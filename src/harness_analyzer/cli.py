@@ -119,6 +119,7 @@ def analyze(
     from harness_analyzer.models.harness import HarnessAnalysis
     from harness_analyzer.collectors.github import GitHubCollector
     from harness_analyzer.collectors.blog import BlogCollector
+    from harness_analyzer.collectors.search import WebSearchCollector
     from harness_analyzer.analyzer.dimensions import CommonDimensionExtractor
     from harness_analyzer.analyzer.specialized import get_specialized_analyzer
     from harness_analyzer.analyzer.offline import OfflineBenchmarkProvider
@@ -128,13 +129,23 @@ def analyze(
     settings = get_settings()
     registry = AppRegistry()
     app_obj = registry.get_app(app_name)
+    is_adhoc = False
+    
     if not app_obj:
-        console.print(f"[red]未找到应用: {app_name}[/red]")
-        raise typer.Exit(1)
+        is_adhoc = True
+        console.print(f"[yellow]🔍 应用 '{app_name}' 未在本地预置注册表中，启动【全网动态搜索与架构探测引擎】...[/yellow]")
+        from harness_analyzer.models.app import AIApp, AppCategory
+        app_obj = AIApp(
+            name=app_name.lower().replace(" ", "-"),
+            display_name=app_name,
+            category=AppCategory.ENGINEERING,  # 初始占位，稍后根据搜索内容自动定性
+            description=f"动态探测应用: {app_name}",
+            info_richness=2,
+        )
 
     cat_val = app_obj.category.value if hasattr(app_obj.category, "value") else str(app_obj.category)
     cat_lbl = app_obj.category.label if hasattr(app_obj.category, "label") else cat_val
-    icon = CATEGORY_ICONS.get(cat_val, "")
+    icon = CATEGORY_ICONS.get(cat_val, "🤖")
     
     # 检查是否使用离线专家基准模式
     use_offline = offline
@@ -143,10 +154,15 @@ def analyze(
             use_offline = True
             console.print("[cyan]ℹ️ 未检测到 API Key，自动启用专家基准架构知识库进行分析...[/cyan]")
         else:
-            console.print("[red]错误: 未配置 API Key[/red]")
-            console.print("请在 .env 文件中设置 GEMINI_API_KEY、OPENAI_API_KEY 或 ANTHROPIC_API_KEY")
-            console.print("或者针对已预置的应用使用: [bold]harness analyze <app> --offline[/bold]")
-            raise typer.Exit(1)
+            if is_adhoc:
+                console.print(f"[red]错误: 应用 '{app_name}' 为全新小众应用，全网动态分析需要配置大模型 API Key[/red]")
+                console.print("请在 .env 中设置 GEMINI_API_KEY、OPENAI_API_KEY 或 ANTHROPIC_API_KEY 以便执行动态搜索与架构提取。")
+                raise typer.Exit(1)
+            else:
+                console.print("[red]错误: 未配置 API Key[/red]")
+                console.print("请在 .env 文件中设置 GEMINI_API_KEY、OPENAI_API_KEY 或 ANTHROPIC_API_KEY")
+                console.print("或者针对已预置的应用使用: [bold]harness analyze <app> --offline[/bold]")
+                raise typer.Exit(1)
 
     console.print(f"\n{icon} 开始分析 [bold]{app_obj.display_name}[/bold] ({cat_lbl}) 的 Harness 架构...\n")
     
@@ -159,12 +175,16 @@ def analyze(
         # Collect data
         collected_texts = []
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
-            task = progress.add_task("📡 采集数据...", total=None)
+            task = progress.add_task("📡 正在全网检索与采集架构信源 (Search/GitHub/Blog)...", total=None)
             
             async def collect():
                 results = []
+                searcher = WebSearchCollector()
                 gh = GitHubCollector()
                 blog = BlogCollector()
+                
+                # 针对新应用或普通应用均先执行全网搜索
+                results.extend(await searcher.collect(app_obj))
                 results.extend(await gh.collect(app_obj))
                 results.extend(await blog.collect(app_obj))
                 return results
@@ -172,31 +192,59 @@ def analyze(
             try:
                 collected = asyncio.run(collect())
                 for c in collected:
-                    collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:2000]}")
+                    collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:2500]}")
             except Exception as e:
-                console.print(f"[yellow]采集数据时出错: {e}，将使用有限信息继续分析[/yellow]")
+                console.print(f"[yellow]采集数据时出错: {e}，将基于已知公开信息继续分析[/yellow]")
             
-            progress.update(task, description="✅ 数据采集完成")
+            progress.update(task, description=f"✅ 数据采集完成 (发现 {len(collected_texts)} 处相关公开信源)")
         
-        collected_data = "\n\n---\n\n".join(collected_texts) if collected_texts else "无额外采集数据，请基于已知公开信息分析。"
+        collected_data = "\n\n---\n\n".join(collected_texts) if collected_texts else "全网公开信源较少，请基于已知信息进行严谨推断并降低置信度。"
+        
+        # 智能动态分类定性（如果是非预置的未知新应用）
+        from harness_analyzer.analyzer.llm import LLMClient
+        llm = LLMClient()
+        
+        if is_adhoc and collected_texts:
+            with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+                c_task = progress.add_task("🔍 动态识别该应用的 Harness 业务品类...", total=None)
+                classify_prompt = (
+                    f"请分析 AI 应用 '{app_obj.display_name}' 属于以下哪一类：\n"
+                    f"- engineering (工程型): 代码编辑/终端执行/IDE工具\n"
+                    f"- data (数据型): NL2SQL/BI分析/表格查询\n"
+                    f"- knowledge (知识型): RAG搜索/文档问答/笔记分析\n"
+                    f"- creative (创作型): 图像/UI/PPT/营销文案生成\n"
+                    f"- automation (自动化型): 多步工作流/自律Agent/任务自动化\n\n"
+                    f"信源参考：\n{collected_data[:1500]}\n\n"
+                    f"只输出一个分类英文单词 (engineering/data/knowledge/creative/automation):"
+                )
+                try:
+                    resp = llm.analyze(classify_prompt).strip().lower()
+                    for cat_candidate in AppCategory:
+                        if cat_candidate.value in resp:
+                            app_obj.category = cat_candidate
+                            cat_val = cat_candidate.value
+                            cat_lbl = cat_candidate.label
+                            icon = CATEGORY_ICONS.get(cat_val, "🤖")
+                            break
+                    progress.update(c_task, description=f"🎯 自动定性识别为: 【{icon} {cat_lbl}】AI 应用")
+                except Exception:
+                    progress.update(c_task, description="⚠️ 自动分类完成")
+        
         app_info = f"应用名称: {app_obj.display_name}\n分类: {cat_val}\n描述: {app_obj.description}\n网站: {app_obj.website}\nGitHub: {app_obj.github_url}"
         
         # Run analysis
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
-            task = progress.add_task("🧠 AI 分析中...", total=None)
-            
-            from harness_analyzer.analyzer.llm import LLMClient
-            llm = LLMClient()
+            task = progress.add_task("🧠 AI 双层架构分析中...", total=None)
             
             # Common dimensions
             extractor = CommonDimensionExtractor(llm)
             common_dims = extractor.extract_all(app_info, collected_data, category=cat_val)
-            progress.update(task, description="🧠 共性维度分析完成，开始品类专属分析...")
+            progress.update(task, description=f"🧠 共性维度完成，正在执行【{cat_lbl}】专属 5 维度穿透分析...")
             
             # Specialized dimensions
             spec_analyzer = get_specialized_analyzer(cat_val, llm)
             spec_dims = spec_analyzer.analyze(app_info, collected_data)
-            progress.update(task, description="✅ 分析完成")
+            progress.update(task, description="✅ 双层架构拆解完成")
         
         # Build analysis result
         analysis = HarnessAnalysis(
