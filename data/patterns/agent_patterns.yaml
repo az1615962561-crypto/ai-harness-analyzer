@@ -1,0 +1,70 @@
+patterns:
+  - name: single_agent
+    display_name: 单 Agent
+    description: "单个 LLM 配合工具集，适用于任务边界清晰的场景"
+    characteristics:
+      - 一个 LLM 实例处理所有请求
+      - 通过工具调用扩展能力
+      - 上下文管理相对简单
+    typical_products:
+      - ChatGPT
+      - Claude.ai
+
+  - name: multi_agent_hierarchical
+    display_name: 多 Agent 层级式
+    description: "Planner-Worker 模式，规划 Agent 分解任务，执行 Agent 完成子任务"
+    characteristics:
+      - 明确的规划-执行分层
+      - 规划 Agent 负责任务分解
+      - 执行 Agent 专注具体操作
+    typical_products:
+      - Devin
+      - Antigravity
+
+  - name: multi_agent_peer
+    display_name: 多 Agent 对等协作式
+    description: "多个专业领域 Agent 平级协作，通过共享上下文或消息传递交换信息、相互校验"
+    characteristics:
+      - 各 Agent 地位对等，各自扮演专门角色（如开发、代码评审、测试）
+      - 通过直接消息传递或讨论机制协同推进任务
+      - 支持交叉验证与共识达成，有效减少单一视角盲区
+    typical_products:
+      - ChatDev
+      - MetaGPT
+      - AutoGen
+
+  - name: multi_agent_swarm
+    display_name: 多 Agent 蜂群式
+    description: "去中心化或轻量协调的 Agent 协作网络，支持基于任务和环境的动态转交 (Handoff) 与动态扩缩容"
+    characteristics:
+      - 采用动态交接 (Handoff) 机制，任务在专业 Agent 间灵活流转
+      - 支持按需动态派生 (Spawn) 工作 Agent 并发处理分片任务
+      - 状态共享通常依托轻量上下文或共享黑板 (Board)
+    typical_products:
+      - OpenAI Swarm
+      - CrewAI
+      - Antigravity Native Swarm
+
+  - name: agent_pipeline
+    display_name: Agent 管线式
+    description: "任务按固定阶段线性或有向无环图 (DAG) 顺序流转，每个阶段由专有 Agent 负责"
+    characteristics:
+      - 阶段划分明确，上游 Agent 输出作为下游 Agent 输入
+      - 适合标准化、确定性高的结构化业务流程
+      - 易于在节点间实施质检阻断、缓存与状态持久化
+    typical_products:
+      - LangFlow
+      - Dify Workflow
+      - Data-to-Report Pipeline
+
+  - name: agent_loop
+    display_name: Agent 自治循环式
+    description: "基于目标驱动的 ReAct 或 Plan-Execute-Reflect 持续迭代循环，直至达到终止条件"
+    characteristics:
+      - 运行循环机制（思考 -> 行动 -> 观察 -> 反思）
+      - 具备自适应纠错能力，能根据工具执行反馈动态调整下一步方案
+      - 需设置严格的退出条件、最大步数限制与死循环熔断保护
+    typical_products:
+      - AutoGPT
+      - BabyAGI
+      - Cursor Agent Mode

@@ -1,0 +1,72 @@
+patterns:
+  - name: function_calling_schema
+    display_name: 原生函数调用
+    description: "通过标准 JSON Schema 描述工具元数据，由 LLM 原生输出符合 Schema 的结构化调用参数"
+    characteristics:
+      - 基于强类型 Schema 严格约束参数，降低格式解析异常
+      - 模型直接输出结构化调用指令，支持单轮并行触发多个工具
+      - 与现代商业模型 API 深度融合，调用链路标准化
+    typical_products:
+      - OpenAI Function Calling
+      - Claude Tool Use
+      - Gemini Function Calling
+
+  - name: react_tool_interleaving
+    display_name: ReAct 交互式工具循环
+    description: "交替进行思考 (Thought)、行动 (Action) 与观察 (Observation)，根据前序工具返回值动态推导后续调用"
+    characteristics:
+      - 工具调用与模型推理紧密交织，形成自适应反馈闭环
+      - 具备自动容错与纠错能力，工具报错时能自动调整重试
+      - 运行链路可解释性强，便于审查与状态追踪
+    typical_products:
+      - LangChain ReAct Agent
+      - Devin
+      - AutoGPT
+
+  - name: mcp_protocol_standard
+    display_name: MCP 标准化协议集成
+    description: "基于开放标准协议 (Model Context Protocol) 统一接入本地与远程工具及数据源"
+    characteristics:
+      - 工具服务与 Agent 核心架构彻底解耦，通过标准 RPC 通信
+      - 具备统一的动态工具发现、模式广播与上下文注入机制
+      - 广泛兼容开源社区与第三方工具生态，即插即用
+    typical_products:
+      - Claude Desktop
+      - Antigravity IDE
+      - Cursor MCP Client
+
+  - name: code_interpreter_sandbox
+    display_name: 代码解释器与沙箱即工具
+    description: "AI 将多步骤复杂操作编写为程序脚本，在受限隔离沙箱中批量执行并获取执行结果"
+    characteristics:
+      - 替代多轮单步 API 调用，一次性执行复杂批处理与数据变换
+      - 严格依托沙箱技术（容器/微VM/WASM）实现环境与宿主物理隔离
+      - 擅长处理大规模数值计算、数据分析清洗与文件处理
+    typical_products:
+      - ChatGPT Code Interpreter
+      - Devin
+      - OpenDevin
+
+  - name: dag_orchestrated_pipeline
+    display_name: DAG 有向图编排工具流
+    description: "通过有向无环图 (DAG) 显式组织工具执行依赖，支持拓扑调度、并发加速与断点续跑"
+    characteristics:
+      - 节点间输入输出依赖关系显式定义，独立节点自动并发执行
+      - 内置条件分支路由、失败重试策略与补偿事务机制
+      - 适用于高可靠性与流程严谨的自动化生产管线
+    typical_products:
+      - Dify Workflow
+      - LangGraph
+      - Flowise
+
+  - name: human_in_the_loop_guard
+    display_name: 人机介入安全防护工具
+    description: "对高危或不可逆操作（写库、删改文件、系统配置、支付）引入人机协同审批断点"
+    characteristics:
+      - 细粒度划分只读安全工具与需人工授权的高危工具
+      - 在交互界面清晰可视化预执行变更（Diff 预览）与影响评估
+      - 确保全自动执行过程始终置于人类监督与风险可控之中
+    typical_products:
+      - Cursor
+      - Claude Code
+      - Devin

@@ -1,0 +1,70 @@
+patterns:
+  - name: single_model_static
+    display_name: 单模型静态绑定
+    description: "系统全量请求统一路由至单一固定模型，架构最简"
+    characteristics:
+      - 无动态路由开销，调用逻辑简单直接
+      - 模型能力与上下文窗口受限于单一选型
+      - 无法兼顾轻量任务的低成本与复杂任务的高智能需求
+    typical_products:
+      - 基础问答助手
+      - 早期单体 AI 插件
+
+  - name: capability_tier_routing
+    display_name: 能力阶梯路由
+    description: "依据任务预估复杂度与推理要求，在轻量模型与旗舰模型之间按需动态分流"
+    characteristics:
+      - 简单任务（分类、信息抽取、简单格式化）分发至轻量快模型
+      - 复杂任务（多步推理、代码重构、系统设计）分流至旗舰大模型
+      - 大幅优化端到端运行延迟与整体 Token 成本
+    typical_products:
+      - Cursor
+      - GitHub Copilot
+      - Antigravity
+
+  - name: intent_semantic_routing
+    display_name: 意图语义分类路由
+    description: "基于用户意图的语义特征与分类标签，将请求路由至领域微调或垂直专用模型"
+    characteristics:
+      - 利用轻量小模型或向量相似度毫秒级判定用户意图
+      - 精准转发给最匹配的专用模型（如代码生成、数学计算、多模态处理）
+      - 针对特定场景提供优于通用大模型的专业表现
+    typical_products:
+      - Perplexity
+      - v0.dev
+      - Semantic Router
+
+  - name: cascade_fallback_routing
+    display_name: 级联降级与容灾路由
+    description: "优先调用低成本或本地模型，若输出校验失败、超时或限流，自动回退到备选大模型"
+    characteristics:
+      - 采用先小后大的级联尝试机制，最大化降低平均单次调用开销
+      - 具备完善的跨供应商与跨区域自动容灾切换能力
+      - 兼具成本收益与高可用性保障
+    typical_products:
+      - LiteLLM
+      - OpenRouter
+      - Julius AI
+
+  - name: speculative_draft_routing
+    display_name: 投机草稿路由
+    description: "轻量模型快速生成初稿或补全建议，大模型进行并行校验或增量精修"
+    characteristics:
+      - 小模型承担高吞吐和低首字延迟生成
+      - 大模型充当仲裁者和精修者，把关核心输出质量
+      - 显著改善交互式场景的实时打字反馈体验
+    typical_products:
+      - Cursor Copilot++
+      - Speculative Decoding 架构应用
+
+  - name: ensemble_mixture_routing
+    display_name: 混合集成共识路由
+    description: "并行分发给多个不同厂商的基座模型，再由聚合模型进行整合、评判与共识融合"
+    characteristics:
+      - 多个模型并行独立生成不同方案与视角
+      - 引入裁判模型 (LLM-as-a-Judge) 消除单一模型偏见与偶发幻觉
+      - 适用于对准确性和全面性要求极高的复杂决策场景
+    typical_products:
+      - Together AI MoA
+      - ChatALL
+      - LMSYS Arena 混合测试

@@ -1,0 +1,71 @@
+patterns:
+  - name: sliding_window_fifo
+    display_name: 滑动窗口截断
+    description: "基于固定 Token 预算或消息条数维护窗口，丢弃最久的历史记录，仅保留最新上下文"
+    characteristics:
+      - 架构与实现极简，无额外模型计算与压缩开销
+      - 随多轮对话推进易遗忘最初设定的约束条件与全局背景
+      - 适用于短生命周期、强局部相关的一问一答型应用
+    typical_products:
+      - 基础问答 Bot
+      - 单轮任务执行器
+
+  - name: hierarchical_recursive_summary
+    display_name: 分层递归摘要压缩
+    description: "当上下文达到容量阈值时，自动调用模型对早期交互进行结构化压缩与摘要提炼"
+    characteristics:
+      - 有效抑制 Token 膨胀，保留跨长对话周期的关键共识
+      - 递归提炼高层语义，关键决策与用户意图被固化为背景指令
+      - 会产生少量压缩延迟，且存在极少细节丢失的可能
+    typical_products:
+      - MemGPT
+      - LangChain ConversationSummary
+      - AutoGen
+
+  - name: rag_dynamic_retrieval
+    display_name: RAG 动态检索注入
+    description: "将海量历史记录、知识库或代码库切分向量化，根据当前上下文动态召回相关片段按需装载"
+    characteristics:
+      - 突破单次物理窗口限制，理论上支持无限量外部知识接入
+      - 结合稠密语义向量与稀疏关键词 (BM25) 进行混合重排检索
+      - 仅注入高相关性上下文，有效减轻注意力分散与幻觉产生
+    typical_products:
+      - Perplexity
+      - NotebookLM
+      - Cursor Codebase Index
+
+  - name: prefix_kv_cache_reuse
+    display_name: 静态前缀缓存优化
+    description: "规范化排列上下文，将固定的 System Prompt、工具定义与知识前缀集中前置，最大化复用 KV Cache"
+    characteristics:
+      - 保持前缀不变以命中服务商的 Prompt Caching 机制
+      - 显著降低首字响应时间 (TTFT) 并减少 50%~90% 的输入成本
+      - 上下文装配器需严格分离静态不变区与动态变化区
+    typical_products:
+      - Claude Prompt Caching
+      - Gemini Context Caching
+      - OpenAI Prompt Caching
+
+  - name: structured_scratchpad_isolation
+    display_name: 结构化工作区与暂存隔离
+    description: "划分独立的命名空间分区（如目标、步骤计划、参考资料、临时便签），保持上下文整洁"
+    characteristics:
+      - 各分区具有独立的生命周期、刷新频率与可见性策略
+      - 子 Agent 仅按需挂载相关分区上下文，避免全局噪点干扰
+      - 大幅提升复杂多步骤工程任务的执行稳定性与可追溯性
+    typical_products:
+      - Antigravity Brain Scratchpad
+      - Devin Workspace
+      - Claude Projects
+
+  - name: hybrid_tiered_memory
+    display_name: 分层多级混合记忆系统
+    description: "构建包含工作记忆、情节记忆与长期语义概念记忆的三级认知记忆网络"
+    characteristics:
+      - 模拟人类记忆分层架构，支持跨长期会话的偏好沉淀与经验积累
+      - 具备自动去重、关联更新、冲突解决与时间衰减遗忘算法
+      - 为 Agent 赋予跨周期个性化自适应能力与持续进化属性
+    typical_products:
+      - Mem0
+      - Zep
+      - Rewind AI

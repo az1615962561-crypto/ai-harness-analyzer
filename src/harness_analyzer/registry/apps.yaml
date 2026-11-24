@@ -1,0 +1,455 @@
+apps:
+  # ==========================================
+  # ENGINEERING (工程型)
+  # ==========================================
+  - name: cursor
+    display_name: Cursor
+    category: engineering
+    tags:
+      - personal
+      - team
+      - developer
+      - ide
+    description: "AI 编程助手，基于 VS Code 的智能 IDE，深度集成多模型能力，支持代码补全、语义检索与全库代码编辑"
+    website: https://cursor.com
+    github_url: null
+    info_richness: 5
+    info_sources:
+      - url: https://cursor.com/blog
+        source_type: blog
+        description: "Cursor 官方博客与技术演进"
+      - url: https://docs.cursor.com
+        source_type: documentation
+        description: "Cursor 官方开发者文档"
+
+  - name: claude-code
+    display_name: Claude Code
+    category: engineering
+    tags:
+      - personal
+      - developer
+      - cli
+      - agent
+    description: "Anthropic CLI 编程 Agent，终端原生的 AI 编程工具，具备自主执行代码、定位修复 Bug 与 Git 版本管理能力"
+    website: https://docs.anthropic.com/en/docs/agents-and-tools/claude-code
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://docs.anthropic.com/en/docs/agents-and-tools/claude-code
+        source_type: documentation
+        description: "Claude Code 官方使用与架构文档"
+      - url: https://www.anthropic.com/news
+        source_type: news
+        description: "Anthropic 官方发布与技术公告"
+
+  - name: devin
+    display_name: Devin
+    category: engineering
+    tags:
+      - team
+      - enterprise
+      - autonomous
+      - agent
+    description: "Cognition 开发的 AI 软件工程师，支持自主完成开发任务，拥有沙盒执行环境与长程规划能力"
+    website: https://cognition.ai
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://cognition.ai/blog
+        source_type: blog
+        description: "Cognition 官方研发技术博客"
+      - url: https://cognition.ai/devin
+        source_type: product_page
+        description: "Devin 产品能力与案例介绍"
+
+  - name: antigravity
+    display_name: Antigravity
+    category: engineering
+    tags:
+      - developer
+      - agent
+      - multi-agent
+      - enterprise
+    description: "Google AI 编程 Agent，强大的多 Agent 编排和工具链，提供深度工作区感知与沙盒化命令执行能力"
+    website: https://antigravity.google
+    github_url: null
+    info_richness: 5
+    info_sources:
+      - url: https://antigravity.google/docs
+        source_type: documentation
+        description: "Antigravity 平台架构与开发文档"
+      - url: https://blog.google/technology/ai
+        source_type: blog
+        description: "Google AI 官方技术发布博客"
+
+  - name: windsurf
+    display_name: Windsurf
+    category: engineering
+    tags:
+      - personal
+      - team
+      - ide
+      - developer
+    description: "Codeium 推出的 AI IDE，前身为 Codeium 编程助手，搭载 Cascade 协同流引擎，深度理解项目上下文"
+    website: https://codeium.com/windsurf
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://codeium.com/blog/windsurf-launch
+        source_type: blog
+        description: "Windsurf 架构发布博客"
+      - url: https://docs.codeium.com/windsurf
+        source_type: documentation
+        description: "Windsurf 功能与使用指南"
+
+  - name: openhands
+    display_name: OpenHands
+    category: engineering
+    tags:
+      - open_source
+      - developer
+      - agent
+      - team
+    description: "开源 AI 软件工程师 (前身 OpenDevin)，基于 Docker 容器安全沙盒自主执行软件开发与协作任务"
+    website: https://all-hands.dev
+    github_url: https://github.com/All-Hands-AI/OpenHands
+    info_richness: 5
+    info_sources:
+      - url: https://github.com/All-Hands-AI/OpenHands
+        source_type: github
+        description: "OpenHands 开源项目仓库与源码"
+      - url: https://docs.all-hands.dev
+        source_type: documentation
+        description: "OpenHands 官方架构与部署文档"
+
+  - name: bolt-new
+    display_name: Bolt.new
+    category: engineering
+    tags:
+      - developer
+      - web
+      - fullstack
+      - personal
+    description: "StackBlitz 的 AI 全栈开发工具，基于 WebContainer 在浏览器内即时构建、运行并调试全栈 Node 应用"
+    website: https://bolt.new
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://blog.stackblitz.com/posts/introducing-bolt
+        source_type: blog
+        description: "StackBlitz 官方 Bolt 发布博客"
+      - url: https://stackblitz.com/docs
+        source_type: documentation
+        description: "WebContainer 与 StackBlitz 平台文档"
+
+  # ==========================================
+  # DATA (数据型)
+  # ==========================================
+  - name: chatbi
+    display_name: ChatBI
+    category: data
+    tags:
+      - enterprise
+      - team
+      - bi
+      - analytics
+    description: "对话式 BI 分析 Agent，通过自然语言查询数据，自动将业务意图翻译为 SQL 并生成多维交互式图表"
+    website: https://chatbi.ai
+    github_url: null
+    info_richness: 3
+    info_sources:
+      - url: https://chatbi.ai/docs
+        source_type: documentation
+        description: "ChatBI 核心功能与查询语法规范"
+      - url: https://chatbi.ai/blog
+        source_type: blog
+        description: "企业级智能 BI 落地实践与方案"
+
+  - name: julius-ai
+    display_name: Julius AI
+    category: data
+    tags:
+      - personal
+      - team
+      - analytics
+      - visualization
+    description: "AI 数据分析平台，支持数据清洗和可视化，通过对话实现高级统计分析、机器学习建模与图表输出"
+    website: https://julius.ai
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://julius.ai/docs
+        source_type: documentation
+        description: "Julius AI 数据分析指南与功能手册"
+      - url: https://julius.ai/blog
+        source_type: blog
+        description: "Julius 官方数据科学博客与案例"
+
+  - name: databricks-assistant
+    display_name: Databricks Assistant
+    category: data
+    tags:
+      - enterprise
+      - developer
+      - analytics
+      - big-data
+    description: "Databricks 内置 AI 助手，深度结合 Lakehouse 上下文，辅助编写并优化 SQL/Python 代码及数据管道"
+    website: https://www.databricks.com/product/databricks-assistant
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://docs.databricks.com/assistant/index.html
+        source_type: documentation
+        description: "Databricks Assistant 官方集成与使用文档"
+      - url: https://www.databricks.com/blog/announcing-databricks-assistant
+        source_type: blog
+        description: "Databricks Assistant 发布与架构剖析"
+
+  # ==========================================
+  # KNOWLEDGE (知识型)
+  # ==========================================
+  - name: perplexity
+    display_name: Perplexity
+    category: knowledge
+    tags:
+      - personal
+      - team
+      - search
+      - research
+    description: "AI 搜索引擎，实时检索+引用溯源，结合大语言模型与多源网页检索，提供精准可靠的结构化答案"
+    website: https://www.perplexity.ai
+    github_url: null
+    info_richness: 5
+    info_sources:
+      - url: https://www.perplexity.ai/hub/blog
+        source_type: blog
+        description: "Perplexity 官方技术博客与更新"
+      - url: https://docs.perplexity.ai
+        source_type: documentation
+        description: "Perplexity API 与开发者文档"
+
+  - name: notebooklm
+    display_name: NotebookLM
+    category: knowledge
+    tags:
+      - personal
+      - research
+      - education
+      - documents
+    description: "Google AI 笔记本，支持多文档深度分析、摘要提炼与交叉引用，具备生成音频播客与深度对话能力"
+    website: https://notebooklm.google.com
+    github_url: null
+    info_richness: 5
+    info_sources:
+      - url: https://blog.google/technology/ai/notebooklm-google-ai
+        source_type: blog
+        description: "Google 官方 NotebookLM 功能与架构介绍"
+      - url: https://support.google.com/notebooklm
+        source_type: documentation
+        description: "NotebookLM 帮助中心与功能指南"
+
+  - name: notion-ai
+    display_name: Notion AI
+    category: knowledge
+    tags:
+      - personal
+      - team
+      - enterprise
+      - productivity
+    description: "Notion 内置 AI 助手，工作空间知识检索与智能写作，连接团队全量知识库实现高效协作与内容整理"
+    website: https://www.notion.so/product/ai
+    github_url: null
+    info_richness: 5
+    info_sources:
+      - url: https://www.notion.so/help/notion-ai
+        source_type: documentation
+        description: "Notion AI 官方帮助与功能指南"
+      - url: https://www.notion.so/blog/category/ai
+        source_type: blog
+        description: "Notion 官方 AI 实践与产品设计博客"
+
+  - name: glean
+    display_name: Glean
+    category: knowledge
+    tags:
+      - enterprise
+      - team
+      - search
+      - knowledge-graph
+    description: "企业级 AI 搜索平台，跨企业全部应用建立统一知识图谱与语义索引，提供权限受控的智能问答"
+    website: https://www.glean.com
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://www.glean.com/blog
+        source_type: blog
+        description: "Glean 企业搜索与架构博客"
+      - url: https://www.glean.com/product
+        source_type: product_page
+        description: "Glean 产品架构与企业安全白皮书"
+
+  # ==========================================
+  # CREATIVE (创作型)
+  # ==========================================
+  - name: midjourney
+    display_name: Midjourney
+    category: creative
+    tags:
+      - personal
+      - design
+      - generative-ai
+      - image
+    description: "AI 图像生成，高质量艺术创作，具备顶级视觉美学与构图细节表现力，支持多种风格与提示词控制"
+    website: https://www.midjourney.com
+    github_url: null
+    info_richness: 5
+    info_sources:
+      - url: https://docs.midjourney.com
+        source_type: documentation
+        description: "Midjourney 官方用户指南与参数手册"
+      - url: https://www.midjourney.com/showcase
+        source_type: showcase
+        description: "Midjourney 社区作品展与提示词灵感库"
+
+  - name: v0-dev
+    display_name: v0.dev
+    category: creative
+    tags:
+      - developer
+      - design
+      - frontend
+      - web
+    description: "Vercel 的 AI UI 生成器，prompt 到 React 组件，结合 Tailwind CSS 与 Shadcn UI 快速生成可用界面"
+    website: https://v0.dev
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://v0.dev/faq
+        source_type: documentation
+        description: "v0.dev 官方常见问题与功能说明"
+      - url: https://vercel.com/blog/announcing-v0
+        source_type: blog
+        description: "Vercel 官方 v0 发布博客与技术解读"
+
+  - name: gamma
+    display_name: Gamma
+    category: creative
+    tags:
+      - personal
+      - team
+      - presentation
+      - documents
+    description: "AI 演示文稿制作，基于对话式提示自动生成排版优美的幻灯片、网页与互动文档，支持快速风格调整"
+    website: https://gamma.app
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://gamma.app/help
+        source_type: documentation
+        description: "Gamma 官方帮助中心与排版设计教程"
+      - url: https://gamma.app/blog
+        source_type: blog
+        description: "Gamma 官方产品博客与演示案例"
+
+  - name: jasper
+    display_name: Jasper
+    category: creative
+    tags:
+      - team
+      - enterprise
+      - marketing
+      - copywriting
+    description: "AI 写作助手平台，专为市场营销团队打造，支持定制企业品牌语调、跨渠道文案生成与协作优化"
+    website: https://www.jasper.ai
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://www.jasper.ai/blog
+        source_type: blog
+        description: "Jasper 官方内容营销与生成技术博客"
+      - url: https://docs.jasper.ai
+        source_type: documentation
+        description: "Jasper API 与开发者接入指南"
+
+  # ==========================================
+  # AUTOMATION (自动化型)
+  # ==========================================
+  - name: autogpt
+    display_name: AutoGPT
+    category: automation
+    tags:
+      - open_source
+      - developer
+      - agent
+      - autonomous
+    description: "自主 AI Agent 框架 (github: Significant-Gravitas/AutoGPT)，探索目标拆解、长期记忆与自主执行闭环"
+    website: https://autogpt.net
+    github_url: https://github.com/Significant-Gravitas/AutoGPT
+    info_richness: 5
+    info_sources:
+      - url: https://github.com/Significant-Gravitas/AutoGPT
+        source_type: github
+        description: "AutoGPT 开源项目代码仓库与核心架构"
+      - url: https://docs.agpt.co
+        source_type: documentation
+        description: "AutoGPT 官方平台与开发者教程"
+
+  - name: crewai
+    display_name: CrewAI
+    category: automation
+    tags:
+      - open_source
+      - developer
+      - multi-agent
+      - framework
+    description: "多 Agent 协作框架 (github: crewAIInc/crewAI)，通过角色设定、任务编排与协同机制构建复杂 Agent 团队"
+    website: https://crewai.com
+    github_url: https://github.com/crewAIInc/crewAI
+    info_richness: 5
+    info_sources:
+      - url: https://github.com/crewAIInc/crewAI
+        source_type: github
+        description: "CrewAI GitHub 仓库与示例代码"
+      - url: https://docs.crewai.com
+        source_type: documentation
+        description: "CrewAI 官方框架文档与最佳实践"
+
+  - name: langgraph
+    display_name: LangGraph
+    category: automation
+    tags:
+      - open_source
+      - developer
+      - orchestration
+      - framework
+    description: "LangChain 的 Agent 编排引擎 (github: langchain-ai/langgraph)，支持循环图工作流、状态持久化与人机协同"
+    website: https://langchain-ai.github.io/langgraph
+    github_url: https://github.com/langchain-ai/langgraph
+    info_richness: 5
+    info_sources:
+      - url: https://github.com/langchain-ai/langgraph
+        source_type: github
+        description: "LangGraph 源码仓库与生态扩展"
+      - url: https://langchain-ai.github.io/langgraph/
+        source_type: documentation
+        description: "LangGraph 核心架构概念与指南"
+
+  - name: manus-ai
+    display_name: Manus AI
+    category: automation
+    tags:
+      - autonomous
+      - agent
+      - personal
+      - team
+    description: "通用 AI Agent，支持多步骤自动化任务，具备跨应用操作、沙盒环境执行与端到端复杂工作流自动化能力"
+    website: https://manus.im
+    github_url: null
+    info_richness: 4
+    info_sources:
+      - url: https://manus.im/blog
+        source_type: blog
+        description: "Manus 官方技术与产品发布博客"
+      - url: https://manus.im/docs
+        source_type: documentation
+        description: "Manus 平台架构与 Agent 能力说明"
