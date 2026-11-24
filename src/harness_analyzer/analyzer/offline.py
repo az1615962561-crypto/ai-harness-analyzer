@@ -8,7 +8,7 @@ from harness_analyzer.models.dimension import (
     SpecializedDimensionAnalysis,
     CommonDimension,
 )
-from harness_analyzer.models.harness import HarnessAnalysis
+from harness_analyzer.models.harness import HarnessAnalysis, PMGuidance
 
 
 class OfflineBenchmarkProvider:
@@ -229,6 +229,40 @@ class OfflineBenchmarkProvider:
             app_name=app.name,
             app_display_name=app.display_name,
             category=app.category.value if hasattr(app.category, "value") else str(app.category),
+            pm_guidance=PMGuidance(
+                suitable_product_forms=[
+                    "IDE 原生侵入式编辑器扩展 (基于 VS Code Fork 或 LSP 深度嵌入)",
+                    "桌面端代码协作浮窗 / 命令行终端原生交互 CLI (如 Claude Code)",
+                ],
+                autonomy_level="L2~L3 (人在回路的渐进协同型)",
+                interaction_design=(
+                    "1. 双重交互粒度分流：行内打字实时补全 (Tab 无感采纳) 与全局多文件编辑 (Composer 对话窗口)；\n"
+                    "  2. 视觉信任锚点：修改以直观的行内 Diff (绿色新增/红色删除) 呈现，单行/单文件支持快捷键快速审查 Accept/Reject；\n"
+                    "  3. 心理安全网：每次复杂修改执行前自动打点快照，支持用户一键 Esc / Undo 原子级还原所有被改动文件。"
+                ),
+                cost_latency_tradeoffs=(
+                    "• 延迟分级：高频 Tab 补全强制要求 <200ms，必须采用端侧小模型或 Speculative 推理；\n"
+                    "• 成本分级：代码重构与多文件编辑走异步流式生成，采用精确 SEARCH/REPLACE 差异块，减少 80% 的 Token 输出量。"
+                ),
+                mvp_must_haves=[
+                    "基于 Tree-sitter 的代码文件语法块精准解析 (函数级切块)",
+                    "流式 SEARCH/REPLACE 差异补丁协议与客户端合并引擎",
+                    "代码修改前置预览 (Diff 审阅界面)",
+                    "单步操作撤销与文件还原 (Undo 快照)",
+                    "终端命令执行前置审批确认机制"
+                ],
+                mvp_nice_to_haves=[
+                    "全库 Merkle Tree 增量索引与本地向量/符号混合检索",
+                    "项目级规则配置文件自适应注入 (.cursorrules / CLAUDE.md)",
+                    "支持 MCP (Model Context Protocol) 开放外部生态",
+                    "自研低延迟小模型行内补全"
+                ],
+                anti_patterns_to_avoid=[
+                    "千万不要在第一期要求大模型直接重写几千行的整个源文件 (Token 爆炸且极慢)；",
+                    "切忌不给用户 Diff 预览就直接把代码落盘修改 (用户会产生极强不安全感)；",
+                    "第一期不要追求完全自主无需确认的 Autonomous 模式，容易改坏代码导致用户弃用。"
+                ]
+            ),
             common_dimensions=common_dims,
             specialized_dimensions=specialized_dims,
             architecture_summary="Cursor 是一套工业级 AI 编程助手 Harness，核心通过'快速补全 + 复合编辑'双 Agent 架构，配合 AST/LSP 混合代码检索、流式 Diff 补丁协议与细腻的人机审阅交互，打造了当前工程型 Agent 的体验标杆。",
@@ -337,6 +371,40 @@ class OfflineBenchmarkProvider:
             app_name=app.name,
             app_display_name=app.display_name,
             category="data",
+            pm_guidance=PMGuidance(
+                suitable_product_forms=[
+                    "企业内部数据工作台 Web 界面 (嵌入现有数仓 / BI 报表平台)",
+                    "企业微信 / 钉钉 / 飞书 对话机器人 (针对业务部门与管理层快速查数)",
+                ],
+                autonomy_level="L1~L2 (严格受控的建议与辅助型)",
+                interaction_design=(
+                    "1. 意图确认卡片：用户输入自然语言后，先回显其识别的业务维度、时间窗口与指标定义，供用户核对；\n"
+                    "  2. SQL 预览与透视：为分析师模式提供生成的 SQL 展开预览与数据来源表说明；\n"
+                    "  3. 可视化交互洞察：查询结果自动匹配自适应图表，并输出 1~2 句核心波动业务归因短语。"
+                ),
+                cost_latency_tradeoffs=(
+                    "• 确定性优先于灵活性：采用固化的状态流 Pipeline，仅在意图提取与图表总结环节消耗 LLM，避免多轮漫游消耗 Token；\n"
+                    "• 生产数仓保护：强制 LIMIT 1000 与查询超时熔断，防止大模型写出全表扫描拖垮集群。"
+                ),
+                mvp_must_haves=[
+                    "核心业务指标字典与元数据映射 (Schema 注释库)",
+                    "高质量 Few-Shot SQL 黄金案例库 (动态召回 3~5 条)",
+                    "SQL 静态语法分析器 (拦截危险 DROP/DELETE/UPDATE)",
+                    "查询执行报错自动反馈重试自愈机制 (最多 2 次)",
+                    "表格结果自动识别并渲染基础折线图/柱状图"
+                ],
+                mvp_nice_to_haves=[
+                    "全库海量表动态 Schema 剪枝算法",
+                    "行级/列级租户数据安全权限自动注入 (Row-Level Security)",
+                    "指标归因自动多维下钻解释",
+                    "自然语言复杂数据透视表交互"
+                ],
+                anti_patterns_to_avoid=[
+                    "切忌把上百张表的建表语句直接塞给大模型 (上下文被污染，准确率暴跌)；",
+                    "切忌直连高权限生产数据库执行模型生成的裸 SQL；",
+                    "第一期不要盲目引入自由多 Agent 辩论，数据场景需要强确定性而非发散。"
+                ]
+            ),
             common_dimensions=common_dims,
             specialized_dimensions=specialized_dims,
             architecture_summary="ChatBI 代表了典型的数据分析型 Agent Harness：采用意图分类与严格 Pipeline 架构，核心突破在于 Schema 智能剪枝、SQL 语法树安全拦截、执行报错自愈闭环以及多维图表自适应推荐。",
@@ -426,6 +494,41 @@ class OfflineBenchmarkProvider:
             app_name=app.name,
             app_display_name=app.display_name,
             category="knowledge",
+            pm_guidance=PMGuidance(
+                suitable_product_forms=[
+                    "企业新一代智能搜索门户 (对标现代 AI 搜索引擎)",
+                    "内部海量文档/Wiki/知识库问答助手 (HR/法务/研发助手)",
+                    "行业分析师与研报调研工作台",
+                ],
+                autonomy_level="L1~L2 (透明引用的交互探索型)",
+                interaction_design=(
+                    "1. 句子级细粒度引用锚定 [1][2]，鼠标悬停即时弹出原文快照卡片，支持一键跳转溯源；\n"
+                    "  2. 底部自动生成 3 个引导式延伸问题 (Related Questions)，促进多轮深度挖掘；\n"
+                    "  3. Pro Search 模式提供意图澄清卡片，允许用户在搜索前框定范围。"
+                ),
+                cost_latency_tradeoffs=(
+                    "• 意图拆解与搜索词拓展使用极速小模型 (响应 <500ms)，避免用户产生白屏等待焦虑；\n"
+                    "• 最终总结归纳与多文档事实核验路由给长上下文旗舰模型，保证回答深度。"
+                ),
+                mvp_must_haves=[
+                    "多路搜索并发召回 (关键词+语义向量混合召回)",
+                    "网页 DOM 清洗与噪音广告/页脚剔除引擎",
+                    "基于 Cross-Encoder 的段落级重排打分模型 (Reranker)",
+                    "生成文本中强制内联引用标记注入协议",
+                    "前端交互式引用悬停预览与原文锚点高亮"
+                ],
+                mvp_nice_to_haves=[
+                    "多信源矛盾观点交叉核验与时效性衰减算法",
+                    "多轮探索历史时间轴与思维导图生成",
+                    "支持上传本地 PDF/研报联合联网搜索",
+                    "语音搜索与播客式总结输出"
+                ],
+                anti_patterns_to_avoid=[
+                    "切忌只做普通向量召回不加 Reranker (召回一堆垃圾网页导致严重幻觉)；",
+                    "切忌生成无引用的裸文本答案，用户无法验证真伪就会产生严重不信任；",
+                    "第一期不要直接爬取未经清洗的网页，杂质字符会挤爆大模型窗口。"
+                ]
+            ),
             common_dimensions=common_dims,
             specialized_dimensions=specialized_dims,
             architecture_summary="Perplexity 构建了一套以'快速检索-多路召回-精准重排-可溯源生成'为核心的知识型 Harness，通过精细的网页去噪、Cross-Encoder 语义重排和内联引用交互，树立了 AI 搜索与知识问答的高可信范式。",
@@ -505,6 +608,41 @@ class OfflineBenchmarkProvider:
             app_name=app.name,
             app_display_name=app.display_name,
             category="automation",
+            pm_guidance=PMGuidance(
+                suitable_product_forms=[
+                    "后台异步执行的长时间复杂任务工作流 Agent (如自动化研究/报表生成)",
+                    "跨企业 SaaS 系统的多应用数据同步与流程自动化服务",
+                    "研发自动化测试与运维排障自愈机器人",
+                ],
+                autonomy_level="L3~L4 (高自主度的全托管异步型)",
+                interaction_design=(
+                    "1. 目标拆解进度看板：以 DAG 任务图或步骤列表实时流式展示当前进展；\n"
+                    "  2. 工具参数透明回显：清晰展示 Agent 正在调用的工具名、输入参数与执行日志；\n"
+                    "  3. 敏感操作审批断点：对写操作、资金、发送对外邮件等破坏性行为强制停顿等待人类确认 (HITL)。"
+                ),
+                cost_latency_tradeoffs=(
+                    "• 预算熔断：全自主循环极易发散，必须强制设定单任务最大迭代步数 (如 Max Steps 20) 与 Token 消耗硬阈值；\n"
+                    "• 异步解耦：脱离即时打字对话形态，用户提交任务后可通过异步 Webhook 通知（邮件/企微）接收成果。"
+                ),
+                mvp_must_haves=[
+                    "基于 DAG 的有向无环图任务依赖调度引擎",
+                    "统一标准化的原子 Tool Calling Schema 接口",
+                    "单步执行失败反思纠偏与指数退避重试机制",
+                    "Docker 容器级轻量安全隔离沙箱",
+                    "任务状态本地持久化与断点续跑支持"
+                ],
+                mvp_nice_to_haves=[
+                    "多 Agent 角色分工委派通信协议 (Planner -> Worker -> Critic)",
+                    "定时 Cron 周期调度与外部 Webhook 触发网关",
+                    "长链路执行历史多分支版本回溯",
+                    "动态 Token 成本预测与智能分配"
+                ],
+                anti_patterns_to_avoid=[
+                    "绝对不要在宿主开发环境或生产机裸跑无容器隔离的自动化 Agent；",
+                    "切忌不设迭代步数上限，极易死循环烧干 API 余额；",
+                    "第一期不要设计过多复杂复合工具，工具数量越多大模型越容易选择困难或参数幻觉。"
+                ]
+            ),
             common_dimensions=common_dims,
             specialized_dimensions=specialized_dims,
             architecture_summary="AutoGPT 是自主自动化 Agent 的代表作，其 Harness 围绕 Plan-Execute-Reflect 闭环循环、DAG 状态机调度、全功能工具库与 Docker 安全沙箱构建，为多步长流程任务自动化提供了参考蓝本。",

@@ -41,8 +41,9 @@ def test_markdown_report_generator():
         key_insights=["Insight 1"],
     )
     md = gen.generate(analysis)
-    assert "# Cursor — Harness 架构分析" in md
-    assert "## 概览" in md
+    assert "# Cursor — Harness 架构" in md
+    assert "## 概览指标" in md
+    assert "## 🎯 应用层：产品经理产品方案指导" in md
     assert "### Agent 编排" in md
     assert "Dual-agent flow" in md
     assert "flowchart TD" in md

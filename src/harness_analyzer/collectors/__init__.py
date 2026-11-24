@@ -2,6 +2,7 @@ from .base import BaseCollector, CollectedData
 from .github import GitHubCollector
 from .blog import BlogCollector
 from .search import WebSearchCollector
+from .reverse_eng import ReverseEngineeringCollector
 
 __all__ = [
     "BaseCollector",
@@ -9,4 +10,5 @@ __all__ = [
     "GitHubCollector",
     "BlogCollector",
     "WebSearchCollector",
+    "ReverseEngineeringCollector",
 ]
