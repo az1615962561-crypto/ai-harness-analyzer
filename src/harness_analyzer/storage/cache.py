@@ -73,6 +73,7 @@ class AnalysisCache:
             return [
                 {
                     "name": row[0],
+                    "app_name": row[0],
                     "category": row[1],
                     "analyzed_at": row[2],
                 }

@@ -110,6 +110,7 @@ GitHub: {a.github_url or 'N/A'}
 def analyze(
     app_name: str = typer.Argument(help="应用名称"),
     depth: str = typer.Option("quick", "--depth", "-d", help="分析深度: quick/full"),
+    offline: bool = typer.Option(False, "--offline", help="使用专家基准知识库离线分析（无需配置 API Key）"),
 ):
     """分析 AI 应用的 Harness 架构"""
     from harness_analyzer.config import get_settings
@@ -118,80 +119,97 @@ def analyze(
     from harness_analyzer.models.harness import HarnessAnalysis
     from harness_analyzer.collectors.github import GitHubCollector
     from harness_analyzer.collectors.blog import BlogCollector
-    from harness_analyzer.analyzer.llm import LLMClient
     from harness_analyzer.analyzer.dimensions import CommonDimensionExtractor
     from harness_analyzer.analyzer.specialized import get_specialized_analyzer
+    from harness_analyzer.analyzer.offline import OfflineBenchmarkProvider
     from harness_analyzer.output.markdown import MarkdownReportGenerator
     from harness_analyzer.storage.cache import AnalysisCache
     
     settings = get_settings()
-    if not settings.api_key:
-        console.print("[red]错误: 未配置 API Key[/red]")
-        console.print("请在 .env 文件中设置 GEMINI_API_KEY、OPENAI_API_KEY 或 ANTHROPIC_API_KEY")
-        raise typer.Exit(1)
-    
     registry = AppRegistry()
     app_obj = registry.get_app(app_name)
     if not app_obj:
         console.print(f"[red]未找到应用: {app_name}[/red]")
         raise typer.Exit(1)
+
+    cat_val = app_obj.category.value if hasattr(app_obj.category, "value") else str(app_obj.category)
+    cat_lbl = app_obj.category.label if hasattr(app_obj.category, "label") else cat_val
+    icon = CATEGORY_ICONS.get(cat_val, "")
     
-    icon = CATEGORY_ICONS.get(app_obj.category, "")
-    console.print(f"\n{icon} 开始分析 [bold]{app_obj.display_name}[/bold] 的 Harness 架构...\n")
+    # 检查是否使用离线专家基准模式
+    use_offline = offline
+    if not settings.api_key:
+        if OfflineBenchmarkProvider.has_benchmark(app_obj.name) or offline:
+            use_offline = True
+            console.print("[cyan]ℹ️ 未检测到 API Key，自动启用专家基准架构知识库进行分析...[/cyan]")
+        else:
+            console.print("[red]错误: 未配置 API Key[/red]")
+            console.print("请在 .env 文件中设置 GEMINI_API_KEY、OPENAI_API_KEY 或 ANTHROPIC_API_KEY")
+            console.print("或者针对已预置的应用使用: [bold]harness analyze <app> --offline[/bold]")
+            raise typer.Exit(1)
+
+    console.print(f"\n{icon} 开始分析 [bold]{app_obj.display_name}[/bold] ({cat_lbl}) 的 Harness 架构...\n")
     
-    # Collect data
-    collected_texts = []
-    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
-        task = progress.add_task("📡 采集数据...", total=None)
+    if use_offline:
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+            task = progress.add_task("📚 提取专家架构基准知识...", total=None)
+            analysis = OfflineBenchmarkProvider.get_analysis(app_obj)
+            progress.update(task, description="✅ 架构数据构建完成")
+    else:
+        # Collect data
+        collected_texts = []
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+            task = progress.add_task("📡 采集数据...", total=None)
+            
+            async def collect():
+                results = []
+                gh = GitHubCollector()
+                blog = BlogCollector()
+                results.extend(await gh.collect(app_obj))
+                results.extend(await blog.collect(app_obj))
+                return results
+            
+            try:
+                collected = asyncio.run(collect())
+                for c in collected:
+                    collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:2000]}")
+            except Exception as e:
+                console.print(f"[yellow]采集数据时出错: {e}，将使用有限信息继续分析[/yellow]")
+            
+            progress.update(task, description="✅ 数据采集完成")
         
-        async def collect():
-            results = []
-            gh = GitHubCollector()
-            blog = BlogCollector()
-            results.extend(await gh.collect(app_obj))
-            results.extend(await blog.collect(app_obj))
-            return results
+        collected_data = "\n\n---\n\n".join(collected_texts) if collected_texts else "无额外采集数据，请基于已知公开信息分析。"
+        app_info = f"应用名称: {app_obj.display_name}\n分类: {cat_val}\n描述: {app_obj.description}\n网站: {app_obj.website}\nGitHub: {app_obj.github_url}"
         
-        try:
-            collected = asyncio.run(collect())
-            for c in collected:
-                collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:2000]}")
-        except Exception as e:
-            console.print(f"[yellow]采集数据时出错: {e}，将使用有限信息继续分析[/yellow]")
+        # Run analysis
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+            task = progress.add_task("🧠 AI 分析中...", total=None)
+            
+            from harness_analyzer.analyzer.llm import LLMClient
+            llm = LLMClient()
+            
+            # Common dimensions
+            extractor = CommonDimensionExtractor(llm)
+            common_dims = extractor.extract_all(app_info, collected_data, category=cat_val)
+            progress.update(task, description="🧠 共性维度分析完成，开始品类专属分析...")
+            
+            # Specialized dimensions
+            spec_analyzer = get_specialized_analyzer(cat_val, llm)
+            spec_dims = spec_analyzer.analyze(app_info, collected_data)
+            progress.update(task, description="✅ 分析完成")
         
-        progress.update(task, description="✅ 数据采集完成")
-    
-    collected_data = "\n\n---\n\n".join(collected_texts) if collected_texts else "无额外采集数据，请基于已知公开信息分析。"
-    app_info = f"应用名称: {app_obj.display_name}\n分类: {app_obj.category}\n描述: {app_obj.description}\n网站: {app_obj.website}\nGitHub: {app_obj.github_url}"
-    
-    # Run analysis
-    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
-        task = progress.add_task("🧠 AI 分析中...", total=None)
-        
-        llm = LLMClient()
-        
-        # Common dimensions
-        extractor = CommonDimensionExtractor(llm)
-        common_dims = extractor.extract_all(app_info, collected_data, category=app_obj.category)
-        progress.update(task, description="🧠 共性维度分析完成，开始品类专属分析...")
-        
-        # Specialized dimensions
-        spec_analyzer = get_specialized_analyzer(app_obj.category, llm)
-        spec_dims = spec_analyzer.analyze(app_info, collected_data)
-        progress.update(task, description="✅ 分析完成")
-    
-    # Build analysis result
-    analysis = HarnessAnalysis(
-        app_name=app_obj.name,
-        app_display_name=app_obj.display_name,
-        category=app_obj.category,
-        common_dimensions=common_dims,
-        specialized_dimensions=spec_dims,
-        architecture_summary=f"{app_obj.display_name} 是一个{app_obj.category}类 AI 应用",
-        key_insights=[d.summary for d in common_dims if d.confidence >= 3][:5],
-        source_count=len(collected_texts),
-        confidence_overall=round(sum(d.confidence for d in common_dims) / max(len(common_dims), 1)),
-    )
+        # Build analysis result
+        analysis = HarnessAnalysis(
+            app_name=app_obj.name,
+            app_display_name=app_obj.display_name,
+            category=cat_val,
+            common_dimensions=common_dims,
+            specialized_dimensions=spec_dims,
+            architecture_summary=f"{app_obj.display_name} 是一个{cat_lbl}类 AI 应用",
+            key_insights=[d.summary for d in common_dims if d.confidence >= 3][:5],
+            source_count=len(collected_texts),
+            confidence_overall=round(sum(d.confidence for d in common_dims) / max(len(common_dims), 1)),
+        )
     
     # Cache
     cache = AnalysisCache(settings.cache_dir)

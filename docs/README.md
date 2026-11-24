@@ -20,3 +20,12 @@
    - 9 大共性维度分析指南
    - 各品类专属 5 维度清单
    - 权重指标体系与设计逻辑（5分制加权逻辑）
+
+## 📊 预置典型架构基准拆解报告
+
+可在项目 [`reports/`](../reports/) 目录下直接查阅以下代表性产品深度拆解成果：
+- [Cursor 架构分析报告 (工程型标杆)](../reports/cursor.md)
+- [ChatBI 架构分析报告 (数据型标杆)](../reports/chatbi.md)
+- [Perplexity 架构分析报告 (知识型标杆)](../reports/perplexity.md)
+- [AutoGPT 架构分析报告 (自动化型标杆)](../reports/autogpt.md)
+- [横向对比报告：Cursor vs ChatBI](../reports/comparison.md)
