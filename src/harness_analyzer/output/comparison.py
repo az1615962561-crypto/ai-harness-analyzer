@@ -62,7 +62,10 @@ class ComparisonReportGenerator:
 
         overview_rows = [
             ["**应用分类**"] + categories,
-            ["**架构置信度**"] + [self._format_stars(self._get_val(a, "confidence", default=None)) for a in analyses],
+            ["**架构置信度**"] + [
+                self._format_stars(self._get_val(a, "confidence_overall", "confidence", default=None))
+                for a in analyses
+            ],
             ["**信息源数量**"] + [
                 str(self._get_val(a, "source_count", default=len(self._get_val(a, "sources", "collected_data", default=[]))))
                 for a in analyses
@@ -84,10 +87,43 @@ class ComparisonReportGenerator:
             table_md.append("| " + " | ".join(clean_row) + " |")
         sections.append("\n".join(table_md) + "\n")
 
-        # 3. 架构维度横向对比
-        sections.append("## 2. 关键架构维度对比\n")
+        # 3. 应用层：产品方案横向对比 (PM Guidance)
+        pm_objects = [self._get_val(a, "pm_guidance", default=None) for a in analyses]
+        if any(pm is not None for pm in pm_objects):
+            sections.append("## 2. 应用层：产品方案横向对比 (PM Guidance)\n")
+            pm_rows = [
+                ["**适合产品形态**"] + [
+                    "；".join(self._get_val(pm, "suitable_product_forms", default=[]) or ["*暂无*"])
+                    if pm else "*暂无*"
+                    for pm in pm_objects
+                ],
+                ["**自主度评级**"] + [
+                    str(self._get_val(pm, "autonomy_level", default="*暂无*")) if pm else "*暂无*"
+                    for pm in pm_objects
+                ],
+                ["**MVP P0 必做项**"] + [
+                    "<br>".join(f"• {m}" for m in (self._get_val(pm, "mvp_must_haves", default=[]) or [])[:3]) or "*暂无*"
+                    if pm else "*暂无*"
+                    for pm in pm_objects
+                ],
+                ["**关键避坑红线**"] + [
+                    "<br>".join(f"❌ {ap}" for ap in (self._get_val(pm, "anti_patterns_to_avoid", default=[]) or [])[:2]) or "*暂无*"
+                    if pm else "*暂无*"
+                    for pm in pm_objects
+                ],
+            ]
+            pm_md = [
+                "| " + " | ".join(["产品决策维度"] + app_names) + " |",
+                "| " + " | ".join([":---"] + [":---"] * len(app_names)) + " |",
+            ]
+            for row in pm_rows:
+                clean_row = [cell.replace("\n", " ").replace("|", "\\|") for cell in row]
+                pm_md.append("| " + " | ".join(clean_row) + " |")
+            sections.append("\n".join(pm_md) + "\n")
 
-        # 汇总各分析覆盖的所有维度
+        # 4. 中间层：架构维度横向对比
+        sections.append("## 3. 中间层：关键架构维度对比\n")
+
         all_dim_labels: list[str] = []
         app_dim_maps: list[dict[str, Any]] = []
 
@@ -132,8 +168,8 @@ class ComparisonReportGenerator:
         else:
             sections.append("*暂无共性维度数据可对比。*\n")
 
-        # 4. 关键洞察对比
-        sections.append("## 3. 各应用关键洞察\n")
+        # 5. 关键洞察对比
+        sections.append("## 4. 各应用关键洞察\n")
         for i, a in enumerate(analyses):
             name = app_names[i]
             insights = self._get_val(a, "key_insights", default=[])
@@ -147,11 +183,11 @@ class ComparisonReportGenerator:
                 sections.append("*暂无关键洞察*")
             sections.append("")
 
-        # 5. 分析说明
-        sections.append("## 4. 分析说明\n")
+        # 6. 分析说明
+        sections.append("## 5. 分析说明\n")
         sections.append(
             "> **说明**：本对比报告基于自动化采集的各产品公开信息（技术文章、开源代码、架构解析等）生成，"
-            "旨在提炼不同产品在 Harness 架构设计上的差异与共性，为架构选型与系统设计提供参考。\n"
+            "旨在提炼不同产品在 Harness 架构设计上的差异与共性，为产品形态选型与系统设计提供参考。\n"
         )
 
         return "\n".join(sections)

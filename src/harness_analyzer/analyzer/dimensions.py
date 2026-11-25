@@ -1,4 +1,4 @@
-"""通用维度分析器"""
+"""通用维度分析器（9 大共性 Harness 维度）"""
 from harness_analyzer.models.dimension import (
     CommonDimension,
     DimensionAnalysis,
@@ -8,77 +8,77 @@ from .llm import LLMClient
 
 
 DIMENSION_PROMPTS: dict[str, str] = {
-    "agent_orchestration": (
+    CommonDimension.AGENT_ORCHESTRATION.value: (
         "分析该 AI 应用的 Agent 编排架构：\n"
-        "1) 是单 Agent 还是多 Agent 系统？\n"
-        "2) 编排模式是什么（层级式/对等式/Swarm/管线式）？\n"
-        "3) Agent 的规划策略是什么（ReAct/Plan-Execute/Tree-of-thought）？\n"
-        "4) Agent 之间如何通信和协调？\n"
-        "5) 是否支持动态创建/销毁 Agent？"
+        "1) 是单 Agent、Pipeline 还是多 Agent 协作系统？\n"
+        "2) 编排模式是什么（层级式 Planner-Worker / 对等式 / Swarm / 状态机）？\n"
+        "3) Agent 的规划与反思策略是什么（ReAct / Plan-Execute / Tree-of-Thought）？\n"
+        "4) Agent 之间如何通信、共享状态与交接任务？\n"
+        "5) 是否支持动态创建/销毁子 Agent 或并行执行？"
     ),
-    "context_management": (
-        "分析该 AI 应用的上下文管理策略：\n"
-        "1) 上下文窗口管理方式（滑动窗口/摘要压缩/RAG 增强）？\n"
-        "2) 长对话如何保持一致性？\n"
-        "3) 多轮对话中的上下文传递机制？\n"
-        "4) 上下文溢出时的降级策略？\n"
-        "5) 是否支持跨会话的上下文持久化？"
+    CommonDimension.MODEL_ROUTING.value: (
+        "分析该 AI 应用的模型路由与调度策略：\n"
+        "1) 底层依赖哪些大模型（旗舰模型/自研小模型/多模态模型）？\n"
+        "2) 是否存在按任务复杂度、延迟或成本分级的动态路由？\n"
+        "3) 是否支持多模型供应商切换、Cascade 降级容灾或 BYOK？\n"
+        "4) 如何平衡推理质量、首字延迟 (TTFT) 与 Token 成本？\n"
+        "5) 是否使用 Speculative Decoding、Prompt Caching 等推理加速手段？"
     ),
-    "tool_integration": (
-        "分析该 AI 应用的工具集成架构：\n"
-        "1) 工具注册与发现机制（静态配置/动态发现/MCP 协议）？\n"
-        "2) 工具调用协议与接口标准？\n"
-        "3) 工具执行的权限控制与安全策略？\n"
-        "4) 工具调用结果的解析与错误处理？\n"
-        "5) 工具编排与组合能力（串行/并行/条件调用）？"
+    CommonDimension.TOOL_CHAIN.value: (
+        "分析该 AI 应用的工具调用链 (Tool Chain) 设计：\n"
+        "1) 提供哪些核心工具（文件读写/终端/LSP/SQL 执行/浏览器/检索等）？\n"
+        "2) 工具注册与协议标准（Function Calling / MCP / OpenAPI）？\n"
+        "3) 工具输出如何做切片、截断与结构化清洗，避免撑爆上下文？\n"
+        "4) 工具执行失败后的错误回传与自愈重试机制？\n"
+        "5) 是否支持工具并发调用或条件编排？"
     ),
-    "memory_architecture": (
-        "分析该 AI 应用的记忆架构：\n"
-        "1) 短期记忆的实现方式（会话缓存/工作记忆区）？\n"
-        "2) 长期记忆的存储机制（向量数据库/知识图谱/关系型存储）？\n"
-        "3) 记忆的检索与召回策略？\n"
-        "4) 记忆的更新与遗忘机制？\n"
-        "5) 记忆在多 Agent 间的共享方式？"
+    CommonDimension.PROMPT_ENGINEERING.value: (
+        "分析该 AI 应用的 Prompt 工程与行为控制策略：\n"
+        "1) System Prompt 的结构设计哲学与指令分层？\n"
+        "2) 如何实现项目级/用户级规则注入（如 .cursorrules / CLAUDE.md / 业务字典）？\n"
+        "3) 输出格式约束协议（如 SEARCH/REPLACE Diff 块、XML/JSON Schema）？\n"
+        "4) Few-Shot 示例的动态选取与注入策略？\n"
+        "5) 如何防止模型产生废话或指令漂移？"
     ),
-    "evaluation_quality": (
-        "分析该 AI 应用的评估与质量保障体系：\n"
-        "1) 输出质量评估方式（自动评估/人工评估/LLM-as-Judge）？\n"
-        "2) 是否有自动化测试与回归测试？\n"
-        "3) 幻觉检测与事实核查机制？\n"
-        "4) 用户反馈收集与模型改进闭环？\n"
-        "5) 评估指标体系设计（准确率/延迟/用户满意度）？"
+    CommonDimension.CONTEXT_ENGINEERING.value: (
+        "分析该 AI 应用的上下文工程 (Context Engineering) 架构：\n"
+        "1) 上下文是如何动态构建和排序的？\n"
+        "2) 索引与检索策略（AST 代码解析/LSP 符号引用/RAG 混合检索/Schema 剪枝）？\n"
+        "3) 上下文窗口压缩、滑动窗口与摘要策略？\n"
+        "4) 增量同步与本地缓存机制（如 Merkle Tree 哈希比对）？\n"
+        "5) 跨轮次、跨会话的长期记忆如何持久化与召回？"
     ),
-    "prompt_engineering": (
-        "分析该 AI 应用的 Prompt 工程策略：\n"
-        "1) Prompt 模板管理方式（硬编码/配置化/动态生成）？\n"
-        "2) System Prompt 的设计哲学与结构？\n"
-        "3) Few-shot 示例的选取与管理？\n"
-        "4) Prompt 链的编排方式？\n"
-        "5) Prompt 版本管理与 A/B 测试？"
+    CommonDimension.DATA_FLOW_STATE.value: (
+        "分析该 AI 应用的数据流与状态管理架构：\n"
+        "1) 用户请求到模型推理再到前端渲染的端到端数据流向？\n"
+        "2) 流式传输机制（SSE / WebSocket / IPC）与增量更新协议？\n"
+        "3) 会话状态与工作区状态机如何持久化？\n"
+        "4) 是否有 Checkpoint / 快照机制支持暂停、恢复与撤销？\n"
+        "5) 多步任务或离线异步任务的断点续跑设计？"
     ),
-    "safety_guardrails": (
-        "分析该 AI 应用的安全护栏机制：\n"
-        "1) 输入过滤与内容审核策略？\n"
-        "2) 输出安全检查（有害内容/PII 泄露/注入攻击防护）？\n"
-        "3) 权限边界与操作限制？\n"
-        "4) 人机协同的审批流程（Human-in-the-loop）？\n"
-        "5) 安全事件的监控与告警机制？"
+    CommonDimension.SECURITY_SANDBOX.value: (
+        "分析该 AI 应用的安全边界与沙箱隔离机制：\n"
+        "1) 危险操作（Shell 执行/文件修改/SQL 查询）在何处、以何种方式隔离（容器/VM/WASM/权限白名单）？\n"
+        "2) 输入输出安全检查（Prompt 注入防护 / SQL AST 静态校验 / PII 脱敏）？\n"
+        "3) 行级/列级数据权限或文件系统访问边界控制？\n"
+        "4) 资源配额限制（超时熔断 / 最大迭代步数 / 查询行数限制）？\n"
+        "5) 隐私模式与企业数据合规保证？"
     ),
-    "ux_interaction": (
-        "分析该 AI 应用的用户体验与交互设计：\n"
-        "1) 交互模式（对话式/表单式/混合式/GUI+CLI）？\n"
-        "2) 流式输出与实时反馈机制？\n"
-        "3) 错误恢复与用户引导策略？\n"
-        "4) 多模态交互支持（文本/图像/语音/代码）？\n"
-        "5) 个性化与自适应交互能力？"
+    CommonDimension.HUMAN_AI_COLLABORATION.value: (
+        "分析该 AI 应用的人机协同 (Human-in-the-Loop) 设计：\n"
+        "1) AI 的自主度定位（行内补全 / 协同编辑 / 审批托管 / 全自主）？\n"
+        "2) 人在哪些关键节点介入审批（Diff 预览 / Plan 确认 / SQL 预审 / 高危断点）？\n"
+        "3) 交互介入粒度（行级 / 块级 / 查询级 / 任务级）？\n"
+        "4) 一键撤销、拒绝重生成与追问引导的反馈闭环设计？\n"
+        "5) 如何通过透明化依据（引用锚点/执行日志）建立用户信任？"
     ),
-    "scalability_ops": (
-        "分析该 AI 应用的可扩展性与运维设计：\n"
-        "1) 系统架构的水平扩展能力？\n"
-        "2) 多模型/多供应商的切换与负载均衡？\n"
-        "3) 成本控制与资源优化策略？\n"
-        "4) 监控、日志与可观测性体系？\n"
-        "5) 部署模式（SaaS/On-Premise/混合部署）？"
+    CommonDimension.EXTENSIBILITY_ECOSYSTEM.value: (
+        "分析该 AI 应用的扩展性与生态机制：\n"
+        "1) 是否支持自定义插件、Skills、Hooks 或子 Agent 扩展？\n"
+        "2) 对开放协议的支持情况（如 MCP Model Context Protocol / OpenAPI）？\n"
+        "3) 配置与规则的层级管理（全局 / 项目 / 会话三级配置）？\n"
+        "4) 是否寄生或兼容现有成熟生态（如 VS Code 插件市场 / 企业 IM）？\n"
+        "5) 团队协作与规则/模板共享机制？"
     ),
 }
 
@@ -94,42 +94,50 @@ class CommonDimensionExtractor:
         dimension: CommonDimension,
         app_info: str,
         collected_data: str,
+        weight: int = 3,
     ) -> DimensionAnalysis:
-        """针对单个维度进行分析"""
+        """针对单个共性维度进行分析"""
         dim_value = dimension.value
-        prompt_template = DIMENSION_PROMPTS.get(dim_value, "请分析该维度。")
-        weight = DIMENSION_WEIGHTS.get(dimension, 3)
+        dim_label = dimension.label
+        prompt_template = DIMENSION_PROMPTS.get(dim_value, f"请分析 {dim_label} 维度。")
 
-        depth_hint = "请进行深入、详尽的分析" if weight >= 4 else "请进行简要分析"
+        if weight >= 4:
+            depth_hint = f"该维度在该品类中的权重为 {weight}/5（核心维度），请结合具体技术细节进行深入、详尽的分析。"
+        else:
+            depth_hint = f"该维度在该品类中的权重为 {weight}/5，请抓住重点进行精炼分析。"
 
         system_prompt = (
-            "你是一位资深 AI 产品架构分析师，擅长从公开信息中推断 AI 应用的技术架构。"
-            "基于提供的信息进行分析，如果信息不足请标注置信度较低。"
+            "你是一位资深 AI 产品架构分析师，擅长从公开技术资料与逆向线索中推断 AI 应用的 Harness 架构。"
+            "请严格基于给定资料分析；若资料不足以支撑结论，请如实说明并给较低的 confidence（1-2）。"
         )
 
         full_prompt = (
             f"## 应用信息\n{app_info}\n\n"
             f"## 采集数据\n{collected_data}\n\n"
-            f"## 分析任务\n{prompt_template}\n\n"
+            f"## 分析任务：{dim_label}\n{prompt_template}\n\n"
             f"{depth_hint}\n\n"
-            '请返回 JSON：{"summary": "一句话总结", "details": "详细分析", '
-            '"evidence": ["依据1", ...], "confidence": 3, '
-            '"recommendations": ["建议1", ...]}'
+            '请返回 JSON：{"summary": "一句话核心结论", "details": "详细技术分析", '
+            '"key_decisions": ["关键设计决策1", "关键设计决策2"], '
+            '"takeaways": ["公司团队可借鉴的工程实践1", ...], '
+            '"evidence_sources": ["参考依据1", ...], "confidence": 3}'
         )
 
         try:
             result = self.llm.structured_analyze(full_prompt, system_prompt)
             return DimensionAnalysis(
-                dimension=dimension,
-                summary=result.get("summary", ""),
+                dimension=dim_value,
+                label=dim_label,
+                summary=result.get("summary", "") or "暂无总结",
                 details=result.get("details", ""),
-                evidence=result.get("evidence", []),
-                confidence=result.get("confidence", 3),
-                recommendations=result.get("recommendations", []),
+                key_decisions=result.get("key_decisions", []) or [],
+                takeaways=result.get("takeaways", []) or [],
+                confidence=max(1, min(5, int(result.get("confidence", 3)))),
+                evidence_sources=result.get("evidence_sources", []) or [],
             )
         except Exception as e:
             return DimensionAnalysis(
-                dimension=dimension,
+                dimension=dim_value,
+                label=dim_label,
                 summary=f"分析失败: {e}",
                 confidence=1,
             )
@@ -139,20 +147,28 @@ class CommonDimensionExtractor:
         app_info: str,
         collected_data: str,
         category: str = "engineering",
+        depth: str = "full",
+        only_dimensions: list[str] | None = None,
     ) -> list[DimensionAnalysis]:
-        """分析所有通用维度
+        """提取所有（或指定）共性维度
 
-        weight >= 4 → 详细分析
-        weight 2-3  → 简要分析
-        weight 1    → 跳过
+        Args:
+            category: 应用所属分类，用于查询 DIMENSION_WEIGHTS 权重矩阵
+            depth: 'quick'（跳过权重 <= 2 的次要维度）或 'full'（全量分析权重 >= 2 的维度）
+            only_dimensions: 若提供，仅提取列表匹配的维度 key
         """
-        results: list[DimensionAnalysis] = []
+        cat_weights = DIMENSION_WEIGHTS.get(category, {})
+        min_weight = 3 if depth == "quick" else 2
+        filter_set = {d.strip().lower() for d in only_dimensions} if only_dimensions else None
 
+        results: list[DimensionAnalysis] = []
         for dimension in CommonDimension:
-            weight = DIMENSION_WEIGHTS.get(dimension, 3)
-            if weight <= 1:
-                continue  # 权重太低，跳过
-            analysis = self.extract_dimension(dimension, app_info, collected_data)
+            if filter_set and dimension.value not in filter_set and dimension.label not in filter_set:
+                continue
+            weight = cat_weights.get(dimension.value, 3)
+            if not filter_set and weight < min_weight:
+                continue
+            analysis = self.extract_dimension(dimension, app_info, collected_data, weight=weight)
             results.append(analysis)
 
         return results
