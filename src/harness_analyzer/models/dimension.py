@@ -224,6 +224,8 @@ class DimensionAnalysis(BaseModel):
     takeaways: list[str] = Field(default_factory=list)
     confidence: int = Field(default=3, ge=1, le=5)
     evidence_sources: list[str] = Field(default_factory=list)
+    verbatim_quotes: list[str] = Field(default_factory=list)
+    is_inferred: bool = False
 
 
 class SpecializedDimensionAnalysis(BaseModel):
@@ -236,3 +238,5 @@ class SpecializedDimensionAnalysis(BaseModel):
     takeaways: list[str] = Field(default_factory=list)
     confidence: int = Field(default=3, ge=1, le=5)
     evidence_sources: list[str] = Field(default_factory=list)
+    verbatim_quotes: list[str] = Field(default_factory=list)
+    is_inferred: bool = False

@@ -108,7 +108,8 @@ class CommonDimensionExtractor:
 
         system_prompt = (
             "你是一位资深 AI 产品架构分析师，擅长从公开技术资料与逆向线索中推断 AI 应用的 Harness 架构。"
-            "请严格基于给定资料分析；若资料不足以支撑结论，请如实说明并给较低的 confidence（1-2）。"
+            "必须严格基于给定采集数据分析并引用原文短句作为证据；"
+            "若采集数据中未提及该维度，必须将 verbatim_quotes 置为 []，并将 confidence 设为 1 或 2，严禁编造引用。"
         )
 
         full_prompt = (
@@ -119,7 +120,8 @@ class CommonDimensionExtractor:
             '请返回 JSON：{"summary": "一句话核心结论", "details": "详细技术分析", '
             '"key_decisions": ["关键设计决策1", "关键设计决策2"], '
             '"takeaways": ["公司团队可借鉴的工程实践1", ...], '
-            '"evidence_sources": ["参考依据1", ...], "confidence": 3}'
+            '"verbatim_quotes": ["直接摘自上述采集数据的原文短句或代码片段(未提及则留空数组[])"], '
+            '"evidence_sources": ["参考依据或URL1", ...], "confidence": 3}'
         )
 
         try:
@@ -133,6 +135,7 @@ class CommonDimensionExtractor:
                 takeaways=result.get("takeaways", []) or [],
                 confidence=max(1, min(5, int(result.get("confidence", 3)))),
                 evidence_sources=result.get("evidence_sources", []) or [],
+                verbatim_quotes=result.get("verbatim_quotes", []) or [],
             )
         except Exception as e:
             return DimensionAnalysis(
@@ -140,6 +143,7 @@ class CommonDimensionExtractor:
                 label=dim_label,
                 summary=f"分析失败: {e}",
                 confidence=1,
+                is_inferred=True,
             )
 
     def extract_all(

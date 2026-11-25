@@ -203,6 +203,7 @@ def analyze(
     else:
         collected_texts: list[str] = []
         raw_sources: list[str] = []
+        raw_corpus_parts: list[str] = []
 
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
             task = progress.add_task("📡 正在全网检索与采集架构信源 (Search/GitHub/Blog/RE)...", total=None)
@@ -228,7 +229,8 @@ def analyze(
             try:
                 collected = asyncio.run(collect())
                 for c in collected:
-                    collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:2500]}")
+                    collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:4500]}")
+                    raw_corpus_parts.append(c.content)
                     if c.source_url and c.source_url not in raw_sources:
                         raw_sources.append(c.source_url)
             except Exception as e:
@@ -237,8 +239,10 @@ def analyze(
             progress.update(task, description=f"✅ 数据采集完成 (发现 {len(collected_texts)} 处相关公开信源)")
 
         collected_data = "\n\n---\n\n".join(collected_texts) if collected_texts else "全网公开信源较少，请基于已知信息进行严谨推断并降低置信度。"
+        raw_corpus = "\n\n".join(raw_corpus_parts)
 
         from harness_analyzer.analyzer.llm import LLMClient
+        from harness_analyzer.analyzer.evidence import verify_all_dimensions
         llm = LLMClient()
 
         if is_adhoc and collected_texts:
@@ -290,11 +294,15 @@ def analyze(
 
             spec_analyzer = get_specialized_analyzer(cat_val, llm)
             spec_dims = spec_analyzer.analyze(app_info, collected_data)
+
+            progress.update(task, description="🛡️ 执行证据强制锚定与反幻觉门控校验...")
+            common_dims, spec_dims = verify_all_dimensions(common_dims, spec_dims, raw_corpus)
+
             progress.update(task, description="🎯 正在提炼产品经理落地方案指导 (PM Guidance)...")
-
             pm_guidance = PMGuidanceExtractor(llm).extract(app_info, cat_val, common_dims, spec_dims)
-            progress.update(task, description="✅ 双层架构与 PM 方案拆解完成")
+            progress.update(task, description="✅ 双层架构、证据核验与 PM 方案拆解完成")
 
+        all_verified_dims = [*common_dims, *spec_dims]
         analysis = HarnessAnalysis(
             app_name=app_obj.name,
             app_display_name=app_obj.display_name,
@@ -306,7 +314,7 @@ def analyze(
             key_insights=[d.summary for d in common_dims if d.confidence >= 3][:5],
             raw_sources=raw_sources,
             source_count=len(collected_texts),
-            confidence_overall=round(sum(d.confidence for d in common_dims) / max(len(common_dims), 1)),
+            confidence_overall=round(sum(d.confidence for d in all_verified_dims) / max(len(all_verified_dims), 1)),
         )
         analysis.mermaid_diagram = DiagramGenerator().generate(analysis)
 

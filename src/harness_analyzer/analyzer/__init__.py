@@ -3,6 +3,7 @@ from .llm import LLMClient
 from .patterns import PatternMatcher
 from .pm_guidance import PMGuidanceExtractor
 from .offline import OfflineBenchmarkProvider
+from .evidence import verify_dimension_evidence, verify_all_dimensions
 
 __all__ = [
     "CommonDimensionExtractor",
@@ -10,4 +11,6 @@ __all__ = [
     "PatternMatcher",
     "PMGuidanceExtractor",
     "OfflineBenchmarkProvider",
+    "verify_dimension_evidence",
+    "verify_all_dimensions",
 ]

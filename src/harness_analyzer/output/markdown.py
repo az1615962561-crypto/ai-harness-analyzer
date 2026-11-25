@@ -58,17 +58,30 @@ class MarkdownReportGenerator:
         takeaways = self._get_val(
             item, "takeaways", "key_takeaways", "lessons", "lessons_learned", default=[]
         )
+        verbatim_quotes = self._get_val(item, "verbatim_quotes", default=[])
+        is_inferred = bool(self._get_val(item, "is_inferred", default=False))
 
         lines = [
             f"### {label}\n",
             f"**置信度**：{self._format_stars(confidence)}\n",
         ]
 
+        if is_inferred:
+            lines.append("> ⚠️ *缺乏一手采集原文直接佐证，本维度主要基于同类架构模式推断（置信度已封顶受限）。*\n")
+
         if summary:
             lines.append(f"{summary}\n")
 
         if details:
             lines.append(f"{details}\n")
+
+        if isinstance(verbatim_quotes, list) and verbatim_quotes:
+            lines.append("**原文佐证片段 (Verified Quotes)**：")
+            for q in verbatim_quotes:
+                clean_q = str(q).replace("\n", " ").strip()
+                if clean_q:
+                    lines.append(f'> "{clean_q}"')
+            lines.append("")
 
         # 关键设计决策
         lines.append("**关键设计决策 (Engineering Decisions)**：")
