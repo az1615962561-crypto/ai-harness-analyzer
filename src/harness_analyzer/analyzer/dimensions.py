@@ -1,4 +1,5 @@
-"""通用维度分析器（9 大共性 Harness 维度）"""
+"""通用维度分析器（9 大共性 Harness 维度，支持同步与并发异步提取）"""
+import asyncio
 from harness_analyzer.models.dimension import (
     CommonDimension,
     DimensionAnalysis,
@@ -176,3 +177,36 @@ class CommonDimensionExtractor:
             results.append(analysis)
 
         return results
+
+    async def aextract_all(
+        self,
+        app_info: str,
+        collected_data: str,
+        category: str = "engineering",
+        depth: str = "full",
+        only_dimensions: list[str] | None = None,
+        max_concurrency: int = 5,
+    ) -> list[DimensionAnalysis]:
+        """并发异步提取所有（或指定）共性维度"""
+        cat_weights = DIMENSION_WEIGHTS.get(category, {})
+        min_weight = 3 if depth == "quick" else 2
+        filter_set = {d.strip().lower() for d in only_dimensions} if only_dimensions else None
+
+        tasks_spec: list[tuple[CommonDimension, int]] = []
+        for dimension in CommonDimension:
+            if filter_set and dimension.value not in filter_set and dimension.label not in filter_set:
+                continue
+            weight = cat_weights.get(dimension.value, 3)
+            if not filter_set and weight < min_weight:
+                continue
+            tasks_spec.append((dimension, weight))
+
+        sem = asyncio.Semaphore(max_concurrency)
+
+        async def _run_one(dim: CommonDimension, w: int) -> DimensionAnalysis:
+            async with sem:
+                return await asyncio.to_thread(
+                    self.extract_dimension, dim, app_info, collected_data, w
+                )
+
+        return list(await asyncio.gather(*[_run_one(d, w) for d, w in tasks_spec]))

@@ -219,13 +219,22 @@ def analyze(
 
         from harness_analyzer.analyzer.llm import LLMClient
         from harness_analyzer.analyzer.evidence import verify_all_dimensions
+        from harness_analyzer.analyzer.fact_sheet import FactSheetExtractor
+        from harness_analyzer.collectors.web_utils import DomainRateLimiter
         llm = LLMClient()
 
         bilingual_names, planned_queries = BilingualQueryPlanner.plan_search_queries(
             app_obj.display_name, question_lang=lang, llm=llm
         )
-        searcher = WebSearchCollector(question_lang=lang)
+        shared_limiter = DomainRateLimiter(min_interval=1.0, max_concurrency=4)
+        searcher = WebSearchCollector(question_lang=lang, rate_limiter=shared_limiter)
         review_collector = UserReviewCollector(question_lang=lang)
+        gh = GitHubCollector()
+        blog = BlogCollector(rate_limiter=shared_limiter)
+        re_collector = ReverseEngineeringCollector(local_app_path=local_app)
+
+        collected_items = []
+        refill_triggered = False
 
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
             task = progress.add_task(
@@ -233,11 +242,9 @@ def analyze(
                 total=None,
             )
 
-            async def collect():
+            async def collect_with_refill():
+                nonlocal refill_triggered
                 results = []
-                gh = GitHubCollector()
-                blog = BlogCollector()
-                re_collector = ReverseEngineeringCollector(local_app_path=local_app)
                 gathered = await asyncio.gather(
                     searcher.search_app(app_obj.display_name, planned_queries=planned_queries),
                     gh.collect(app_obj),
@@ -249,11 +256,27 @@ def analyze(
                 for res in gathered:
                     if isinstance(res, list):
                         results.extend(res)
-                return results
+
+                cov_items = [*searcher.last_coverage_items, *review_collector.last_coverage_items]
+                cov_report = BilingualQueryPlanner.build_coverage_report(
+                    cov_items, question_lang=lang, bilingual_names=bilingual_names
+                )
+                if cov_report.coverage_score < 0.6 or any(
+                    ang in cov_report.missing_angles for ang in ("architecture_qa", "user_reviews")
+                ):
+                    refill_triggered = True
+                    existing_urls = {c.source_url for c in results if c.source_url}
+                    extra_data, extra_cov = await searcher.refill_missing_angles(
+                        app_obj.display_name, cov_report.missing_angles, existing_urls=existing_urls
+                    )
+                    results.extend(extra_data)
+                    cov_items.extend(extra_cov)
+
+                return results, cov_items
 
             try:
-                collected = asyncio.run(collect())
-                for c in collected:
+                collected_items, all_cov_items = asyncio.run(collect_with_refill())
+                for c in collected_items:
                     collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:4500]}")
                     raw_corpus_parts.append(c.content)
                     if c.source_type in _PRIMARY_SOURCE_TYPES:
@@ -263,17 +286,29 @@ def analyze(
                     if c.source_url and c.source_url not in raw_sources:
                         raw_sources.append(c.source_url)
             except Exception as e:
+                all_cov_items = []
                 console.print(f"[yellow]采集数据时出错: {e}，将基于已知公开信息继续分析[/yellow]")
 
-            all_cov_items = [*searcher.last_coverage_items, *review_collector.last_coverage_items]
+            from harness_analyzer.models.harness import BlockedSource
+            blocked_all: list[BlockedSource] = list(shared_limiter.blocked_records)
+            for item in [*searcher.last_blocked_sources, *gh.last_blocked_sources]:
+                if isinstance(item, BlockedSource):
+                    blocked_all.append(item)
+                elif isinstance(item, dict):
+                    blocked_all.append(BlockedSource(**item))
+
             search_coverage = BilingualQueryPlanner.build_coverage_report(
-                all_cov_items, question_lang=lang, bilingual_names=bilingual_names
+                all_cov_items,
+                question_lang=lang,
+                bilingual_names=bilingual_names,
+                refill_triggered=refill_triggered,
+                blocked_sources=blocked_all,
             )
             progress.update(
                 task,
                 description=(
                     f"✅ 采集完成 ({len(collected_texts)} 条信源, {len(review_items)} 组用户评论, "
-                    f"双语覆盖度 {search_coverage.coverage_score:.0%})"
+                    f"覆盖度 {search_coverage.coverage_score:.0%}, 拦截熔断 {len(blocked_all)})"
                 ),
             )
 
@@ -316,22 +351,31 @@ def analyze(
         only_dims = [d.strip() for d in dimensions.split(",") if d.strip()] if dimensions else None
 
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
-            task = progress.add_task("🧠 AI 双层架构分析中...", total=None)
+            task = progress.add_task("🧪 Stage 1: 并发提炼高密度技术事实底座 (Fact Sheet)...", total=None)
 
             extractor = CommonDimensionExtractor(llm)
-            common_dims = extractor.extract_all(
-                app_info,
-                collected_data,
-                category=cat_val,
-                depth=depth,
-                only_dimensions=only_dims,
-            )
-            progress.update(task, description=f"🧠 共性维度完成，正在执行【{cat_lbl}】专属 5 维度穿透分析...")
-
             spec_analyzer = get_specialized_analyzer(cat_val, llm)
-            spec_dims = spec_analyzer.analyze(app_info, collected_data)
 
-            progress.update(task, description="🛡️ 按联系程度执行分维度独立 Guard 校验...")
+            async def run_two_stage_analysis():
+                fact_sheet = await FactSheetExtractor(llm).build_fact_sheet(
+                    app_obj.display_name, collected_items
+                )
+                progress.update(task, description=f"⚡ Stage 2: 并发拆解 9 共性 + {cat_lbl}专属 5 维度...")
+                c_dims, s_dims = await asyncio.gather(
+                    extractor.aextract_all(
+                        app_info,
+                        fact_sheet,
+                        category=cat_val,
+                        depth=depth,
+                        only_dimensions=only_dims,
+                    ),
+                    spec_analyzer.aanalyze(app_info, fact_sheet),
+                )
+                return c_dims, s_dims
+
+            common_dims, spec_dims = asyncio.run(run_two_stage_analysis())
+
+            progress.update(task, description="🛡️ 按联系程度执行分维度独立 Guard 校验（比对原始语料）...")
             common_dims, spec_dims = verify_all_dimensions(
                 common_dims,
                 spec_dims,

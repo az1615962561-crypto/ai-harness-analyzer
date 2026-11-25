@@ -169,13 +169,22 @@ class MarkdownReportGenerator:
             zh_hits = self._get_val(search_coverage, "zh_hits", default=0)
             en_hits = self._get_val(search_coverage, "en_hits", default=0)
             missing = self._get_val(search_coverage, "missing_angles", default=[]) or []
+            refill_triggered = bool(self._get_val(search_coverage, "refill_triggered", default=False))
+            blocked_sources = self._get_val(search_coverage, "blocked_sources", default=[]) or []
             cov_items = self._get_val(search_coverage, "items", default=[]) or []
             lines.append("### 双语多维度检索覆盖度评估\n")
+            refill_tag = " ｜ 🔄 *已触发盲区自动补搜*" if refill_triggered else ""
             lines.append(
-                f"- **综合覆盖度**：`{cov_score:.0%}` ｜ **提问语言命中**：`{zh_hits}` 条 ｜ **英语命中**：`{en_hits}` 条"
+                f"- **综合覆盖度**：`{cov_score:.0%}` ｜ **提问语言命中**：`{zh_hits}` 条 ｜ **英语命中**：`{en_hits}` 条{refill_tag}"
             )
             if missing:
                 lines.append(f"- **覆盖盲区提示**：`{', '.join(missing)}`")
+            if blocked_sources:
+                lines.append(f"- **🛡️ 反爬/限流礼貌退出记录**：共 `{len(blocked_sources)}` 处（已自动熔断保护，未强行绕过）：")
+                for bs in blocked_sources[:6]:
+                    b_url = self._get_val(bs, "url", default="")
+                    b_reason = self._get_val(bs, "reason", default="")
+                    lines.append(f"  - `{b_url}` (`{b_reason}`)")
             if cov_items:
                 lines.append("")
                 lines.append("| 语言 | 检索角度 | 检索词 | 命中数 | 深抓正文 | 采集字符 |")

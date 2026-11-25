@@ -13,8 +13,8 @@ def test_search_collector_fallback():
         display_name="Test Unknown Agent",
         category=AppCategory.ENGINEERING,
     )
-    with patch("duckduckgo_search.DDGS") as mock_ddg:
-        mock_ddg.side_effect = Exception("Network offline")
+    with patch("harness_analyzer.collectors.search.run_search_query") as mock_search:
+        mock_search.side_effect = Exception("Network offline")
         results = asyncio.run(collector.collect(app))
         assert isinstance(results, list)
         assert len(results) == 0

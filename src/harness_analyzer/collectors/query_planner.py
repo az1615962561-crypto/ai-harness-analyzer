@@ -10,7 +10,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from harness_analyzer.models.harness import QueryCoverageItem, SearchCoverageReport
+from harness_analyzer.models.harness import BlockedSource, QueryCoverageItem, SearchCoverageReport
 
 
 @dataclass(frozen=True)
@@ -183,11 +183,42 @@ class BilingualQueryPlanner:
             )
         return queries
 
+    @classmethod
+    def plan_refill_queries(
+        cls,
+        app_name: str,
+        missing_angles: list[str],
+        question_lang: str = "zh",
+        llm: Any = None,
+    ) -> list[PlannedQuery]:
+        """针对覆盖度不足或命中的盲区角度，生成更宽泛的二次补搜关键词"""
+        names = cls.resolve_bilingual_names(app_name, question_lang=question_lang, llm=llm)
+        local_name = names["local"]
+        en_name = names["en"]
+        refills: list[PlannedQuery] = []
+
+        if "architecture_qa" in missing_angles:
+            refills.append(PlannedQuery(query=f"{en_name} AI explained", language="en", angle="architecture_qa"))
+            if question_lang == "zh":
+                refills.append(PlannedQuery(query=f"{local_name} AI 原理", language="zh", angle="architecture_qa"))
+        if "implementation_tech" in missing_angles:
+            refills.append(PlannedQuery(query=f"{en_name} LLM tools workflow", language="en", angle="implementation_tech"))
+        if "source_reverse" in missing_angles:
+            refills.append(PlannedQuery(query=f"{en_name} github", language="en", angle="source_reverse"))
+        if "user_reviews" in missing_angles:
+            refills.append(PlannedQuery(query=f"{en_name} review feedback", language="en", angle="user_reviews"))
+            if question_lang == "zh":
+                refills.append(PlannedQuery(query=f"{local_name} 好用吗 评测", language="zh", angle="user_reviews"))
+
+        return refills
+
     @staticmethod
     def build_coverage_report(
         items: list[QueryCoverageItem],
         question_lang: str = "zh",
         bilingual_names: dict[str, str] | None = None,
+        refill_triggered: bool = False,
+        blocked_sources: list[BlockedSource] | None = None,
     ) -> SearchCoverageReport:
         """汇总各搜索词的命中与正文提取情况，评估信息覆盖度与盲区"""
         zh_hits = sum(i.hits_count for i in items if i.language == "zh")
@@ -201,7 +232,6 @@ class BilingualQueryPlanner:
         covered_angles = [a for a, cnt in angle_hits.items() if cnt > 0]
         missing_angles = [a for a, cnt in angle_hits.items() if cnt == 0]
 
-        # 覆盖度打分：角度覆盖率占 70%，双语均衡度占 30%
         angle_ratio = len(covered_angles) / len(_ALL_ANGLES)
         if question_lang == "zh":
             lang_bonus = (0.15 if zh_hits > 0 else 0.0) + (0.15 if en_hits > 0 else 0.0)
@@ -219,4 +249,6 @@ class BilingualQueryPlanner:
             covered_angles=covered_angles,
             missing_angles=missing_angles,
             coverage_score=score,
+            refill_triggered=refill_triggered,
+            blocked_sources=blocked_sources or [],
         )

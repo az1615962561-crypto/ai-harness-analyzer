@@ -20,6 +20,13 @@ class QueryCoverageItem(BaseModel):
     chars_collected: int = 0
 
 
+class BlockedSource(BaseModel):
+    """被反爬拦截、速率限制或验证码阻断的来源记录"""
+    url: str
+    reason: str
+    status_code: int | None = None
+
+
 class SearchCoverageReport(BaseModel):
     """双语多维度检索覆盖度评估报告"""
     question_language: str = "zh"
@@ -30,6 +37,8 @@ class SearchCoverageReport(BaseModel):
     covered_angles: list[str] = Field(default_factory=list)
     missing_angles: list[str] = Field(default_factory=list)
     coverage_score: float = Field(default=0.0, ge=0.0, le=1.0, description="覆盖度得分 0~1")
+    refill_triggered: bool = Field(default=False, description="是否触发了盲区自动补搜")
+    blocked_sources: list[BlockedSource] = Field(default_factory=list, description="触发反爬/限流而礼貌退出的信源")
 
 
 class UserReviewSummary(BaseModel):

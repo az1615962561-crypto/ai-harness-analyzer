@@ -5,6 +5,7 @@ from .pm_guidance import PMGuidanceExtractor
 from .offline import OfflineBenchmarkProvider
 from .evidence import verify_dimension_evidence, verify_all_dimensions, resolve_coupling_level
 from .intermediate import IntermediateArtifactBuilder
+from .fact_sheet import FactSheetExtractor
 
 __all__ = [
     "CommonDimensionExtractor",
@@ -16,4 +17,5 @@ __all__ = [
     "verify_all_dimensions",
     "resolve_coupling_level",
     "IntermediateArtifactBuilder",
+    "FactSheetExtractor",
 ]

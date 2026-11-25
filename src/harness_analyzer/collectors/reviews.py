@@ -15,6 +15,7 @@ import httpx
 from harness_analyzer.collectors.base import BaseCollector, CollectedData
 from harness_analyzer.collectors.github import GitHubCollector
 from harness_analyzer.collectors.query_planner import BilingualQueryPlanner
+from harness_analyzer.collectors.web_utils import run_search_query
 from harness_analyzer.models.harness import QueryCoverageItem
 
 
@@ -147,34 +148,30 @@ class UserReviewCollector(BaseCollector):
         visited: set[str] = set()
         cov_items: list[QueryCoverageItem] = []
 
-        try:
-            from duckduckgo_search import DDGS
-            with DDGS() as ddgs:
-                for pq in planned:
-                    cov = QueryCoverageItem(query=pq.query, language=pq.language, angle=pq.angle)
-                    try:
-                        hits = list(ddgs.text(pq.query, max_results=self.max_review_hits))
-                        cov.hits_count = len(hits)
-                        for h in hits:
-                            url = h.get("href") or ""
-                            body = (h.get("body") or "").strip()
-                            title = h.get("title") or "用户评价"
-                            if url and body and url not in visited:
-                                visited.add(url)
-                                cov.chars_collected += len(body)
-                                results.append(
-                                    CollectedData(
-                                        source_url=url,
-                                        source_type="user_review",
-                                        title=f"[权威社区评价|{pq.language}] {title}",
-                                        content=body,
-                                    )
-                                )
-                    except Exception:
-                        pass
-                    cov_items.append(cov)
-        except Exception:
-            pass
+        for pq in planned:
+            cov = QueryCoverageItem(query=pq.query, language=pq.language, angle=pq.angle)
+            try:
+                hits = run_search_query(pq.query, language=pq.language, max_results=self.max_review_hits)
+                cov.hits_count = len(hits)
+                for h in hits:
+                    url = h.get("href") or ""
+                    body = (h.get("body") or "").strip()
+                    title = h.get("title") or "用户评价"
+                    if url and body and url not in visited:
+                        visited.add(url)
+                        cov.chars_collected += len(body)
+                        results.append(
+                            CollectedData(
+                                source_url=url,
+                                source_type="user_review",
+                                title=f"[权威社区评价|{pq.language}] {title}",
+                                content=body,
+                            )
+                        )
+            except Exception:
+                pass
+            cov_items.append(cov)
+
         self.last_coverage_items = cov_items
         return results
 

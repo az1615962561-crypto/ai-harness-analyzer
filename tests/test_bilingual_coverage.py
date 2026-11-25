@@ -43,21 +43,16 @@ def test_coverage_report_tracks_hits_and_missing_angles():
 
 
 def test_web_search_collector_records_bilingual_coverage(monkeypatch):
-    class FakeDDGS:
-        def __enter__(self):
-            return self
-        def __exit__(self, *args):
-            pass
-        def text(self, query, max_results=4):
-            return [
-                {
-                    "title": f"Result for {query}",
-                    "href": f"https://example.com/{abs(hash(query))}",
-                    "body": f"Architecture details found for {query}",
-                }
-            ]
+    def fake_run_search(query, language="en", max_results=4, timeout=6):
+        return [
+            {
+                "title": f"Result for {query}",
+                "href": f"https://example.com/{abs(hash(query))}",
+                "body": f"Architecture details found for {query}",
+            }
+        ]
 
-    monkeypatch.setattr("duckduckgo_search.DDGS", FakeDDGS)
+    monkeypatch.setattr("harness_analyzer.collectors.search.run_search_query", fake_run_search)
     # Skip real HTTP page fetch in unit test
     async def fake_fetch(client, url, max_chars=4500, use_jina_fallback=True):
         return ("Mock Page", "Mock clean article content explaining agent architecture and tool calling in depth." * 3, [])

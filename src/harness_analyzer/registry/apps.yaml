@@ -198,12 +198,12 @@ apps:
     github_url: null
     info_richness: 4
     info_sources:
-      - url: https://docs.databricks.com/assistant/index.html
+      - url: https://www.databricks.com/product/databricks-iq
         source_type: documentation
-        description: "Databricks Assistant 官方集成与使用文档"
-      - url: https://www.databricks.com/blog/announcing-databricks-assistant
-        source_type: blog
-        description: "Databricks Assistant 发布与架构剖析"
+        description: "Databricks Data Intelligence & Assistant 官方架构说明"
+      - url: https://www.databricks.com/product/databricks-assistant
+        source_type: product_page
+        description: "Databricks Assistant 产品与架构能力介绍"
 
   # ==========================================
   # KNOWLEDGE (知识型)
@@ -257,14 +257,14 @@ apps:
       - enterprise
       - productivity
     description: "Notion 内置 AI 助手，工作空间知识检索与智能写作，连接团队全量知识库实现高效协作与内容整理"
-    website: https://www.notion.so/product/ai
+    website: https://www.notion.com/product/ai
     github_url: null
     info_richness: 5
     info_sources:
-      - url: https://www.notion.so/help/notion-ai
-        source_type: documentation
-        description: "Notion AI 官方帮助与功能指南"
-      - url: https://www.notion.so/blog/category/ai
+      - url: https://www.notion.com/product/ai
+        source_type: product_page
+        description: "Notion AI 官方产品与工作空间架构介绍"
+      - url: https://www.notion.com/blog/category/ai
         source_type: blog
         description: "Notion 官方 AI 实践与产品设计博客"
 

@@ -33,6 +33,7 @@ class GitHubCollector(BaseCollector):
     def __init__(self, timeout: float = 15.0, max_source_files: int = 6):
         self.timeout = timeout
         self.max_source_files = max_source_files
+        self.last_blocked_sources: list[dict] = []
 
     @staticmethod
     def _parse_github_url(url: str) -> tuple[str, str] | None:
@@ -181,11 +182,19 @@ class GitHubCollector(BaseCollector):
     async def _fetch_repo_tree(
         self, client: httpx.AsyncClient, owner: str, repo: str
     ) -> tuple[CollectedData, str, list[str]] | None:
-        """通过 api.github.com 获取仓库文件结构"""
+        """通过 api.github.com 获取仓库文件结构（带速率配额检测）"""
         for branch in ("main", "master"):
             api_url = f"https://api.github.com/repos/{owner}/{repo}/git/trees/{branch}?recursive=1"
             try:
                 resp = await client.get(api_url)
+                remaining = resp.headers.get("x-ratelimit-remaining")
+                if resp.status_code in (403, 429) or remaining == "0":
+                    self.last_blocked_sources.append({
+                        "url": api_url,
+                        "reason": "github_api_ratelimit",
+                        "status_code": resp.status_code,
+                    })
+                    return None
                 if resp.status_code == 200:
                     data = resp.json()
                     tree = data.get("tree", [])

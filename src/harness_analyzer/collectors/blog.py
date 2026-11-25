@@ -1,18 +1,24 @@
-"""博客与技术文档数据采集器（支持索引页自动下钻至技术文章正文 + SPA 降级提取）"""
+"""博客与技术文档数据采集器（支持索引页自动下钻、反爬熔断与按域名限流）"""
 import asyncio
 from typing import Any
 from urllib.parse import urlparse
 import httpx
 from .base import BaseCollector, CollectedData
-from .web_utils import fetch_clean_page, rank_article_links
+from .web_utils import DomainRateLimiter, fetch_clean_page, rank_article_links
 
 
 class BlogCollector(BaseCollector):
     """从官方技术博客与文档采集公开架构信息"""
 
-    def __init__(self, timeout: float = 15.0, max_drilldown: int = 3):
+    def __init__(
+        self,
+        timeout: float = 15.0,
+        max_drilldown: int = 3,
+        rate_limiter: DomainRateLimiter | None = None,
+    ):
         self.timeout = timeout
         self.max_drilldown = max_drilldown
+        self.rate_limiter = rate_limiter or DomainRateLimiter(min_interval=1.0, max_concurrency=4)
 
     @staticmethod
     def _is_index_page(url: str) -> bool:
@@ -54,7 +60,9 @@ class BlogCollector(BaseCollector):
                 url_str = str(url)
                 visited.add(url_str.rstrip("/"))
                 try:
-                    page_title, cleaned, links = await fetch_clean_page(client, url_str, max_chars=5000)
+                    page_title, cleaned, links = await fetch_clean_page(
+                        client, url_str, max_chars=5000, rate_limiter=self.rate_limiter
+                    )
                     if cleaned:
                         collected.append(
                             CollectedData(
@@ -64,24 +72,24 @@ class BlogCollector(BaseCollector):
                                 content=cleaned,
                             )
                         )
-                    # 如果是索引/列表页，收集高质量技术子文章链接
                     if links and self._is_index_page(url_str):
                         drilldown_candidates.extend(rank_article_links(url_str, links, limit=self.max_drilldown))
                 except Exception:
                     continue
 
-            # 并发深抓筛选出来的具体技术文章
             unique_sub_links = []
             for sub_url, sub_title in drilldown_candidates:
                 norm = sub_url.rstrip("/")
-                if norm not in visited:
+                if norm not in visited and not self.rate_limiter.is_blocked(sub_url):
                     visited.add(norm)
                     unique_sub_links.append((sub_url, sub_title))
 
             if unique_sub_links:
                 async def _fetch_sub(sub_url: str, sub_title: str) -> CollectedData | None:
                     try:
-                        p_title, p_text, _ = await fetch_clean_page(client, sub_url, max_chars=5000)
+                        p_title, p_text, _ = await fetch_clean_page(
+                            client, sub_url, max_chars=5000, rate_limiter=self.rate_limiter
+                        )
                         if p_text and len(p_text) > 150:
                             return CollectedData(
                                 source_url=sub_url,
