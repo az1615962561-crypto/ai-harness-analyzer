@@ -128,6 +128,7 @@ def info(app_name: str = typer.Argument(help="应用名称")):
 def analyze(
     app_name: str = typer.Argument(help="应用名称"),
     depth: str = typer.Option("full", "--depth", "-d", help="分析深度: quick/full"),
+    lang: str = typer.Option("zh", "--lang", help="提问语言（默认 zh，自动执行「提问语言 + 英语」双重检索）"),
     dimensions: str = typer.Option(None, "--dimensions", help="指定分析的共性维度（逗号分隔）"),
     github: str = typer.Option(None, "--github", "-g", help="自定义或补充 GitHub 仓库地址"),
     url: str = typer.Option(None, "--url", "-u", help="自定义或补充官网/技术博客 URL"),
@@ -144,6 +145,7 @@ def analyze(
     from harness_analyzer.collectors.search import WebSearchCollector
     from harness_analyzer.collectors.reverse_eng import ReverseEngineeringCollector
     from harness_analyzer.collectors.reviews import UserReviewCollector
+    from harness_analyzer.collectors.query_planner import BilingualQueryPlanner
     from harness_analyzer.analyzer.dimensions import CommonDimensionExtractor
     from harness_analyzer.analyzer.specialized import get_specialized_analyzer
     from harness_analyzer.analyzer.intermediate import IntermediateArtifactBuilder
@@ -215,18 +217,29 @@ def analyze(
             "re_repository", "github_re_search", "local_reverse_engineering",
         }
 
+        from harness_analyzer.analyzer.llm import LLMClient
+        from harness_analyzer.analyzer.evidence import verify_all_dimensions
+        llm = LLMClient()
+
+        bilingual_names, planned_queries = BilingualQueryPlanner.plan_search_queries(
+            app_obj.display_name, question_lang=lang, llm=llm
+        )
+        searcher = WebSearchCollector(question_lang=lang)
+        review_collector = UserReviewCollector(question_lang=lang)
+
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
-            task = progress.add_task("📡 正在全网检索与采集信源 (Search/GitHub/Blog/RE/真实用户评论)...", total=None)
+            task = progress.add_task(
+                f"📡 正在执行「{lang} + en」双语全网检索与五路采集 ({bilingual_names.get('local')} / {bilingual_names.get('en')})...",
+                total=None,
+            )
 
             async def collect():
                 results = []
-                searcher = WebSearchCollector()
                 gh = GitHubCollector()
                 blog = BlogCollector()
                 re_collector = ReverseEngineeringCollector(local_app_path=local_app)
-                review_collector = UserReviewCollector()
                 gathered = await asyncio.gather(
-                    searcher.collect(app_obj),
+                    searcher.search_app(app_obj.display_name, planned_queries=planned_queries),
                     gh.collect(app_obj),
                     blog.collect(app_obj),
                     re_collector.collect(app_obj),
@@ -252,18 +265,21 @@ def analyze(
             except Exception as e:
                 console.print(f"[yellow]采集数据时出错: {e}，将基于已知公开信息继续分析[/yellow]")
 
+            all_cov_items = [*searcher.last_coverage_items, *review_collector.last_coverage_items]
+            search_coverage = BilingualQueryPlanner.build_coverage_report(
+                all_cov_items, question_lang=lang, bilingual_names=bilingual_names
+            )
             progress.update(
                 task,
-                description=f"✅ 数据采集完成 (共 {len(collected_texts)} 条信源，含 {len(review_items)} 组真实用户评论)",
+                description=(
+                    f"✅ 采集完成 ({len(collected_texts)} 条信源, {len(review_items)} 组用户评论, "
+                    f"双语覆盖度 {search_coverage.coverage_score:.0%})"
+                ),
             )
 
         collected_data = "\n\n---\n\n".join(collected_texts) if collected_texts else "全网公开信源较少，请基于已知信息进行严谨推断并降低置信度。"
         raw_corpus = "\n\n".join(raw_corpus_parts)
         primary_corpus = "\n\n".join(primary_corpus_parts)
-
-        from harness_analyzer.analyzer.llm import LLMClient
-        from harness_analyzer.analyzer.evidence import verify_all_dimensions
-        llm = LLMClient()
 
         if is_adhoc and collected_texts:
             with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
@@ -324,13 +340,14 @@ def analyze(
                 primary_corpus=primary_corpus,
             )
 
-            progress.update(task, description="📦 合成中间产物（含权威用户评论洞察）...")
+            progress.update(task, description="📦 合成中间产物（含检索覆盖度与权威用户评论）...")
             intermediate_artifact = IntermediateArtifactBuilder(llm).build(
                 app_name=app_obj.name,
                 category=cat_val,
                 common_dims=common_dims,
                 specialized_dims=spec_dims,
                 review_items=review_items,
+                search_coverage=search_coverage,
             )
 
             progress.update(task, description="🎯 基于中间产物转化为产品经理方案指导 (PM Guidance)...")

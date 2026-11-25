@@ -10,6 +10,28 @@ from harness_analyzer.models.dimension import (
 )
 
 
+class QueryCoverageItem(BaseModel):
+    """单条检索词的覆盖度统计"""
+    query: str
+    language: str  # "zh" / "en"
+    angle: str     # "architecture_qa" / "implementation_tech" / "source_reverse" / "user_reviews"
+    hits_count: int = 0
+    pages_fetched: int = 0
+    chars_collected: int = 0
+
+
+class SearchCoverageReport(BaseModel):
+    """双语多维度检索覆盖度评估报告"""
+    question_language: str = "zh"
+    bilingual_names: dict[str, str] = Field(default_factory=dict, description="提问语言名与英文名映射")
+    items: list[QueryCoverageItem] = Field(default_factory=list)
+    zh_hits: int = 0
+    en_hits: int = 0
+    covered_angles: list[str] = Field(default_factory=list)
+    missing_angles: list[str] = Field(default_factory=list)
+    coverage_score: float = Field(default=0.0, ge=0.0, le=1.0, description="覆盖度得分 0~1")
+
+
 class UserReviewSummary(BaseModel):
     """权威社区真实用户评论洞察汇总"""
     review_sources: list[str] = Field(default_factory=list, description="评论来源 (HN/Reddit/G2/ProductHunt/GitHub Issues)")
@@ -28,6 +50,7 @@ class IntermediateArtifact(BaseModel):
     moderate_findings: list[str] = Field(default_factory=list, description="中度关联维度结论")
     inferred_warnings: list[str] = Field(default_factory=list, description="未通过实证校验的推断警示（供 PM 避坑）")
     user_reviews: UserReviewSummary | None = Field(default=None, description="真实用户评论与痛点提炼")
+    search_coverage: SearchCoverageReport | None = Field(default=None, description="双语多角度检索覆盖度评估")
     guard_summary: dict[str, int] = Field(default_factory=dict, description="各 Guard 状态计数统计")
 
 

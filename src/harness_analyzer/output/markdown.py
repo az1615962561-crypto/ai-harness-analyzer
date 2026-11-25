@@ -144,10 +144,11 @@ class MarkdownReportGenerator:
         core_facts = self._get_val(artifact, "core_verified_facts", default=[]) or []
         warnings = self._get_val(artifact, "inferred_warnings", default=[]) or []
         user_reviews = self._get_val(artifact, "user_reviews", default=None)
+        search_coverage = self._get_val(artifact, "search_coverage", default=None)
 
         lines = [
             "## 📦 中间产物与权威用户真实评论 (Intermediate Artifact & User Reviews)\n",
-            "> **转化依据说明**：本节汇总经分维度 Guard 校验后的技术事实与权威社区真实用户反馈，是上方『产品经理方案指导』的直接转化底座。\n",
+            "> **转化依据说明**：本节汇总经分维度 Guard 校验后的技术事实、双语检索覆盖度与权威社区真实用户反馈，是上方『产品经理方案指导』的直接转化底座。\n",
         ]
 
         if guard_summary:
@@ -162,6 +163,32 @@ class MarkdownReportGenerator:
         if warnings:
             lines.append(f"- **未实证警示数**：`{len(warnings)}` 项（已拦截防照搬）")
         lines.append("")
+
+        if search_coverage:
+            cov_score = self._get_val(search_coverage, "coverage_score", default=0.0)
+            zh_hits = self._get_val(search_coverage, "zh_hits", default=0)
+            en_hits = self._get_val(search_coverage, "en_hits", default=0)
+            missing = self._get_val(search_coverage, "missing_angles", default=[]) or []
+            cov_items = self._get_val(search_coverage, "items", default=[]) or []
+            lines.append("### 双语多维度检索覆盖度评估\n")
+            lines.append(
+                f"- **综合覆盖度**：`{cov_score:.0%}` ｜ **提问语言命中**：`{zh_hits}` 条 ｜ **英语命中**：`{en_hits}` 条"
+            )
+            if missing:
+                lines.append(f"- **覆盖盲区提示**：`{', '.join(missing)}`")
+            if cov_items:
+                lines.append("")
+                lines.append("| 语言 | 检索角度 | 检索词 | 命中数 | 深抓正文 | 采集字符 |")
+                lines.append("| :--- | :--- | :--- | :---: | :---: | :---: |")
+                for ci in cov_items:
+                    q_lang = self._get_val(ci, "language", default="")
+                    q_angle = self._get_val(ci, "angle", default="")
+                    q_text = str(self._get_val(ci, "query", default="")).replace("|", "\\|")
+                    q_hits = self._get_val(ci, "hits_count", default=0)
+                    q_pages = self._get_val(ci, "pages_fetched", default=0)
+                    q_chars = self._get_val(ci, "chars_collected", default=0)
+                    lines.append(f"| {q_lang} | {q_angle} | `{q_text}` | {q_hits} | {q_pages} | {q_chars} |")
+            lines.append("")
 
         if user_reviews:
             praises = self._get_val(user_reviews, "praises", default=[]) or []

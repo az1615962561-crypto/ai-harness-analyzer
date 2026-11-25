@@ -14,7 +14,7 @@ from harness_analyzer.models.dimension import (
     GuardStatus,
     SpecializedDimensionAnalysis,
 )
-from harness_analyzer.models.harness import IntermediateArtifact, UserReviewSummary
+from harness_analyzer.models.harness import IntermediateArtifact, SearchCoverageReport, UserReviewSummary
 from .llm import LLMClient
 
 
@@ -89,6 +89,7 @@ class IntermediateArtifactBuilder:
         specialized_dims: Sequence[SpecializedDimensionAnalysis],
         review_items: Sequence[CollectedData] = (),
         user_reviews_override: UserReviewSummary | None = None,
+        search_coverage: SearchCoverageReport | None = None,
     ) -> IntermediateArtifact:
         """构建第二步→第三步后的标准中间产物"""
         core_verified_facts: list[str] = []
@@ -126,6 +127,7 @@ class IntermediateArtifactBuilder:
             moderate_findings=moderate_findings,
             inferred_warnings=inferred_warnings,
             user_reviews=user_reviews,
+            search_coverage=search_coverage,
             guard_summary=guard_summary,
         )
 

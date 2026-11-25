@@ -34,11 +34,21 @@ class PMGuidanceExtractor:
                 f"人机信任与交互摩擦：\n{frictions}"
             )
 
+        coverage_block = "离线基准知识库模式（未执行在线搜索统计）。"
+        if artifact.search_coverage:
+            sc = artifact.search_coverage
+            coverage_block = (
+                f"覆盖度得分：{sc.coverage_score:.0%} "
+                f"(中文命中 {sc.zh_hits} 条 / 英文命中 {sc.en_hits} 条)\n"
+                f"已覆盖角度：{', '.join(sc.covered_angles) or '无'}\n"
+                f"覆盖盲区：{', '.join(sc.missing_angles) or '无'}"
+            )
+
         system_prompt = (
             "你是一位既懂 AI 底层 Harness 工程又精通商业产品落地的资深 AI 产品总监。"
-            "请严格依据提供的【中间产物（已分维度 Guard 校验）】与【真实用户评论洞察】，"
+            "请严格依据提供的【中间产物（已分维度 Guard 校验）】、【检索覆盖度评估】与【真实用户评论洞察】，"
             "输出产品经理可直接写入 PRD 的方案指导。"
-            "注意：对于标记在『未实证推断警示』中的能力，切勿盲目列为 P0 硬性照搬项。"
+            "注意：对于标记在『未实证推断警示』或处于『覆盖盲区』的能力，切勿盲目列为 P0 硬性照搬项。"
         )
 
         prompt = (
@@ -47,7 +57,8 @@ class PMGuidanceExtractor:
             f"## 中间产物 1：核心强关联且已严格实证的架构事实 (P0 转化主依据)\n{core_block}\n\n"
             f"## 中间产物 2：中度/弱关联维度发现\n{mod_block}\n\n"
             f"## 中间产物 3：未通过实证 Guard 的推断警示 (PM 谨慎引用)\n{warn_block}\n\n"
-            f"## 中间产物 4：权威社区真实用户评论与痛点\n{reviews_block}\n\n"
+            f"## 中间产物 4：双语检索内容覆盖度评估\n{coverage_block}\n\n"
+            f"## 中间产物 5：权威社区真实用户评论与痛点\n{reviews_block}\n\n"
             "## 任务\n"
             "综合以上中间产物与用户真实痛点，从产品经理视角给出落地指导，严格返回以下 JSON 结构：\n"
             "{\n"

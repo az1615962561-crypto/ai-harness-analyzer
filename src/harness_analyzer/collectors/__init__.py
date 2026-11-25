@@ -4,6 +4,7 @@ from .blog import BlogCollector
 from .search import WebSearchCollector
 from .reverse_eng import ReverseEngineeringCollector
 from .reviews import UserReviewCollector
+from .query_planner import BilingualQueryPlanner, PlannedQuery
 
 __all__ = [
     "BaseCollector",
@@ -13,4 +14,6 @@ __all__ = [
     "WebSearchCollector",
     "ReverseEngineeringCollector",
     "UserReviewCollector",
+    "BilingualQueryPlanner",
+    "PlannedQuery",
 ]

@@ -14,15 +14,25 @@ import httpx
 
 from harness_analyzer.collectors.base import BaseCollector, CollectedData
 from harness_analyzer.collectors.github import GitHubCollector
+from harness_analyzer.collectors.query_planner import BilingualQueryPlanner
+from harness_analyzer.models.harness import QueryCoverageItem
 
 
 class UserReviewCollector(BaseCollector):
     """采集权威社区与评测平台的真实用户评论，用于支撑人机体验与产品方案分析"""
 
-    def __init__(self, timeout: float = 12.0, max_hn_stories: int = 3, max_review_hits: int = 4):
+    def __init__(
+        self,
+        timeout: float = 12.0,
+        max_hn_stories: int = 3,
+        max_review_hits: int = 4,
+        question_lang: str = "zh",
+    ):
         self.timeout = timeout
         self.max_hn_stories = max_hn_stories
         self.max_review_hits = max_review_hits
+        self.question_lang = question_lang
+        self.last_coverage_items: list[QueryCoverageItem] = []
 
     @staticmethod
     def _strip_hn_html(html_text: str) -> str:
@@ -131,39 +141,41 @@ class UserReviewCollector(BaseCollector):
             return []
 
     def _search_authoritative_review_sites(self, app_name: str) -> list[CollectedData]:
-        """通过搜索引擎检索 G2 / Product Hunt / Reddit / 知乎 / V2EX 等权威真实评价"""
-        queries = [
-            f'"{app_name}" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review',
-            f'"{app_name}" ("pros and cons" OR "frustrating" OR "review" OR "issues") site:reddit.com',
-            f'"{app_name}" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com)',
-        ]
+        """通过双语检索 G2 / Product Hunt / Reddit / 知乎 / V2EX 等权威真实评价并记录覆盖度"""
+        planned = BilingualQueryPlanner.plan_review_queries(app_name, question_lang=self.question_lang)
         results: list[CollectedData] = []
         visited: set[str] = set()
+        cov_items: list[QueryCoverageItem] = []
 
         try:
             from duckduckgo_search import DDGS
             with DDGS() as ddgs:
-                for q in queries:
+                for pq in planned:
+                    cov = QueryCoverageItem(query=pq.query, language=pq.language, angle=pq.angle)
                     try:
-                        hits = list(ddgs.text(q, max_results=self.max_review_hits))
+                        hits = list(ddgs.text(pq.query, max_results=self.max_review_hits))
+                        cov.hits_count = len(hits)
                         for h in hits:
                             url = h.get("href") or ""
                             body = (h.get("body") or "").strip()
                             title = h.get("title") or "用户评价"
                             if url and body and url not in visited:
                                 visited.add(url)
+                                cov.chars_collected += len(body)
                                 results.append(
                                     CollectedData(
                                         source_url=url,
                                         source_type="user_review",
-                                        title=f"[权威社区评价] {title}",
+                                        title=f"[权威社区评价|{pq.language}] {title}",
                                         content=body,
                                     )
                                 )
                     except Exception:
-                        continue
+                        pass
+                    cov_items.append(cov)
         except Exception:
             pass
+        self.last_coverage_items = cov_items
         return results
 
     async def collect(self, app: Any) -> list[CollectedData]:
