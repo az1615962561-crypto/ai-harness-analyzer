@@ -214,6 +214,20 @@ DIMENSION_WEIGHTS: dict[str, dict[str, int]] = {
 }
 
 
+class CouplingLevel(str, Enum):
+    """维度与目标应用核心 Harness 的联系程度"""
+    CORE = "core"          # 核心强关联（专属维度或权重=5）
+    MODERATE = "moderate"  # 中度关联（权重=3~4）
+    LOOSE = "loose"        # 弱关联（权重=1~2）
+
+
+class GuardStatus(str, Enum):
+    """分维度独立 Guard 校验状态"""
+    STRICT_VERIFIED = "strict_verified"      # 已通过一手或多重实证严格校验
+    PARTIAL_VERIFIED = "partial_verified"    # 仅有二手/单条引证，置信度受限
+    UNVERIFIED_CAPPED = "unverified_capped"  # 无原文实证，已封顶降级并标为推测
+
+
 class DimensionAnalysis(BaseModel):
     """通用维度分析结果"""
     dimension: str
@@ -226,6 +240,9 @@ class DimensionAnalysis(BaseModel):
     evidence_sources: list[str] = Field(default_factory=list)
     verbatim_quotes: list[str] = Field(default_factory=list)
     is_inferred: bool = False
+    coupling_level: CouplingLevel = CouplingLevel.MODERATE
+    guard_status: GuardStatus = GuardStatus.STRICT_VERIFIED
+    guard_reason: str = ""
 
 
 class SpecializedDimensionAnalysis(BaseModel):
@@ -240,3 +257,6 @@ class SpecializedDimensionAnalysis(BaseModel):
     evidence_sources: list[str] = Field(default_factory=list)
     verbatim_quotes: list[str] = Field(default_factory=list)
     is_inferred: bool = False
+    coupling_level: CouplingLevel = CouplingLevel.CORE
+    guard_status: GuardStatus = GuardStatus.STRICT_VERIFIED
+    guard_reason: str = ""

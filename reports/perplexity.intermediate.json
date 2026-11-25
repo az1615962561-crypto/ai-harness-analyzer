@@ -1,0 +1,42 @@
+{
+  "app_name": "perplexity",
+  "category": "knowledge",
+  "generated_at": "2026-11-25T11:11:46.816260",
+  "core_verified_facts": [
+    "[RAG 全链路设计] 动态多路由检索 + 实时重排序模型 (Cross-Encoder Reranker) (置信度 5★ | core/strict_verified)",
+    "[引用链管理与溯源] 句子级细粒度引用锚定与源文快照 (置信度 5★ | core/strict_verified)",
+    "[多文档综合推理] 冲突检测与多方观点汇总 (置信度 4★ | core/strict_verified)",
+    "[上下文工程] 网页实时清洗 + 段落级语义片段重排 (Reranking) (置信度 5★ | core/strict_verified)"
+  ],
+  "moderate_findings": [
+    "[Agent 编排] 检索-生成-核验串联编排 (Query Planner -> Web Scraper -> Reranker -> Synthesis Agent) (置信度 5★ | loose/strict_verified)",
+    "[模型路由] 分层模型路由 (轻量模型做意图拆解 + 旗舰模型做多文档推理) (置信度 5★ | moderate/strict_verified)",
+    "[人机协同] 透明引用溯源 + 引导式追问 (Related Questions) (置信度 5★ | moderate/strict_verified)"
+  ],
+  "inferred_warnings": [],
+  "user_reviews": {
+    "review_sources": [
+      "https://news.ycombinator.com (Hacker News)",
+      "https://www.reddit.com/r/perplexity_ai"
+    ],
+    "praises": [
+      "答案每句话附带角标引用，悬停就能核对原始网页，极大降低搜索时间",
+      "追问交互流畅，比传统搜索引擎广告堆砌高效得多"
+    ],
+    "pain_points": [
+      "部分冷门技术或中文深度问题抓取的网页来源质量参差不齐",
+      "面对需要严格深度推理的任务，长文综述偶尔过度简化原文条件"
+    ],
+    "trust_and_ux_friction": [
+      "偶尔出现『角标引用存在，但点进去原文并不支持该结论』的错位引用问题"
+    ],
+    "sample_quotes": [
+      "Perplexity replaced 80% of my Google searches, though I still click the inline citations whenever numbers matter."
+    ]
+  },
+  "guard_summary": {
+    "strict_verified": 7,
+    "partial_verified": 0,
+    "unverified_capped": 0
+  }
+}

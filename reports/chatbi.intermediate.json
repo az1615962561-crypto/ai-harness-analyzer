@@ -1,0 +1,43 @@
+{
+  "app_name": "chatbi",
+  "category": "data",
+  "generated_at": "2026-11-25T11:11:45.659601",
+  "core_verified_facts": [
+    "[NL2SQL 转换管线] 意图解析 -> 知识检索 -> SQL 生成 -> 语法纠错 -> 自动重试 (置信度 4★ | core/strict_verified)",
+    "[多源异构数据适配] 统一 JDBC/ODBC 抽象层与方言适配器 (置信度 4★ | core/strict_verified)",
+    "[数据模式自动发现] 元数据采集 + 样本数据语义推导 + 业务指标字典映射 (置信度 5★ | core/strict_verified)",
+    "[查询生成与优化] 智能索引推荐与分区裁剪检查 (置信度 4★ | core/strict_verified)",
+    "[数据可视化引擎] 查询结果自动匹配图表形态与数据洞察总结 (置信度 4★ | core/strict_verified)",
+    "[工具链] 只读数据库执行器 + 语法解析器 + 图表推荐引擎 (置信度 5★ | core/strict_verified)",
+    "[提示词工程] 动态 Schema 注入 + Few-Shot SQL 黄金案例库 (置信度 5★ | core/strict_verified)"
+  ],
+  "moderate_findings": [
+    "[Agent 编排] 单 Agent 意图识别 + 串行数据处理 Pipeline (置信度 4★ | loose/strict_verified)",
+    "[安全沙箱] SQL 静态语法树 (AST) 防护 + 行级列级权限拦截 (置信度 5★ | moderate/strict_verified)"
+  ],
+  "inferred_warnings": [],
+  "user_reviews": {
+    "review_sources": [
+      "企业 BI 社区评测 (G2 / 知乎企业数字化专栏)"
+    ],
+    "praises": [
+      "业务人员无需找数据研发排队写 SQL，自然语言直接出常规看板",
+      "结合指标口径字典后，常见经营日报查询准确率大幅提高"
+    ],
+    "pain_points": [
+      "遇到多表复杂 JOIN 或隐含业务口径（如“有效复购率”）时仍容易算错数",
+      "未展示计算逻辑时，管理层不敢直接拿生成的数字做汇报"
+    ],
+    "trust_and_ux_friction": [
+      "用户极度关心『这个数字怎么算出来的』，缺乏口径回显与 SQL 透明解释会导致零信任"
+    ],
+    "sample_quotes": [
+      "对话查数很爽，但如果不能点开看到用的是哪张表和过滤条件，我们根本不敢拿去周会汇报。"
+    ]
+  },
+  "guard_summary": {
+    "strict_verified": 9,
+    "partial_verified": 0,
+    "unverified_capped": 0
+  }
+}

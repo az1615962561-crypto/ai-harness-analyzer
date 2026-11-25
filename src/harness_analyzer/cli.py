@@ -143,8 +143,10 @@ def analyze(
     from harness_analyzer.collectors.blog import BlogCollector
     from harness_analyzer.collectors.search import WebSearchCollector
     from harness_analyzer.collectors.reverse_eng import ReverseEngineeringCollector
+    from harness_analyzer.collectors.reviews import UserReviewCollector
     from harness_analyzer.analyzer.dimensions import CommonDimensionExtractor
     from harness_analyzer.analyzer.specialized import get_specialized_analyzer
+    from harness_analyzer.analyzer.intermediate import IntermediateArtifactBuilder
     from harness_analyzer.analyzer.pm_guidance import PMGuidanceExtractor
     from harness_analyzer.analyzer.offline import OfflineBenchmarkProvider
     from harness_analyzer.output.markdown import MarkdownReportGenerator
@@ -199,14 +201,22 @@ def analyze(
             analysis = OfflineBenchmarkProvider.get_analysis(app_obj)
             if not analysis.mermaid_diagram:
                 analysis.mermaid_diagram = DiagramGenerator().generate(analysis)
-            progress.update(task, description="✅ 架构数据构建完成")
+            progress.update(task, description="✅ 架构数据与中间产物构建完成")
     else:
         collected_texts: list[str] = []
         raw_sources: list[str] = []
         raw_corpus_parts: list[str] = []
+        primary_corpus_parts: list[str] = []
+        review_items = []
+
+        _PRIMARY_SOURCE_TYPES = {
+            "github_readme", "github_tree", "github_source",
+            "blog", "blog_article", "docs", "documentation", "product_page",
+            "re_repository", "github_re_search", "local_reverse_engineering",
+        }
 
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
-            task = progress.add_task("📡 正在全网检索与采集架构信源 (Search/GitHub/Blog/RE)...", total=None)
+            task = progress.add_task("📡 正在全网检索与采集信源 (Search/GitHub/Blog/RE/真实用户评论)...", total=None)
 
             async def collect():
                 results = []
@@ -214,11 +224,13 @@ def analyze(
                 gh = GitHubCollector()
                 blog = BlogCollector()
                 re_collector = ReverseEngineeringCollector(local_app_path=local_app)
+                review_collector = UserReviewCollector()
                 gathered = await asyncio.gather(
                     searcher.collect(app_obj),
                     gh.collect(app_obj),
                     blog.collect(app_obj),
                     re_collector.collect(app_obj),
+                    review_collector.collect(app_obj),
                     return_exceptions=True,
                 )
                 for res in gathered:
@@ -231,15 +243,23 @@ def analyze(
                 for c in collected:
                     collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:4500]}")
                     raw_corpus_parts.append(c.content)
+                    if c.source_type in _PRIMARY_SOURCE_TYPES:
+                        primary_corpus_parts.append(c.content)
+                    if c.source_type == "user_review":
+                        review_items.append(c)
                     if c.source_url and c.source_url not in raw_sources:
                         raw_sources.append(c.source_url)
             except Exception as e:
                 console.print(f"[yellow]采集数据时出错: {e}，将基于已知公开信息继续分析[/yellow]")
 
-            progress.update(task, description=f"✅ 数据采集完成 (发现 {len(collected_texts)} 处相关公开信源)")
+            progress.update(
+                task,
+                description=f"✅ 数据采集完成 (共 {len(collected_texts)} 条信源，含 {len(review_items)} 组真实用户评论)",
+            )
 
         collected_data = "\n\n---\n\n".join(collected_texts) if collected_texts else "全网公开信源较少，请基于已知信息进行严谨推断并降低置信度。"
         raw_corpus = "\n\n".join(raw_corpus_parts)
+        primary_corpus = "\n\n".join(primary_corpus_parts)
 
         from harness_analyzer.analyzer.llm import LLMClient
         from harness_analyzer.analyzer.evidence import verify_all_dimensions
@@ -295,18 +315,34 @@ def analyze(
             spec_analyzer = get_specialized_analyzer(cat_val, llm)
             spec_dims = spec_analyzer.analyze(app_info, collected_data)
 
-            progress.update(task, description="🛡️ 执行证据强制锚定与反幻觉门控校验...")
-            common_dims, spec_dims = verify_all_dimensions(common_dims, spec_dims, raw_corpus)
+            progress.update(task, description="🛡️ 按联系程度执行分维度独立 Guard 校验...")
+            common_dims, spec_dims = verify_all_dimensions(
+                common_dims,
+                spec_dims,
+                raw_corpus,
+                category=cat_val,
+                primary_corpus=primary_corpus,
+            )
 
-            progress.update(task, description="🎯 正在提炼产品经理落地方案指导 (PM Guidance)...")
-            pm_guidance = PMGuidanceExtractor(llm).extract(app_info, cat_val, common_dims, spec_dims)
-            progress.update(task, description="✅ 双层架构、证据核验与 PM 方案拆解完成")
+            progress.update(task, description="📦 合成中间产物（含权威用户评论洞察）...")
+            intermediate_artifact = IntermediateArtifactBuilder(llm).build(
+                app_name=app_obj.name,
+                category=cat_val,
+                common_dims=common_dims,
+                specialized_dims=spec_dims,
+                review_items=review_items,
+            )
+
+            progress.update(task, description="🎯 基于中间产物转化为产品经理方案指导 (PM Guidance)...")
+            pm_guidance = PMGuidanceExtractor(llm).extract_from_artifact(app_info, intermediate_artifact)
+            progress.update(task, description="✅ 中间产物、分维度 Guard 与 PM 方案拆解完成")
 
         all_verified_dims = [*common_dims, *spec_dims]
         analysis = HarnessAnalysis(
             app_name=app_obj.name,
             app_display_name=app_obj.display_name,
             category=cat_val,
+            intermediate_artifact=intermediate_artifact,
             pm_guidance=pm_guidance,
             common_dimensions=common_dims,
             specialized_dimensions=spec_dims,
@@ -322,6 +358,13 @@ def analyze(
     cache = AnalysisCache(settings.cache_dir)
     cache.save(app_obj.name, cat_val, analysis.model_dump_json())
 
+    # 持久化保存结构化中间产物 (.intermediate.json)
+    intermediate_path = None
+    if analysis.intermediate_artifact is not None:
+        intermediate_path = IntermediateArtifactBuilder.save_to_disk(
+            analysis.intermediate_artifact, settings.reports_dir, app_obj.name
+        )
+
     # Generate report
     report_gen = MarkdownReportGenerator()
     report_text = report_gen.generate(analysis)
@@ -331,6 +374,8 @@ def analyze(
     report_path.write_text(report_text, encoding="utf-8")
 
     console.print("\n[green]✅ 分析完成！[/green]")
+    if intermediate_path:
+        console.print(f"📦 中间产物已保存到: [bold]{intermediate_path}[/bold]")
     console.print(f"📄 报告已保存到: [bold]{report_path}[/bold]")
 
     if analysis.key_insights:

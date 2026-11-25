@@ -11,14 +11,14 @@ class ComparisonReportGenerator:
         """将置信度格式化为星级字符串"""
         if conf is None:
             return "★★★☆☆"
-        if isinstance(conf, (int, float)):
-            if 0 < conf <= 1.0:
-                stars = round(conf * 5)
-            else:
-                stars = round(conf)
-            stars = max(1, min(5, stars))
-            return "★" * stars + "☆" * (5 - stars)
-        return str(conf)
+        if isinstance(conf, float) and 0.0 <= conf <= 1.0:
+            stars = round(conf * 5)
+        elif isinstance(conf, (int, float)):
+            stars = round(conf)
+        else:
+            return str(conf)
+        stars = max(1, min(5, stars))
+        return "★" * stars + "☆" * (5 - stars)
 
     @staticmethod
     def _get_val(obj: Any, *keys: str, default: Any = "") -> Any:

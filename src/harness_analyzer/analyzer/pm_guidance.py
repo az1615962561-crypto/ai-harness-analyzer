@@ -1,52 +1,63 @@
 """应用层：产品经理方案指导生成器 (PM Guidance Extractor)
-将中间层 9+5 维度的底层技术拆解，提炼转化为面向产品经理与业务负责人的产品形态、交互信任机制、成本权衡与 PRD MVP 清单。
+直接以第二步→第三步产出的结构化中间产物 (IntermediateArtifact) 为依据，
+结合已验证的技术事实与权威真实用户评论痛点，转化为产品经理可直接落地的 PRD 方案指导。
 """
+from __future__ import annotations
+
 from harness_analyzer.models.dimension import DimensionAnalysis, SpecializedDimensionAnalysis
-from harness_analyzer.models.harness import PMGuidance
+from harness_analyzer.models.harness import IntermediateArtifact, PMGuidance
+from .intermediate import IntermediateArtifactBuilder
 from .llm import LLMClient
 
 
 class PMGuidanceExtractor:
-    """基于技术维度分析结果，生成产品经理视角的落地指导方案"""
+    """基于中间产物与真实用户评论，生成产品经理视角的落地指导方案"""
 
     def __init__(self, llm: LLMClient):
         self.llm = llm
 
-    def extract(
-        self,
-        app_info: str,
-        category: str,
-        common_dims: list[DimensionAnalysis],
-        specialized_dims: list[SpecializedDimensionAnalysis],
-    ) -> PMGuidance:
-        """综合维度拆解结论，输出产品经理方案指导"""
-        dim_summary_lines = []
-        for d in common_dims:
-            dim_summary_lines.append(f"- [{d.label}] {d.summary}")
-        for sd in specialized_dims:
-            dim_summary_lines.append(f"- [{sd.label}] {sd.summary}")
+    def extract_from_artifact(self, app_info: str, artifact: IntermediateArtifact) -> PMGuidance:
+        """直接消费 IntermediateArtifact 进行应用层产品方案转化"""
+        core_block = "\n".join(f"- {x}" for x in artifact.core_verified_facts) or "- 暂无严格实证的核心事实"
+        mod_block = "\n".join(f"- {x}" for x in artifact.moderate_findings) or "- 暂无"
+        warn_block = "\n".join(f"- {x}" for x in artifact.inferred_warnings) or "- 无"
 
-        dims_text = "\n".join(dim_summary_lines) or "暂无维度摘要"
+        reviews_block = "暂无社区用户评论数据。"
+        if artifact.user_reviews:
+            ur = artifact.user_reviews
+            praises = "\n".join(f"  + {p}" for p in ur.praises) or "  + 暂无"
+            pains = "\n".join(f"  - {p}" for p in ur.pain_points) or "  - 暂无"
+            frictions = "\n".join(f"  ! {f}" for f in ur.trust_and_ux_friction) or "  ! 暂无"
+            reviews_block = (
+                f"用户正面爽点：\n{praises}\n"
+                f"用户高频痛点：\n{pains}\n"
+                f"人机信任与交互摩擦：\n{frictions}"
+            )
 
         system_prompt = (
             "你是一位既懂 AI 底层 Harness 工程又精通商业产品落地的资深 AI 产品总监。"
-            "请把下面的技术架构拆解翻译为产品经理可直接写入 PRD 的方案指导。"
+            "请严格依据提供的【中间产物（已分维度 Guard 校验）】与【真实用户评论洞察】，"
+            "输出产品经理可直接写入 PRD 的方案指导。"
+            "注意：对于标记在『未实证推断警示』中的能力，切勿盲目列为 P0 硬性照搬项。"
         )
 
         prompt = (
             f"## 目标对标应用信息\n{app_info}\n\n"
-            f"## 所属品类\n{category}\n\n"
-            f"## 中间层技术维度分析摘要\n{dims_text}\n\n"
+            f"## 所属品类：{artifact.category}\n\n"
+            f"## 中间产物 1：核心强关联且已严格实证的架构事实 (P0 转化主依据)\n{core_block}\n\n"
+            f"## 中间产物 2：中度/弱关联维度发现\n{mod_block}\n\n"
+            f"## 中间产物 3：未通过实证 Guard 的推断警示 (PM 谨慎引用)\n{warn_block}\n\n"
+            f"## 中间产物 4：权威社区真实用户评论与痛点\n{reviews_block}\n\n"
             "## 任务\n"
-            "请从产品经理视角给出落地指导，严格返回以下 JSON 结构：\n"
+            "综合以上中间产物与用户真实痛点，从产品经理视角给出落地指导，严格返回以下 JSON 结构：\n"
             "{\n"
             '  "suitable_product_forms": ["最适合的产品形态1", "形态2"],\n'
             '  "autonomy_level": "L1~L4 自主度评级及一句话定位",\n'
-            '  "interaction_design": "人机协同与用户信任建立机制设计（包含审查粒度、预览方式、安全撤销网）",\n'
+            '  "interaction_design": "人机协同与用户信任建立机制设计（重点针对上述用户痛点与信任摩擦给出解法）",\n'
             '  "cost_latency_tradeoffs": "响应延迟与 Token 成本的体验权衡策略",\n'
             '  "mvp_must_haves": ["第一期 P0 必须功能1", "功能2", "功能3"],\n'
             '  "mvp_nice_to_haves": ["第二期 P1 增强功能1", "功能2"],\n'
-            '  "anti_patterns_to_avoid": ["产品经理需避开的坑1", "坑2"]\n'
+            '  "anti_patterns_to_avoid": ["结合用户吐槽和未实证风险提炼的产品避坑红线1", "红线2"]\n'
             "}"
         )
 
@@ -62,7 +73,23 @@ class PMGuidanceExtractor:
                 anti_patterns_to_avoid=data.get("anti_patterns_to_avoid", []) or [],
             )
         except Exception:
-            return self._fallback_guidance(category)
+            return self._fallback_guidance(artifact.category)
+
+    def extract(
+        self,
+        app_info: str,
+        category: str,
+        common_dims: list[DimensionAnalysis],
+        specialized_dims: list[SpecializedDimensionAnalysis],
+    ) -> PMGuidance:
+        """向后兼容的便捷入口：内部先合成 IntermediateArtifact 再转化 PM 方案"""
+        artifact = IntermediateArtifactBuilder().build(
+            app_name="target",
+            category=category,
+            common_dims=common_dims,
+            specialized_dims=specialized_dims,
+        )
+        return self.extract_from_artifact(app_info, artifact)
 
     @staticmethod
     def _fallback_guidance(category: str) -> PMGuidance:

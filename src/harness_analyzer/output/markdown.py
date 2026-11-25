@@ -27,14 +27,14 @@ class MarkdownReportGenerator:
         """将置信度转化为 5 星显示"""
         if conf is None:
             return "★★★☆☆"
-        if isinstance(conf, (int, float)):
-            if 0 < conf <= 1.0:
-                stars = round(conf * 5)
-            else:
-                stars = round(conf)
-            stars = max(1, min(5, stars))
-            return "★" * stars + "☆" * (5 - stars)
-        return str(conf)
+        if isinstance(conf, float) and 0.0 <= conf <= 1.0:
+            stars = round(conf * 5)
+        elif isinstance(conf, (int, float)):
+            stars = round(conf)
+        else:
+            return str(conf)
+        stars = max(1, min(5, stars))
+        return "★" * stars + "☆" * (5 - stars)
 
     @staticmethod
     def _get_val(obj: Any, *keys: str, default: Any = None) -> Any:
@@ -60,14 +60,41 @@ class MarkdownReportGenerator:
         )
         verbatim_quotes = self._get_val(item, "verbatim_quotes", default=[])
         is_inferred = bool(self._get_val(item, "is_inferred", default=False))
+        coupling = self._get_val(item, "coupling_level", default=None)
+        if hasattr(coupling, "value"):
+            coupling = coupling.value
+        guard_status = self._get_val(item, "guard_status", default=None)
+        if hasattr(guard_status, "value"):
+            guard_status = guard_status.value
+        guard_reason = self._get_val(item, "guard_reason", default="")
+
+        coupling_labels = {
+            "core": "🔴 核心强关联",
+            "moderate": "🟡 中度关联",
+            "loose": "⚪ 弱关联",
+        }
+        guard_labels = {
+            "strict_verified": "✅ 严格实证通过",
+            "partial_verified": "⚠️ 部分实证受限",
+            "unverified_capped": "🚧 无实证推断封顶",
+        }
+
+        meta_badges = [f"**置信度**：{self._format_stars(confidence)}"]
+        if coupling:
+            meta_badges.append(f"**联系程度**：{coupling_labels.get(str(coupling), str(coupling))}")
+        if guard_status:
+            meta_badges.append(f"**Guard 状态**：{guard_labels.get(str(guard_status), str(guard_status))}")
 
         lines = [
             f"### {label}\n",
-            f"**置信度**：{self._format_stars(confidence)}\n",
+            " | ".join(meta_badges) + "\n",
         ]
 
         if is_inferred:
-            lines.append("> ⚠️ *缺乏一手采集原文直接佐证，本维度主要基于同类架构模式推断（置信度已封顶受限）。*\n")
+            warn_msg = guard_reason or "缺乏一手采集原文直接佐证，本维度主要基于同类架构模式推断（置信度已封顶受限）。"
+            lines.append(f"> ⚠️ *{warn_msg}*\n")
+        elif guard_reason and guard_status == "partial_verified":
+            lines.append(f"> ℹ️ *{guard_reason}*\n")
 
         if summary:
             lines.append(f"{summary}\n")
@@ -108,6 +135,64 @@ class MarkdownReportGenerator:
         else:
             lines.append("1. 暂无可直接借鉴的明确项")
         lines.append("")
+
+        return "\n".join(lines)
+
+    def _render_intermediate_summary(self, artifact: Any) -> str:
+        """渲染中间产物摘要与真实用户评论洞察（连接第二步/第三步到第四步 PM 方案的转化桥梁）"""
+        guard_summary = self._get_val(artifact, "guard_summary", default={}) or {}
+        core_facts = self._get_val(artifact, "core_verified_facts", default=[]) or []
+        warnings = self._get_val(artifact, "inferred_warnings", default=[]) or []
+        user_reviews = self._get_val(artifact, "user_reviews", default=None)
+
+        lines = [
+            "## 📦 中间产物与权威用户真实评论 (Intermediate Artifact & User Reviews)\n",
+            "> **转化依据说明**：本节汇总经分维度 Guard 校验后的技术事实与权威社区真实用户反馈，是上方『产品经理方案指导』的直接转化底座。\n",
+        ]
+
+        if guard_summary:
+            strict_n = guard_summary.get("strict_verified", 0)
+            partial_n = guard_summary.get("partial_verified", 0)
+            capped_n = guard_summary.get("unverified_capped", 0)
+            lines.append(
+                f"- **分维度 Guard 统计**：✅ 严格实证 `{strict_n}` 项 ｜ ⚠️ 部分实证 `{partial_n}` 项 ｜ 🚧 推断封顶 `{capped_n}` 项"
+            )
+        if core_facts:
+            lines.append(f"- **核心实证锚点数**：`{len(core_facts)}` 项（已作为 P0 产品方案主依据）")
+        if warnings:
+            lines.append(f"- **未实证警示数**：`{len(warnings)}` 项（已拦截防照搬）")
+        lines.append("")
+
+        if user_reviews:
+            praises = self._get_val(user_reviews, "praises", default=[]) or []
+            pains = self._get_val(user_reviews, "pain_points", default=[]) or []
+            frictions = self._get_val(user_reviews, "trust_and_ux_friction", default=[]) or []
+            quotes = self._get_val(user_reviews, "sample_quotes", default=[]) or []
+            sources = self._get_val(user_reviews, "review_sources", default=[]) or []
+
+            lines.append("### 权威社区真实用户评论拆解\n")
+            if praises:
+                lines.append("**👍 真实用户高频好评 (核心爽点)**：")
+                for p in praises:
+                    lines.append(f"- {p}")
+                lines.append("")
+            if pains:
+                lines.append("**👎 真实用户高频吐槽 (痛点与短板)**：")
+                for p in pains:
+                    lines.append(f"- {p}")
+                lines.append("")
+            if frictions:
+                lines.append("**⚡ 人机协作与信任摩擦点**：")
+                for f in frictions:
+                    lines.append(f"- {f}")
+                lines.append("")
+            if quotes:
+                lines.append("**💬 代表性一线用户原话**：")
+                for q in quotes:
+                    lines.append(f'> "{q}"')
+                lines.append("")
+            if sources:
+                lines.append("**评论采集来源**：" + " / ".join(sources) + "\n")
 
         return "\n".join(lines)
 
@@ -225,6 +310,7 @@ class MarkdownReportGenerator:
         architecture_summary = self._get_val(
             analysis, "architecture_summary", default="暂无架构摘要说明。"
         )
+        intermediate_artifact = self._get_val(analysis, "intermediate_artifact", default=None)
         pm_guidance = self._get_val(analysis, "pm_guidance", default=None)
         common_dimensions = self._get_val(analysis, "common_dimensions", default=[])
         specialized_dimensions = self._get_val(analysis, "specialized_dimensions", default=[])
@@ -254,6 +340,10 @@ class MarkdownReportGenerator:
 
         # 5. 【核心交付层】应用层：产品经理产品方案指导
         parts.append(self._render_pm_guidance(pm_guidance, app_display_name, category))
+
+        # 6. 【转化桥梁】中间产物与权威用户真实评论洞察
+        if intermediate_artifact is not None:
+            parts.append(self._render_intermediate_summary(intermediate_artifact))
 
         # 6. 【论据分析层】中间层：Harness 架构维度深度拆解
         parts.append("## 🔬 中间层：Harness 架构维度深度拆解 (Dimension Analysis)\n")

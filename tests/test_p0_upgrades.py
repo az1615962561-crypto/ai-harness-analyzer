@@ -143,13 +143,13 @@ def test_evidence_verification_caps_hallucinated_confidence():
     assert v_common[0].is_inferred is False
     assert len(v_common[0].verbatim_quotes) == 1
 
-    # Fabricated quote is stripped, marked inferred, and capped at 2 stars
-    assert v_common[1].confidence == 2
+    # Fabricated quote is stripped, marked inferred, and CORE unverified is strictly capped at 1 star
+    assert v_common[1].confidence == 1
     assert v_common[1].is_inferred is True
     assert v_common[1].verbatim_quotes == []
 
-    # Empty quote is marked inferred and capped at 2 stars
-    assert v_spec[0].confidence == 2
+    # Empty quote on specialized (CORE) dimension is marked inferred and capped at 1 star
+    assert v_spec[0].confidence == 1
     assert v_spec[0].is_inferred is True
 
     # Verify Markdown renders both Verified Quotes and Inferred warning
@@ -164,4 +164,5 @@ def test_evidence_verification_caps_hallucinated_confidence():
     )
     assert "原文佐证片段 (Verified Quotes)" in md
     assert "Tree-sitter AST chunking" in md
-    assert "缺乏一手采集原文直接佐证" in md
+    assert "缺乏原文实证" in md
+    assert "★☆☆☆☆" in md

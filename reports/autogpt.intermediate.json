@@ -1,0 +1,40 @@
+{
+  "app_name": "autogpt",
+  "category": "automation",
+  "generated_at": "2026-11-25T11:11:47.966957",
+  "core_verified_facts": [
+    "[DAG 与状态机引擎] 有向无环图 (DAG) 任务编排与状态流转 (置信度 5★ | core/strict_verified)",
+    "[容错与重试恢复] 异常捕获 -> 状态回滚 -> 替代路径重试 (置信度 4★ | core/strict_verified)",
+    "[触发与调度机制] 事件驱动 Webhook 监听与定时 Cron 调度 (置信度 4★ | core/strict_verified)",
+    "[Agent 编排] 自主循环规划与任务状态机 (Plan-Execute-Observe-Reflect Cycle) (置信度 5★ | core/strict_verified)",
+    "[工具链] 全能力工具箱 (Shell 终端、浏览器、文件系统与通用 API 调用) (置信度 5★ | core/strict_verified)"
+  ],
+  "moderate_findings": [
+    "[安全沙箱] Docker 容器隔离与自主运行权限控制 (置信度 5★ | moderate/strict_verified)"
+  ],
+  "inferred_warnings": [],
+  "user_reviews": {
+    "review_sources": [
+      "https://github.com/Significant-Gravitas/AutoGPT/issues",
+      "https://news.ycombinator.com (Hacker News)"
+    ],
+    "praises": [
+      "验证了自主目标拆解与工具循环执行的无限潜力，激发了整个 Agent 生态"
+    ],
+    "pain_points": [
+      "长链路任务经常陷入死循环，短时间内烧光大量 OpenAI API 费用",
+      "本地配置与 Docker 沙箱环境门槛高，非开发者难以上手"
+    ],
+    "trust_and_ux_friction": [
+      "缺乏中途人工干预与可预期的成本上限，导致用户不敢放手让它长期挂机跑任务"
+    ],
+    "sample_quotes": [
+      "Cool demo, but left unattended it looped 15 times trying to fix a missing dependency and burned $10 in minutes."
+    ]
+  },
+  "guard_summary": {
+    "strict_verified": 6,
+    "partial_verified": 0,
+    "unverified_capped": 0
+  }
+}

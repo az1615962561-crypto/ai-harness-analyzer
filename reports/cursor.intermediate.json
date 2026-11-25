@@ -1,0 +1,50 @@
+{
+  "app_name": "cursor",
+  "category": "engineering",
+  "generated_at": "2026-11-25T11:11:44.480167",
+  "core_verified_facts": [
+    "[沙箱隔离模型] 宿主安全确认模式 + 本地执行边界 (置信度 4★ | core/strict_verified)",
+    "[代码库理解引擎] LSP 静态分析 + Tree-sitter AST + 增量向量混合索引 (置信度 5★ | core/strict_verified)",
+    "[Diff 生成与管理] 高效流式 SEARCH/REPLACE 块解析与实时语法合规性检查 (置信度 5★ | core/strict_verified)",
+    "[终端与进程管理] 集成 VS Code PTY 终端会话与命令输出环形缓冲区 (置信度 5★ | core/strict_verified)",
+    "[检查点与回滚] Git 兼容的轻量暂存区快照与多步撤销树 (置信度 5★ | core/strict_verified)",
+    "[Agent 编排] 多 Agent 协作流 (Tab 快速补全 Agent + Composer 全局编辑 Agent + Background Indexing Agent) (置信度 5★ | core/strict_verified)",
+    "[模型路由] 基于任务复杂度的分级模型路由 (Claude 3.5 Sonnet 主力 + 自研低延迟小模型补全) (置信度 5★ | core/strict_verified)",
+    "[工具链] 围绕本地文件系统与语言服务器 (LSP) 的精细工具链 (置信度 5★ | core/strict_verified)",
+    "[上下文工程] 本地 Merkle Tree 增量索引 + 混合检索 (BM25 + 向量嵌入 + LSP 引用) (置信度 5★ | core/strict_verified)",
+    "[安全沙箱] 终端操作权限审批与文件修改权限白名单 (置信度 5★ | core/strict_verified)",
+    "[人机协同] 行内实时 Diff 审阅 + 自然语言直接交互编辑 (Inline Edit) (置信度 5★ | core/strict_verified)",
+    "[扩展生态] 完整兼容 VS Code 扩展生态 + MCP 协议与自定义规则生态 (置信度 5★ | core/strict_verified)"
+  ],
+  "moderate_findings": [
+    "[提示词工程] 分层规则注入与结构化 XML/Markdown 格式约束 (置信度 4★ | moderate/strict_verified)",
+    "[数据流与状态管理] 双向增量流式状态同步与本地会话 Checkpoint (置信度 4★ | moderate/strict_verified)"
+  ],
+  "inferred_warnings": [],
+  "user_reviews": {
+    "review_sources": [
+      "https://news.ycombinator.com (Hacker News 开发者社区)",
+      "https://www.reddit.com/r/cursor"
+    ],
+    "praises": [
+      "Cursor Tab 多行预测与光标跳转体验极佳，真正做到打字不卡顿",
+      "Inline Diff (绿增红删) 审阅直观，结合一键回滚让人敢放心让 AI 改多文件"
+    ],
+    "pain_points": [
+      "大型仓库下 Composer 偶尔误删或改坏未提及的相邻函数",
+      "高频对话时快速额度消耗快，降速队列体验落差明显"
+    ],
+    "trust_and_ux_friction": [
+      "全自动 Agent 模式下连续执行终端命令时，用户容易失去变更感知，仍高度依赖手点 Accept/Reject"
+    ],
+    "sample_quotes": [
+      "Cursor Tab alone justifies the subscription—predicting the next edit location feels magical.",
+      "Composer is great for scaffolding, but on large files it still occasionally drops unrelated code unless you watch the diff carefully."
+    ]
+  },
+  "guard_summary": {
+    "strict_verified": 14,
+    "partial_verified": 0,
+    "unverified_capped": 0
+  }
+}

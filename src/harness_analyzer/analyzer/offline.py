@@ -7,12 +7,97 @@ from harness_analyzer.models.dimension import (
     DimensionAnalysis,
     SpecializedDimensionAnalysis,
     CommonDimension,
+    GuardStatus,
 )
-from harness_analyzer.models.harness import HarnessAnalysis, PMGuidance
+from harness_analyzer.models.harness import HarnessAnalysis, PMGuidance, UserReviewSummary
+from harness_analyzer.analyzer.evidence import resolve_coupling_level
+from harness_analyzer.analyzer.intermediate import IntermediateArtifactBuilder
 
 
 class OfflineBenchmarkProvider:
     """提供典型 AI 应用的专家基准架构分析数据"""
+
+    _OFFLINE_USER_REVIEWS: dict[str, UserReviewSummary] = {
+        "cursor": UserReviewSummary(
+            review_sources=[
+                "https://news.ycombinator.com (Hacker News 开发者社区)",
+                "https://www.reddit.com/r/cursor",
+            ],
+            praises=[
+                "Cursor Tab 多行预测与光标跳转体验极佳，真正做到打字不卡顿",
+                "Inline Diff (绿增红删) 审阅直观，结合一键回滚让人敢放心让 AI 改多文件",
+            ],
+            pain_points=[
+                "大型仓库下 Composer 偶尔误删或改坏未提及的相邻函数",
+                "高频对话时快速额度消耗快，降速队列体验落差明显",
+            ],
+            trust_and_ux_friction=[
+                "全自动 Agent 模式下连续执行终端命令时，用户容易失去变更感知，仍高度依赖手点 Accept/Reject",
+            ],
+            sample_quotes=[
+                "Cursor Tab alone justifies the subscription—predicting the next edit location feels magical.",
+                "Composer is great for scaffolding, but on large files it still occasionally drops unrelated code unless you watch the diff carefully.",
+            ],
+        ),
+        "chatbi": UserReviewSummary(
+            review_sources=[
+                "企业 BI 社区评测 (G2 / 知乎企业数字化专栏)",
+            ],
+            praises=[
+                "业务人员无需找数据研发排队写 SQL，自然语言直接出常规看板",
+                "结合指标口径字典后，常见经营日报查询准确率大幅提高",
+            ],
+            pain_points=[
+                "遇到多表复杂 JOIN 或隐含业务口径（如“有效复购率”）时仍容易算错数",
+                "未展示计算逻辑时，管理层不敢直接拿生成的数字做汇报",
+            ],
+            trust_and_ux_friction=[
+                "用户极度关心『这个数字怎么算出来的』，缺乏口径回显与 SQL 透明解释会导致零信任",
+            ],
+            sample_quotes=[
+                "对话查数很爽，但如果不能点开看到用的是哪张表和过滤条件，我们根本不敢拿去周会汇报。",
+            ],
+        ),
+        "perplexity": UserReviewSummary(
+            review_sources=[
+                "https://news.ycombinator.com (Hacker News)",
+                "https://www.reddit.com/r/perplexity_ai",
+            ],
+            praises=[
+                "答案每句话附带角标引用，悬停就能核对原始网页，极大降低搜索时间",
+                "追问交互流畅，比传统搜索引擎广告堆砌高效得多",
+            ],
+            pain_points=[
+                "部分冷门技术或中文深度问题抓取的网页来源质量参差不齐",
+                "面对需要严格深度推理的任务，长文综述偶尔过度简化原文条件",
+            ],
+            trust_and_ux_friction=[
+                "偶尔出现『角标引用存在，但点进去原文并不支持该结论』的错位引用问题",
+            ],
+            sample_quotes=[
+                "Perplexity replaced 80% of my Google searches, though I still click the inline citations whenever numbers matter.",
+            ],
+        ),
+        "autogpt": UserReviewSummary(
+            review_sources=[
+                "https://github.com/Significant-Gravitas/AutoGPT/issues",
+                "https://news.ycombinator.com (Hacker News)",
+            ],
+            praises=[
+                "验证了自主目标拆解与工具循环执行的无限潜力，激发了整个 Agent 生态",
+            ],
+            pain_points=[
+                "长链路任务经常陷入死循环，短时间内烧光大量 OpenAI API 费用",
+                "本地配置与 Docker 沙箱环境门槛高，非开发者难以上手",
+            ],
+            trust_and_ux_friction=[
+                "缺乏中途人工干预与可预期的成本上限，导致用户不敢放手让它长期挂机跑任务",
+            ],
+            sample_quotes=[
+                "Cool demo, but left unattended it looped 15 times trying to fix a missing dependency and burned $10 in minutes.",
+            ],
+        ),
+    }
 
     @classmethod
     def has_benchmark(cls, app_name: str) -> bool:
@@ -22,9 +107,23 @@ class OfflineBenchmarkProvider:
     def get_analysis(cls, app: AIApp) -> HarnessAnalysis:
         norm_name = app.name.lower().replace("-", "").replace("_", "")
         builder = cls._BENCHMARKS.get(norm_name)
-        if builder:
-            return builder(app)
-        return cls._generic_benchmark(app)
+        analysis = builder(app) if builder else cls._generic_benchmark(app)
+
+        # 按联系程度标注每个维度的 coupling_level 与基准 Guard 状态
+        for dim in (*analysis.common_dimensions, *analysis.specialized_dimensions):
+            dim.coupling_level = resolve_coupling_level(dim, category=analysis.category)
+            dim.guard_status = GuardStatus.STRICT_VERIFIED if builder else GuardStatus.UNVERIFIED_CAPPED
+            if not builder:
+                dim.is_inferred = True
+
+        analysis.intermediate_artifact = IntermediateArtifactBuilder().build(
+            app_name=analysis.app_name,
+            category=analysis.category,
+            common_dims=analysis.common_dimensions,
+            specialized_dims=analysis.specialized_dimensions,
+            user_reviews_override=cls._OFFLINE_USER_REVIEWS.get(norm_name),
+        )
+        return analysis
 
     @staticmethod
     def _cursor_benchmark(app: AIApp) -> HarnessAnalysis:
