@@ -132,7 +132,8 @@ def analyze(
     dimensions: str = typer.Option(None, "--dimensions", help="指定分析的共性维度（逗号分隔）"),
     github: str = typer.Option(None, "--github", "-g", help="自定义或补充 GitHub 仓库地址"),
     url: str = typer.Option(None, "--url", "-u", help="自定义或补充官网/技术博客 URL"),
-    local_app: Path = typer.Option(None, "--local-app", "-l", help="本地客户端解包目录（逆向提取 Prompt/Rules）"),
+    local_app: Path = typer.Option(None, "--local-app", "-l", help="本地客户端解包目录或 app.asar（逆向提取 Prompt/Rules）"),
+    use_rea: bool = typer.Option(False, "--use-rea", help="显式启用 rea-agents 对本地 ASAR/JS 应用做深度结构化逆向（需 Node.js）"),
     offline: bool = typer.Option(False, "--offline", help="使用专家基准知识库离线分析（无需配置 API Key）"),
 ):
     """分析 AI 应用的 Harness 架构（支持预置应用、未知应用全网探测及本地逆向解包）"""
@@ -231,7 +232,7 @@ def analyze(
         review_collector = UserReviewCollector(question_lang=lang)
         gh = GitHubCollector()
         blog = BlogCollector(rate_limiter=shared_limiter)
-        re_collector = ReverseEngineeringCollector(local_app_path=local_app)
+        re_collector = ReverseEngineeringCollector(local_app_path=local_app, use_rea=use_rea)
 
         collected_items = []
         refill_triggered = False

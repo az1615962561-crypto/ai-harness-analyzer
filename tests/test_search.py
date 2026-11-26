@@ -34,3 +34,40 @@ def test_reverse_engineering_local_scan(tmp_path):
     assert len(results) == 1
     assert results[0].source_type == "local_reverse_engineering"
     assert "SEARCH/REPLACE" in results[0].content
+
+
+def test_reverse_engineering_rea_integration_and_fallback(tmp_path, monkeypatch):
+    asar_file = tmp_path / "app.asar"
+    asar_file.write_bytes(b"fake asar")
+
+    # 1. Missing rea/npx -> graceful fallback to empty list
+    monkeypatch.setattr("shutil.which", lambda name: None)
+    collector = ReverseEngineeringCollector(local_app_path=asar_file, use_rea=True)
+    assert collector._resolve_rea_command() is None
+    assert asyncio.run(collector._run_rea_analyzer(asar_file)) == []
+
+    # 2. Available rea + mocked subprocess JSON output -> formatted CollectedData
+    monkeypatch.setattr("shutil.which", lambda name: "/usr/local/bin/rea" if name == "rea" else None)
+
+    class FakeProc:
+        returncode = 0
+        async def communicate(self):
+            payload = (
+                'npx notice...\n'
+                '{"normalized_result": {"summary": "Electron agent host", '
+                '"endpoints": [{"path": "/api/agent/run", "method": "POST"}], '
+                '"evidence": ["systemPrompt loaded from rules.json"]}}'
+            ).encode("utf-8")
+            return payload, b""
+
+    async def fake_exec(*cmd, **kwargs):
+        assert "analyze-javascript-application" in cmd
+        assert "--json" in cmd
+        return FakeProc()
+
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", fake_exec)
+    rea_items = asyncio.run(collector._run_rea_analyzer(asar_file))
+    assert len(rea_items) == 1
+    assert rea_items[0].source_type == "local_reverse_engineering"
+    assert "/api/agent/run" in rea_items[0].content
+    assert "Electron agent host" in rea_items[0].content

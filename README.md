@@ -85,38 +85,58 @@ harness list
 harness info cursor
 harness info chatbi
 
-# 3. 针对某应用执行自动数据采集与双层 Harness 架构分析
+# 3. 针对某应用执行自动数据采集与双层 Harness 架构分析（在线全网 + 双语检索 + 分别 Guard + PM 方案）
 harness analyze cursor
 
-# 4. 对比多款应用的 Harness 架构差异
-harness compare cursor devin antigravity
+# 3b. 离线专家基准库模式（零 API Key 即可查看标杆报告与中间产物）
+harness analyze cursor --offline
+
+# 3c. 对本地 Electron app.asar 或解包 JS 目录执行深度逆向取证（自动/可选调用 rea-agents）
+harness analyze my-app --local-app /abs/path/to/app.asar --use-rea
+
+# 4. 对比多款应用的 Harness 架构差异（含 PM 方案横向对比）
+harness compare cursor chatbi
 
 # 5. 查看已生成的分析报告 (Markdown 或 JSON)
 harness report cursor
 ```
+
+### 4. 跨 Agent 智能体零锁定使用（Codex / Claude Code / Cursor / Antigravity / OpenHands）
+
+本项目遵循跨平台开放规范，**不绑定任何特定 IDE 或平台**。任意编码智能体拉取仓库后即可直接读取指引并调用：
+
+- [`AGENTS.md`](AGENTS.md)：通用跨智能体运行手册（Codex、Cursor、Antigravity、OpenHands 等直接识别）
+- [`CLAUDE.md`](CLAUDE.md)：Claude Code 入口指引
+- [`.agents/skills/harness-analyzer/SKILL.md`](.agents/skills/harness-analyzer/SKILL.md)：开放标准 Skill 定义，教智能体何时调用、如何读取中间产物 `reports/<app>.intermediate.json` 与最终报告 `reports/<app>.md`
 
 ---
 
 ## 📂 项目结构
 
 ```
+├── AGENTS.md                   # 🤖 跨智能体通用操作指引 (Codex/Cursor/Antigravity等)
+├── CLAUDE.md                   # 🤖 Claude Code 入口指引
+├── LICENSE                     # 📄 MIT 开源协议
+├── .agents/skills/             # 🧩 开放标准 Agent Skill 定义
+│   └── harness-analyzer/SKILL.md
 ├── docs/                       # 📚 项目知识库
 │   ├── README.md               # 知识库索引
 │   ├── project-plan.md         # 实施方案与技术选型
 │   ├── classification.md       # 五大分类体系深度解析
-│   └── dimensions.md           # 双层维度与权重指标规范
+│   ├── dimensions.md           # 双层维度与权重指标规范
+│   └── logical-mindmap.md      # 核心逻辑思维导图与推演闭环
 ├── src/harness_analyzer/       # 💻 核心源代码
 │   ├── cli.py                  # Typer + Rich 终端入口
 │   ├── models/                 # Pydantic 强类型数据模型
 │   ├── registry/               # 应用知识注册表 (22+ 预置应用 YAML)
-│   ├── collectors/             # GitHub / 博客数据异步采集器
-│   ├── analyzer/               # 双层 LLM 分析引擎与 5 大专属分析器
-│   ├── output/                 # Markdown 报告与 Mermaid 架构图生成
+│   ├── collectors/             # 五路采集器 (双语搜索/GitHub深读/博客下钻/RE+rea-agents/真实评论)
+│   ├── analyzer/               # Fact Sheet + 并发9+5分析 + 分维度Guard + 中间产物 + PM转化
+│   ├── output/                 # 三层 Markdown 报告、PM对比矩阵与 Mermaid 架构图
 │   └── storage/                # SQLite 报告持久化与缓存
 ├── data/
 │   ├── patterns/               # 常见 Agent 架构模式库 (YAML)
 │   └── prompts/                # 结构化抽取提示词模板
-└── reports/                    # 📊 生成的架构分析报告输出目录
+└── reports/                    # 📊 生成的中间产物 (.intermediate.json) 与架构报告 (.md)
 ```
 
 ---

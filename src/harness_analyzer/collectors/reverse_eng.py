@@ -1,32 +1,130 @@
 """应用逆向工程与系统提示词/协议采集器 (Reverse Engineering & Artifact Collector)
 支持：
 1. 扫描本地解包目录（如 Electron asar 提取后的 .prompt/.rules/tools 定义）
-2. 通过 GitHub Search API 动态检索社区逆向仓库与 Prompt Leak 资料
-3. 抓取知名公开逆向/参考仓库的核心源码
+2. 可选调用跨平台逆向引擎 rea-agents（需 Node.js/rea CLI）对本地 ASAR/JS 应用做结构化深度分析，无环境时自动平滑降级
+3. 通过 GitHub Search API 动态检索社区逆向仓库与 Prompt Leak 资料
+4. 抓取知名公开逆向/参考仓库的核心源码
 """
+from __future__ import annotations
+
 import asyncio
+import json
 import os
 import re
+import shutil
 from pathlib import Path
+from typing import Any
 import httpx
+
 from harness_analyzer.collectors.base import BaseCollector, CollectedData
 
 
 class ReverseEngineeringCollector(BaseCollector):
     """逆向工程采集器：定位系统提示词 (System Prompt)、内部协议及 Tool Calling 真实定义"""
 
-    def __init__(self, local_app_path: str | Path | None = None, timeout: float = 12.0):
+    def __init__(
+        self,
+        local_app_path: str | Path | None = None,
+        timeout: float = 12.0,
+        use_rea: bool = False,
+        rea_timeout: float = 60.0,
+    ):
         self.local_app_path = Path(local_app_path) if local_app_path else None
         self.timeout = timeout
+        self.use_rea = use_rea
+        self.rea_timeout = rea_timeout
+
+    @staticmethod
+    def _resolve_rea_command() -> list[str] | None:
+        """探测可用的 rea CLI 或 npx rea-agents@latest"""
+        rea_bin = shutil.which("rea")
+        if rea_bin:
+            return [rea_bin]
+        npx_bin = shutil.which("npx")
+        if npx_bin:
+            return [npx_bin, "-y", "rea-agents@latest"]
+        return None
+
+    @staticmethod
+    def _format_rea_json(payload: Any, target_path: Path) -> str:
+        """将 rea-agents --json 输出提炼为紧凑可读的技术取证摘要"""
+        if not isinstance(payload, dict):
+            return json.dumps(payload, ensure_ascii=False)[:4500]
+
+        root = payload.get("normalized_result") or payload
+        lines: list[str] = [f"REA 静态逆向取证目标: {target_path.name}"]
+
+        for key in ("summary", "overview", "framework", "entrypoint", "limitations", "unknowns"):
+            val = root.get(key) or payload.get(key)
+            if val:
+                rendered = json.dumps(val, ensure_ascii=False) if isinstance(val, (dict, list)) else str(val)
+                lines.append(f"- {key}: {rendered[:900]}")
+
+        for list_key in ("routes", "endpoints", "inferences", "evidence", "modules", "findings"):
+            items = root.get(list_key) or payload.get(list_key)
+            if isinstance(items, list) and items:
+                lines.append(f"\n[{list_key}] (共 {len(items)} 项，截取高价值条目):")
+                for entry in items[:15]:
+                    rendered = json.dumps(entry, ensure_ascii=False) if isinstance(entry, (dict, list)) else str(entry)
+                    lines.append(f"  * {rendered[:320]}")
+
+        text = "\n".join(lines)
+        if len(text) < 80:
+            text = json.dumps(payload, ensure_ascii=False, indent=2)
+        return text[:4500]
+
+    async def _run_rea_analyzer(self, target_path: Path) -> list[CollectedData]:
+        """调用 rea-agents analyze-javascript-application 对 ASAR/JS 目录执行静态逆向取证"""
+        cmd_prefix = self._resolve_rea_command()
+        if not cmd_prefix:
+            return []
+
+        abs_target = str(target_path.resolve())
+        cmd = [*cmd_prefix, "analyze-javascript-application", abs_target, "--json"]
+
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+            stdout, _ = await asyncio.wait_for(proc.communicate(), timeout=self.rea_timeout)
+            if proc.returncode != 0 or not stdout:
+                return []
+
+            raw_out = stdout.decode("utf-8", errors="ignore").strip()
+            # 跳过 npx 偶发的前置提示行，定位 JSON 起始位置
+            json_start = raw_out.find("{")
+            if json_start == -1:
+                json_start = raw_out.find("[")
+            if json_start == -1:
+                return []
+
+            parsed = json.loads(raw_out[json_start:])
+            formatted = self._format_rea_json(parsed, target_path)
+            return [
+                CollectedData(
+                    source_url=abs_target,
+                    source_type="local_reverse_engineering",
+                    title=f"[REA 深度逆向取证] {target_path.name}",
+                    content=formatted,
+                )
+            ]
+        except Exception:
+            return []
 
     async def collect(self, app) -> list[CollectedData]:
-        """综合执行本地逆向检查与公网逆向仓库嗅探"""
+        """综合执行本地逆向检查（可选 REA + 目录扫描）与公网逆向仓库嗅探"""
         collected: list[CollectedData] = []
         app_name = getattr(app, "name", "")
         display_name = getattr(app, "display_name", app_name)
 
         if self.local_app_path and self.local_app_path.exists():
-            collected.extend(self._scan_local_app(self.local_app_path, display_name))
+            should_run_rea = self.use_rea or self.local_app_path.suffix.lower() == ".asar"
+            if should_run_rea:
+                collected.extend(await self._run_rea_analyzer(self.local_app_path))
+            if self.local_app_path.is_dir():
+                collected.extend(self._scan_local_app(self.local_app_path, display_name))
 
         collected.extend(await self._hunt_public_re_artifacts(app_name, display_name))
         return collected
