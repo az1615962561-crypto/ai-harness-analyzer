@@ -67,8 +67,22 @@ cd ai-harness-analyzer
 pip install -e .
 ```
 
-### 2. 配置大模型 API（可选，离线查看预置知识库不需要）
+### 2. 两种运行方式（智能体零 Key 直跑 & CLI 独立 API 跑）
 
+#### 方式 A：Coding Agent 原生直跑（零 LLM API Key，智能体拉仓库即用）
+适用于在 `Antigravity`、`Codex`、`Claude Code`、`Cursor` 等编码智能体中直接使用智能体自身推理能力：
+```bash
+# 1. 真机联网五路采集原始事实与契约（无需 LLM Key）
+harness collect <app_name> --lang zh
+
+# 2. 智能体读取 reports/<app_name>.collected.json 完成 9+5 维度、模式识别与 PM 方案，
+#    产出 reports/<app_name>.agent_draft.json
+
+# 3. 由程序执行分维度 Guard 原文硬校验、生成 Mermaid 图、写入 SQLite 缓存与双报告
+harness finalize reports/<app_name>.agent_draft.json
+```
+
+#### 方式 B：CLI 命令行独立 API 自动化运行（适合终端批处理 / CI / 无人值守）
 复制环境配置并填写任一主流模型 Key：
 ```bash
 cp .env.example .env
@@ -78,27 +92,32 @@ cp .env.example .env
 ### 3. 命令行操作
 
 ```bash
+# 0. 检查环境就绪状态
+harness doctor
+
 # 1. 查看已收录的 22+ 款主流 AI 应用
 harness list
-
-# 2. 查看特定应用的分类、维度权重与专属拆解维度
 harness info cursor
-harness info chatbi
 
-# 3. 针对某应用执行自动数据采集与双层 Harness 架构分析（在线全网 + 双语检索 + 分别 Guard + PM 方案）
-harness analyze cursor
+# 2a. 方式 A：智能体零 Key 两段式实测（先采集后校验交付）
+harness collect cline --lang zh
+harness finalize reports/cline.agent_draft.json
 
-# 3b. 离线专家基准库模式（零 API Key 即可查看标杆报告与中间产物）
+# 2b. 方式 B：CLI 一键全自动分析（需配置 LLM API Key）
+harness analyze cursor --depth full --lang zh
+
+# 2c. 离线专家基准库模式（零 API Key 查看标杆报告与中间产物）
 harness analyze cursor --offline
 
-# 3c. 对本地 Electron app.asar 或解包 JS 目录执行深度逆向取证（自动/可选调用 rea-agents）
-harness analyze my-app --local-app /abs/path/to/app.asar --use-rea
+# 3. 对本地 Electron app.asar 或解包 JS 目录执行深度逆向取证（自动/可选调用 rea-agents）
+harness collect my-app --local-app /abs/path/to/app.asar --use-rea
 
-# 4. 对比多款应用的 Harness 架构差异（含 PM 方案横向对比）
+# 4. 对比多款应用的 Harness 架构差异（两种方式生成的报告互通对比）
 harness compare cursor chatbi
 
-# 5. 查看已生成的分析报告 (Markdown 或 JSON)
+# 5. 查看报告与缓存管理
 harness report cursor
+harness cache list
 ```
 
 ### 4. 跨 Agent 智能体零锁定使用（Codex / Claude Code / Cursor / Antigravity / OpenHands）

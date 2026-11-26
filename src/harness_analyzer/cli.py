@@ -157,46 +157,25 @@ def analyze(
     if verbose:
         configure_logging(verbose=True)
     from harness_analyzer.config import get_settings
-    from harness_analyzer.registry.loader import AppRegistry
-    from harness_analyzer.models.app import AIApp, AppCategory, InfoSource
+    from harness_analyzer.models.app import AppCategory
     from harness_analyzer.models.harness import HarnessAnalysis
-    from harness_analyzer.collectors.github import GitHubCollector
-    from harness_analyzer.collectors.blog import BlogCollector
-    from harness_analyzer.collectors.search import WebSearchCollector
-    from harness_analyzer.collectors.reverse_eng import ReverseEngineeringCollector
-    from harness_analyzer.collectors.reviews import UserReviewCollector
-    from harness_analyzer.collectors.query_planner import BilingualQueryPlanner
     from harness_analyzer.analyzer.dimensions import CommonDimensionExtractor
     from harness_analyzer.analyzer.specialized import get_specialized_analyzer
     from harness_analyzer.analyzer.intermediate import IntermediateArtifactBuilder
     from harness_analyzer.analyzer.pm_guidance import PMGuidanceExtractor
     from harness_analyzer.analyzer.offline import OfflineBenchmarkProvider
-    from harness_analyzer.output.markdown import MarkdownReportGenerator
     from harness_analyzer.output.diagram import DiagramGenerator
-    from harness_analyzer.storage.cache import AnalysisCache
+    from harness_analyzer.pipeline import (
+        PRIMARY_SOURCE_TYPES,
+        collect_five_channels,
+        persist_analysis_artifacts,
+        resolve_app_target,
+    )
 
     settings = get_settings()
-    registry = AppRegistry()
-    app_obj = registry.get_app(app_name)
-    is_adhoc = False
-
-    if not app_obj:
-        is_adhoc = True
+    app_obj, is_adhoc = resolve_app_target(app_name, github=github, url=url)
+    if is_adhoc:
         console.print(f"[yellow]🔍 应用 '{app_name}' 未在本地预置注册表中，启动【全网动态搜索与架构探测引擎】...[/yellow]")
-        app_obj = AIApp(
-            name=app_name.lower().replace(" ", "-"),
-            display_name=app_name,
-            category=AppCategory.ENGINEERING,
-            description=f"动态探测应用: {app_name}",
-            github_url=github,
-            website=url,
-            info_richness=2,
-        )
-    else:
-        if github:
-            app_obj.github_url = github
-        if url:
-            app_obj.info_sources.append(InfoSource(url=url, source_type="blog", description="用户补充 URL"))
 
     cat_val, cat_lbl, icon = _cat_info(app_obj.category)
 
@@ -206,13 +185,11 @@ def analyze(
             use_offline = True
             console.print("[cyan]ℹ️ 未检测到 API Key，自动启用专家基准架构知识库进行分析...[/cyan]")
         else:
-            if is_adhoc:
-                console.print(f"[red]错误: 应用 '{app_name}' 为全新小众应用，全网动态分析需要配置大模型 API Key[/red]")
-                console.print("请在 .env 中设置 GEMINI_API_KEY、OPENAI_API_KEY 或 ANTHROPIC_API_KEY 以便执行动态搜索与架构提取。")
-                raise typer.Exit(1)
-            console.print("[red]错误: 未配置 API Key[/red]")
-            console.print("请在 .env 文件中设置 GEMINI_API_KEY、OPENAI_API_KEY 或 ANTHROPIC_API_KEY")
-            console.print("或者针对已预置的应用使用: [bold]harness analyze <app> --offline[/bold]")
+            console.print("[red]错误: 未配置外部 LLM API Key[/red]")
+            console.print("方式 A（智能体零 Key 直跑）: 先执行 [bold]harness collect " + app_obj.name + "[/bold]，由当前智能体完成推理后执行 [bold]harness finalize[/bold]")
+            console.print("方式 B（CLI API 模式）: 在 .env 中设置 GEMINI_API_KEY / OPENAI_API_KEY / ANTHROPIC_API_KEY")
+            if not is_adhoc:
+                console.print("方式 C（离线基准）: [bold]harness analyze " + app_obj.name + " --offline[/bold]")
             raise typer.Exit(1)
 
     console.print(f"\n{icon} 开始分析 [bold]{app_obj.display_name}[/bold] ({cat_lbl}) 的 Harness 架构...\n")
@@ -231,99 +208,39 @@ def analyze(
         primary_corpus_parts: list[str] = []
         review_items = []
 
-        _PRIMARY_SOURCE_TYPES = {
-            "github_readme", "github_tree", "github_source",
-            "blog", "blog_article", "docs", "documentation", "product_page",
-            "re_repository", "github_re_search", "local_reverse_engineering",
-        }
-
         from harness_analyzer.analyzer.llm import LLMClient
         from harness_analyzer.analyzer.evidence import verify_all_dimensions
         from harness_analyzer.analyzer.fact_sheet import FactSheetExtractor
-        from harness_analyzer.collectors.web_utils import DomainRateLimiter
+        from harness_analyzer.collectors.query_planner import BilingualQueryPlanner
         llm = LLMClient()
-
-        bilingual_names, planned_queries = BilingualQueryPlanner.plan_search_queries(
-            app_obj.display_name, question_lang=lang, llm=llm
-        )
-        shared_limiter = DomainRateLimiter(min_interval=1.0, max_concurrency=4)
-        searcher = WebSearchCollector(question_lang=lang, rate_limiter=shared_limiter)
-        review_collector = UserReviewCollector(question_lang=lang)
-        gh = GitHubCollector()
-        blog = BlogCollector(rate_limiter=shared_limiter)
-        re_collector = ReverseEngineeringCollector(local_app_path=local_app, use_rea=use_rea)
-
         collected_items = []
-        refill_triggered = False
 
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
             task = progress.add_task(
-                f"📡 正在执行「{lang} + en」双语全网检索与五路采集 ({bilingual_names.get('local')} / {bilingual_names.get('en')})...",
+                f"📡 正在执行「{lang} + en」双语全网检索与五路采集 ({app_obj.display_name})...",
                 total=None,
             )
-
-            async def collect_with_refill():
-                nonlocal refill_triggered
-                results = []
-                gathered = await asyncio.gather(
-                    searcher.search_app(app_obj.display_name, planned_queries=planned_queries),
-                    gh.collect(app_obj),
-                    blog.collect(app_obj),
-                    re_collector.collect(app_obj),
-                    review_collector.collect(app_obj),
-                    return_exceptions=True,
-                )
-                for res in gathered:
-                    if isinstance(res, list):
-                        results.extend(res)
-
-                cov_items = [*searcher.last_coverage_items, *review_collector.last_coverage_items]
-                cov_report = BilingualQueryPlanner.build_coverage_report(
-                    cov_items, question_lang=lang, bilingual_names=bilingual_names
-                )
-                if cov_report.coverage_score < 0.6 or any(
-                    ang in cov_report.missing_angles for ang in ("architecture_qa", "user_reviews")
-                ):
-                    refill_triggered = True
-                    existing_urls = {c.source_url for c in results if c.source_url}
-                    extra_data, extra_cov = await searcher.refill_missing_angles(
-                        app_obj.display_name, cov_report.missing_angles, existing_urls=existing_urls
-                    )
-                    results.extend(extra_data)
-                    cov_items.extend(extra_cov)
-
-                return results, cov_items
-
             try:
-                collected_items, all_cov_items = asyncio.run(collect_with_refill())
+                collected_items, search_coverage, bilingual_names, blocked_all = asyncio.run(
+                    collect_five_channels(app_obj, lang=lang, local_app=local_app, use_rea=use_rea, llm=llm)
+                )
                 for c in collected_items:
                     collected_texts.append(f"[{c.source_type}] {c.title}\n{c.content[:4500]}")
                     raw_corpus_parts.append(c.content)
-                    if c.source_type in _PRIMARY_SOURCE_TYPES:
+                    if c.source_type in PRIMARY_SOURCE_TYPES:
                         primary_corpus_parts.append(c.content)
                     if c.source_type == "user_review":
                         review_items.append(c)
                     if c.source_url and c.source_url not in raw_sources:
                         raw_sources.append(c.source_url)
             except Exception as e:
-                all_cov_items = []
+                bilingual_names = BilingualQueryPlanner.infer_bilingual_names(app_obj.display_name)
+                search_coverage = BilingualQueryPlanner.build_coverage_report(
+                    [], question_lang=lang, bilingual_names=bilingual_names
+                )
+                blocked_all = []
                 console.print(f"[yellow]采集数据时出错: {e}，将基于已知公开信息继续分析[/yellow]")
 
-            from harness_analyzer.models.harness import BlockedSource
-            blocked_all: list[BlockedSource] = list(shared_limiter.blocked_records)
-            for item in [*searcher.last_blocked_sources, *gh.last_blocked_sources]:
-                if isinstance(item, BlockedSource):
-                    blocked_all.append(item)
-                elif isinstance(item, dict):
-                    blocked_all.append(BlockedSource(**item))
-
-            search_coverage = BilingualQueryPlanner.build_coverage_report(
-                all_cov_items,
-                question_lang=lang,
-                bilingual_names=bilingual_names,
-                refill_triggered=refill_triggered,
-                blocked_sources=blocked_all,
-            )
             progress.update(
                 task,
                 description=(
@@ -442,25 +359,9 @@ def analyze(
         analysis.mermaid_diagram = DiagramGenerator().generate(analysis)
 
     target_reports_dir = output_dir or settings.reports_dir
-
-    # Cache (确保存入字符串分类名)
-    cache = AnalysisCache(settings.cache_dir)
-    cache.save(app_obj.name, cat_val, analysis.model_dump_json())
-
-    # 持久化保存结构化中间产物 (.intermediate.json)
-    intermediate_path = None
-    if analysis.intermediate_artifact is not None:
-        intermediate_path = IntermediateArtifactBuilder.save_to_disk(
-            analysis.intermediate_artifact, target_reports_dir, app_obj.name
-        )
-
-    # Generate report
-    report_gen = MarkdownReportGenerator()
-    report_text = report_gen.generate(analysis)
-
-    target_reports_dir.mkdir(parents=True, exist_ok=True)
-    report_path = target_reports_dir / f"{app_obj.name}.md"
-    report_path.write_text(report_text, encoding="utf-8")
+    report_path, intermediate_path = persist_analysis_artifacts(
+        analysis, cache_dir=settings.cache_dir, reports_dir=target_reports_dir
+    )
 
     console.print("\n[green]✅ 分析完成！[/green]")
     if intermediate_path:
@@ -471,6 +372,113 @@ def analyze(
         console.print("\n[bold]关键洞察:[/bold]")
         for i, insight in enumerate(analysis.key_insights, 1):
             console.print(f"  {i}. {insight}")
+
+
+@app.command()
+def collect(
+    app_name: str = typer.Argument(help="应用名称（预置ID或任意新应用名）"),
+    lang: str = typer.Option("zh", "--lang", help="提问语言（默认 zh，自动执行「提问语言 + 英语」双重检索）"),
+    github: str = typer.Option(None, "--github", "-g", help="自定义或补充 GitHub 仓库地址"),
+    url: str = typer.Option(None, "--url", "-u", help="自定义或补充官网/技术博客 URL"),
+    local_app: Path = typer.Option(None, "--local-app", "-l", help="本地客户端解包目录或 app.asar（逆向提取 Prompt/Rules）"),
+    use_rea: bool = typer.Option(False, "--use-rea", help="显式启用 rea-agents 对本地 ASAR/JS 应用做深度结构化逆向（需 Node.js）"),
+    output_dir: Path = typer.Option(None, "--output-dir", "-O", help="输出目录（默认 HARNESS_REPORTS_DIR）"),
+    output: Path = typer.Option(None, "--output", "-o", help="自定义采集包 JSON 输出路径"),
+):
+    """【智能体原生入口 Step 1】无 API Key 真机联网五路采集，导出 *.collected.json 供编码智能体直接推理"""
+    from harness_analyzer.config import get_settings
+    from harness_analyzer.pipeline import (
+        build_collected_bundle,
+        collect_five_channels,
+        resolve_app_target,
+    )
+
+    settings = get_settings()
+    app_obj, is_adhoc = resolve_app_target(app_name, github=github, url=url)
+    cat_val, cat_lbl, icon = _cat_info(app_obj.category)
+    console.print(f"\n{icon} 正在为 [bold]{app_obj.display_name}[/bold] 执行无 Key 真机联网五路采集...\n")
+
+    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+        task = progress.add_task(f"📡 正在执行「{lang} + en」双语全网检索与五路采集...", total=None)
+        collected_items, search_coverage, bilingual_names, blocked_all = asyncio.run(
+            collect_five_channels(app_obj, lang=lang, local_app=local_app, use_rea=use_rea, llm=None)
+        )
+        progress.update(
+            task,
+            description=(
+                f"✅ 采集完成 ({len(collected_items)} 条信源, "
+                f"覆盖度 {search_coverage.coverage_score:.0%}, 拦截熔断 {len(blocked_all)})"
+            ),
+        )
+
+    bundle = build_collected_bundle(
+        app_obj=app_obj,
+        is_adhoc=is_adhoc,
+        collected_items=collected_items,
+        search_coverage=search_coverage,
+        bilingual_names=bilingual_names,
+        lang=lang,
+    )
+    out_dir = output_dir or settings.reports_dir
+    out_path = output or (out_dir / f"{app_obj.name}.collected.json")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(bundle.model_dump_json(indent=2), encoding="utf-8")
+
+    console.print(f"\n[green]✅ 采集数据包已保存到:[/green] [bold]{out_path}[/bold]")
+    console.print(
+        f"下一步（Coding Agent 原生推理）: 读取 [bold]{out_path}[/bold] 中的 collected_items 与 prompt_contract，"
+        f"写入 [bold]{out_path.parent / f'{app_obj.name}.agent_draft.json'}[/bold] 后执行 "
+        f"[bold]harness finalize {out_path.parent / f'{app_obj.name}.agent_draft.json'}[/bold]"
+    )
+
+
+@app.command()
+def finalize(
+    draft_path: Path = typer.Argument(help="编码智能体产出的分析草稿 JSON 路径 (*.agent_draft.json)"),
+    collected: Path = typer.Option(None, "--collected", "-c", help="对应的 *.collected.json 路径（默认按同目录自动匹配）"),
+    output_dir: Path = typer.Option(None, "--output-dir", "-O", help="自定义报告输出目录（覆盖 HARNESS_REPORTS_DIR）"),
+):
+    """【智能体原生入口 Step 3】对智能体产出的 JSON 执行分维度 Guard 校验、写入缓存并生成完整报告"""
+    from harness_analyzer.config import get_settings
+    from harness_analyzer.pipeline import (
+        AgentDraftInput,
+        CollectedBundle,
+        finalize_from_draft,
+        persist_analysis_artifacts,
+    )
+
+    if not draft_path.exists():
+        console.print(f"[red]错误: 找不到草稿文件 {draft_path}[/red]")
+        raise typer.Exit(1)
+
+    settings = get_settings()
+    draft = AgentDraftInput.model_validate_json(draft_path.read_text(encoding="utf-8"))
+
+    collected_path = collected
+    if collected_path is None:
+        stem_app = draft.app_name or draft_path.name.removesuffix(".agent_draft.json").removesuffix(".draft.json").removesuffix(".json")
+        candidates = [
+            draft_path.parent / f"{stem_app}.collected.json",
+            settings.reports_dir / f"{stem_app}.collected.json",
+        ]
+        collected_path = next((p for p in candidates if p.exists()), None)
+
+    if collected_path is None or not collected_path.exists():
+        console.print("[red]错误: 未找到配套的 *.collected.json 文件，请通过 --collected 显式指定[/red]")
+        raise typer.Exit(1)
+
+    bundle = CollectedBundle.model_validate_json(collected_path.read_text(encoding="utf-8"))
+    analysis = finalize_from_draft(bundle, draft)
+
+    target_reports_dir = output_dir or settings.reports_dir
+    report_path, intermediate_path = persist_analysis_artifacts(
+        analysis, cache_dir=settings.cache_dir, reports_dir=target_reports_dir
+    )
+
+    console.print("\n[green]✅ 智能体分析校验与交付完成！[/green]")
+    if intermediate_path:
+        console.print(f"📦 中间产物已保存到: [bold]{intermediate_path}[/bold]")
+    console.print(f"📄 报告已保存到: [bold]{report_path}[/bold]")
 
 
 @app.command()

@@ -1,0 +1,172 @@
+{
+  "app_name": "openhands",
+  "category": "engineering",
+  "generated_at": "2026-11-26T11:43:56.546583",
+  "core_verified_facts": [
+    "[沙箱隔离模型] 可切换多层执行隔离模型（本地直接运行 / 挂载目录的 Docker 容器 / VM / Modal / OpenHands Cloud 托管沙箱） (置信度 5★ | core/strict_verified)",
+    "[终端与进程管理] 内置 xterm 终端管理与专属 Bash Action/Observation 可视化组件，支持本地与远端后端会话交互 (置信度 5★ | core/strict_verified)",
+    "[Agent 编排] 控制面与执行后端分离的多后端编排（Agent Canvas + Agent Server + Software Agent SDK），支持原生 Agent 与 ACP 外部 Agent 协作 (置信度 5★ | core/strict_verified)",
+    "[模型路由] 多模型与跨 Agent 异构路由，支持本地模型、商业模型 API（企业版结合 LiteLLM proxy）及 ACP 外部智能体接入 (置信度 5★ | core/strict_verified)",
+    "[工具链] 内置 Bash/文件编辑器/搜索/任务工具集并配合前端 React 专属工具可视化卡片，同时原生支持 MCP 工具协议 (置信度 5★ | core/strict_verified)",
+    "[上下文工程] 通过 AgentContext 容器加载 Skills/元数据，并在单步推理前调用 Condenser（压缩器）对超限事件流历史进行压缩 (置信度 3★ | core/partial_verified)",
+    "[安全沙箱] 明确标注本地 Agent Canvas 本身不提供强隔离，生产或高风险场景需切换 Docker 容器、VM 或云端托管沙箱，并在企业版配合 Keycloak 与 Runtime API (置信度 5★ | core/strict_verified)",
+    "[人机协同] 集中式 Web/Desktop 控制面统一查看对话、文件编辑、终端与自动化任务，并对高风险操作提供确认状态中断与人工审批 (置信度 5★ | core/strict_verified)",
+    "[扩展生态] 四维开放扩展体系：MCP 协议（SSE/SHTTP/stdio）、`.agents/skills` 技能包、插件机制、以及开放的 ACP（外部编码智能体）协议 (置信度 5★ | core/strict_verified)"
+  ],
+  "moderate_findings": [
+    "[提示词工程] 基于仓库内 `.agents/skills` 与自定义 Agent 角色隔离（只读 Planning Prompt vs 全功能 Execution Prompt）管理提示策略 (置信度 4★ | moderate/strict_verified)",
+    "[数据流与状态管理] 前端 Agent Canvas 与无状态/持久化执行后端通过类型化 ActionEvent 与 ObservationEvent 事件流交互 (置信度 4★ | moderate/strict_verified)"
+  ],
+  "inferred_warnings": [
+    "[代码理解引擎] 基于终端搜索工具与只读规划/探索子集进行代码库定位，本次采集一手语料未见独立 AST/LSP 索引架构细节 —— 🔴 核心强关联维度缺乏原文实证（或引用未命中原文），置信度已严格封顶 1 星，PM 切勿直接作为 P0 硬依据。",
+    "[Diff 与变更管理] 前端集成 Monaco Editor 与文件编辑器工具卡片，但本次抓取语料未包含底层 Diff 补丁生成与冲突消解细则 —— 🔴 核心强关联维度缺乏原文实证（或引用未命中原文），置信度已严格封顶 1 星，PM 切勿直接作为 P0 硬依据。",
+    "[检查点与回滚] 本次采集语料提及会话状态持久化与 GitHub 工作流集成，但未捕获显式编辑快照回滚机制细节 —— 🔴 核心强关联维度缺乏原文实证（或引用未命中原文），置信度已严格封顶 1 星，PM 切勿直接作为 P0 硬依据。"
+  ],
+  "user_reviews": {
+    "review_sources": [
+      "https://github.com/All-Hands-AI/OpenHands/issues",
+      "https://juejin.cn/post/7683024148631420937",
+      "https://zhuanlan.zhihu.com/p/2030684535390745084"
+    ],
+    "praises": [
+      "能脱离单纯代码补全，端到端独立完成写代码、跑终端命令、查错与自愈修复的完整工程闭环",
+      "开源且支持多后端（本地 / Docker 沙箱 / 自托管 VM / 云端），团队可直接按开源标准落地并作为 staging 试点验证"
+    ],
+    "pain_points": [
+      "部分早期版本本地安装/启动（npm @openhands/agent-canvas）默认硬编码端口（如 3001）等环境兼容问题引发大量排查评论（204 评论高热度 Issue）",
+      "多 Agent 并发写同一仓库时容易出现「上下文冲突与代码变更责任归属不清」的团队协作成本"
+    ],
+    "trust_and_ux_friction": [
+      "本地无容器隔离模式下权限过高，而切换到 Docker 全栈环境配置与资源开销又相对较重，开发者易在安全边界与启动便利间犹豫"
+    ],
+    "sample_quotes": [
+      "[closed, 204 评论] [Bug]: detect ports automatically instead of always using 3001: Installation Method npm (`npx @openhands/agent-canvas`)",
+      "对工程管理者，落地路径很具体：先在非关键服务上试点多 agent Workspace，配 OpenHands 沙箱做 staging……但也提示一个新的组织问题——多 agent 并发写同一仓库时的\"上下文冲突与责任归属\"会成为新的协作成本。"
+    ]
+  },
+  "search_coverage": {
+    "question_language": "zh",
+    "bilingual_names": {
+      "local": "OpenHands",
+      "en": "OpenHands"
+    },
+    "items": [
+      {
+        "query": "how the OpenHands works AI architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 4,
+        "pages_fetched": 1,
+        "chars_collected": 4500
+      },
+      {
+        "query": "OpenHands AI engineering blog system architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands system prompt tools agent harness",
+        "language": "en",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands AI agent github reverse engineering",
+        "language": "en",
+        "angle": "source_reverse",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands的架构是什么",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands AI 底层原理 技术架构 拆解",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands 提示词 工具调用 Agent 工作流",
+        "language": "zh",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 2,
+        "chars_collected": 6778
+      },
+      {
+        "query": "OpenHands 开源 源码 逆向",
+        "language": "zh",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"OpenHands\" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"OpenHands\" (\"pros and cons\" OR \"frustrating\" OR \"review\" OR \"issues\") site:reddit.com",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"OpenHands\" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com OR site:juejin.cn)",
+        "language": "zh",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 585
+      }
+    ],
+    "zh_hits": 12,
+    "en_hits": 8,
+    "covered_angles": [
+      "architecture_qa",
+      "implementation_tech",
+      "source_reverse",
+      "user_reviews"
+    ],
+    "missing_angles": [],
+    "coverage_score": 1.0,
+    "refill_triggered": false,
+    "blocked_sources": [
+      {
+        "url": "https://aiwiki.ai/wiki/openhands",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      },
+      {
+        "url": "https://aiwiki.ai/wiki/openhands",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      }
+    ]
+  },
+  "guard_summary": {
+    "strict_verified": 10,
+    "partial_verified": 1,
+    "unverified_capped": 3
+  }
+}

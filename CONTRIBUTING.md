@@ -42,5 +42,6 @@ pytest -v tests/
 
 ## Testing & Code Style
 
+- **Dual-Entrypoint Sync Rule**: This project maintains two first-class entrypoints — **CLI API Mode** (`harness analyze`) and **Coding-Agent Native Mode** (`harness collect` -> Agent draft -> `harness finalize`) — backed by `src/harness_analyzer/pipeline.py`. Keep both entrypoints synchronized whenever changing collectors, dimension schemas, Guard verification, caches, or report generation.
 - Keep existing comments/docstrings intact and avoid network calls in unit tests (use `unittest.mock` / `httpx.MockTransport`).
 - Always run `pytest -v tests/` before opening a PR.

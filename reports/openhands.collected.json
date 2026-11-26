@@ -1,0 +1,760 @@
+{
+  "schema_version": "1.0",
+  "collected_at": "2026-11-26T11:42:14.836999",
+  "app_name": "openhands",
+  "app_display_name": "OpenHands",
+  "category": "engineering",
+  "is_adhoc": false,
+  "description": "开源 AI 软件工程师 (前身 OpenDevin)，基于 Docker 容器安全沙盒自主执行软件开发与协作任务",
+  "website": "https://all-hands.dev",
+  "github_url": "https://github.com/All-Hands-AI/OpenHands",
+  "question_lang": "zh",
+  "bilingual_names": {
+    "local": "OpenHands",
+    "en": "OpenHands"
+  },
+  "raw_sources": [
+    "https://aiwiki.ai/wiki/openhands",
+    "https://docs.openhands.dev/enterprise/architecture",
+    "https://www.datacamp.com/tutorial/openhands",
+    "https://docs.openhands.dev/sdk/arch/overview",
+    "https://rajshah4.github.io/learn-openhands-harness/workshops/odsc-2026/prompts",
+    "https://docs.openhands.org.cn/sdk/arch/agent",
+    "https://docs.openhands.org.cn/sdk/guides/agent-custom",
+    "https://blog.csdn.net/gitblog_00446/article/details/167801892",
+    "https://juejin.cn/post/7708195966889459747",
+    "https://zhuanlan.zhihu.com/p/2018450684861792754",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/README.md",
+    "https://github.com/All-Hands-AI/OpenHands/tree/main",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/playwright.mock-llm-docker.config.ts",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/utils/llm-subscription-schema.ts",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/features/mcp-page/index.ts",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/features/chat/tool-visualizers/index.ts",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/providers/index.ts",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/features/markdown/paragraph.tsx",
+    "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/package.json",
+    "https://docs.all-hands.dev",
+    "https://docs.all-hands.dev/overview/model-context-protocol",
+    "https://docs.all-hands.dev/openhands/usage/agent-canvas/setup",
+    "https://docs.all-hands.dev/openhands/usage/agent-canvas/overview",
+    "https://news.ycombinator.com/item?id=31797288",
+    "https://github.com/All-Hands-AI/OpenHands/issues",
+    "https://www.zhihu.com/question/1888656774510405327",
+    "https://zhuanlan.zhihu.com/p/2030684535390745084",
+    "https://juejin.cn/post/7683024148631420937"
+  ],
+  "search_coverage": {
+    "question_language": "zh",
+    "bilingual_names": {
+      "local": "OpenHands",
+      "en": "OpenHands"
+    },
+    "items": [
+      {
+        "query": "how the OpenHands works AI architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 4,
+        "pages_fetched": 1,
+        "chars_collected": 4500
+      },
+      {
+        "query": "OpenHands AI engineering blog system architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands system prompt tools agent harness",
+        "language": "en",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands AI agent github reverse engineering",
+        "language": "en",
+        "angle": "source_reverse",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands的架构是什么",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands AI 底层原理 技术架构 拆解",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "OpenHands 提示词 工具调用 Agent 工作流",
+        "language": "zh",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 2,
+        "chars_collected": 6778
+      },
+      {
+        "query": "OpenHands 开源 源码 逆向",
+        "language": "zh",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"OpenHands\" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"OpenHands\" (\"pros and cons\" OR \"frustrating\" OR \"review\" OR \"issues\") site:reddit.com",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"OpenHands\" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com OR site:juejin.cn)",
+        "language": "zh",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 585
+      }
+    ],
+    "zh_hits": 12,
+    "en_hits": 8,
+    "covered_angles": [
+      "architecture_qa",
+      "implementation_tech",
+      "source_reverse",
+      "user_reviews"
+    ],
+    "missing_angles": [],
+    "coverage_score": 1.0,
+    "refill_triggered": false,
+    "blocked_sources": [
+      {
+        "url": "https://aiwiki.ai/wiki/openhands",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      },
+      {
+        "url": "https://aiwiki.ai/wiki/openhands",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      }
+    ]
+  },
+  "collected_items": [
+    {
+      "source_url": "https://aiwiki.ai/wiki/openhands",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] OpenHands - AI Wiki",
+      "content": "Oct 28, 2026 · OpenHands is an open-source, autonomous software development agent platform developed by All Hands AI that lets AI agents write code, run shell commands, browse the web, and edit files inside an isolated Docker sandbox to complete software engineering tasks end-to-end.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.openhands.dev/enterprise/architecture",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] Architecture - OpenHands Docs",
+      "content": "How OpenHands Enterprise is put together — components, services, and required vs. optional external systems. This page explains how the OpenHands Enterprise architecture is put together: the overall solution, the individual components/services that make it up, and which external systems are required versus optional.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.datacamp.com/tutorial/openhands",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] OpenHands: Set Up and Use the Open-Source AI Coding Agent",
+      "content": "Oct 2, 2026 · Learn what OpenHands is, how its AI coding agent works, and how developers use it to write, debug, test, and modify code across software projects.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.openhands.dev/sdk/arch/overview",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] Overview - OpenHands Docs",
+      "content": "The OpenHands Software Agent SDK provides a unified, type-safe framework for building and deploying AI agents—from local experiments to full production systems, focused on statelessness, composability, and clear boundaries between research and deployment.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://rajshah4.github.io/learn-openhands-harness/workshops/odsc-2026/prompts",
+      "source_type": "search_snippet",
+      "title": "[en/implementation_tech] Exercise prompts | Learn Harness Engineering with OpenHands",
+      "content": "A hands-on course for learning harness engineering with OpenHands, Agent Canvas, the SDK, traces, metrics, and model routing.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.openhands.org.cn/sdk/arch/agent",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] Agent - OpenHands 文档",
+      "content": "Agent 组件实现了驱动自主任务执行的核心推理-行动循环。 它通过无状态、事件驱动的架构协调 LLM 查询、工具执行和上下文管理。 来源: openhands-sdk/openhands/sdk/agent/",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.openhands.org.cn/sdk/guides/agent-custom",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] 创建自定义 Agent - OpenHands 文档",
+      "content": "本指南演示了如何创建针对特定用例定制的自定义 Agent。 以规划 Agent 为具体示例，您将学习如何设计具有自定义工具集、系统 Prompt 和配置的专用 Agent，以优化特定工作流程的性能。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/gitblog_00446/article/details/167801892",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] 如何为OpenHands Software Agent SDK编写自定义工具：从定义到注册的...",
+      "content": "Oct 13, 2026 · 本教程带你走通完整流程：如何为 OpenHands Software Agent SDK 定义一个自定义工具——从输入（Action）、输出（Observation）、执行器（ToolExecutor）到最终用 register_tool () 注册并挂载给 Agent。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://juejin.cn/post/7708195966889459747",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] OpenHands 完整教程：从安装到自动化，2026年11月最新版（v1.40.0）Op...",
+      "content": "Nov 16, 2026 · 总结 OpenHands v1.40.0 已经从一个 AI 编程代理工具，成长为可以统一调度多个 Agent 后端的开发者控制中心。 MIT 协议、93k+ Star 的社区规模和每周迭代的节奏，使它成为目前开源 Agent 框架里最活跃的选择之一。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://zhuanlan.zhihu.com/p/2018450684861792754",
+      "source_type": "search_snippet",
+      "title": "[zh/source_reverse] GitHub霸榜！OpenHands开源炸裂：全能AI程序员真的来了？",
+      "content": "Mar 20, 2026 · 阅读指引：这是一篇旨在打破“AI只会写Hello World”刻板印象的深度硬核测评。 本文不仅是对 OpenHands 这一现象级开源项目的拆解，更是对未来软件工程形态的一次前瞻性推演。 全文约 3500 字，阅读需 8 分钟，建议收藏后细读。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.openhands.dev/enterprise/architecture",
+      "source_type": "web_page",
+      "title": "[网页正文|en] Architecture - OpenHands Docs",
+      "content": "Architecture - OpenHands Docs\nDocumentation Index\nFetch the complete documentation index at: /llms.txt\nUse this file to discover all available pages before exploring further.\nSkip to main content\nAssistant\nResponses are generated using AI and may contain mistakes.\nContact support\nThis page explains how the OpenHands Enterprise architecture is put together: the\noverall solution, the individual components/services that make it up, and which\nexternal systems are required versus optional.\nThere are two install paths for OpenHands Enterprise:\nVM install (Quick Start): Single VM deployment with all required services\nInstall with Helm: Install the full OpenHands Enterprise solution in a Kubernetes cluster\nFor the services, networking, and storage in the Docker Compose stack, see\nDocker Compose Architecture.\nHow It Works\nA user’s browser talks to the OpenHands application (server + frontend), which\ncoordinates with Keycloak for identity, a LiteLLM proxy for LLM calls, and the\nRuntime API for spinning up isolated sandboxes where the coding agent actually\nruns. Optional services extend this core with scheduled/event-driven automations,\nplugins, and richer integrations.\nThe core loop is:\nA user (or a webhook from GitHub, GitLab, Slack, Jira) creates or resumes\na conversation.\nThe OpenHands app authenticates the request (via Keycloak-issued cookies/tokens) and\nasks the Runtime API for a sandbox.\nRuntime API assigns a warm (pre-started) or freshly created Runtime pod — an\nisolated sandbox running the agent server.\nThe agent in the sandbox calls out through the LiteLLM proxy to the configured LLM\nprovider, executes tools (bash, file edits, browser, git), and streams events back to\nthe app and browser.\nThe agent can push commits, open PRs/MRs, and comment back on the originating\nissue/PR/message through the relevant Git provider or chat/ticketing\nintegration.\nConversation state and artifacts are persisted to PostgreSQL, Redis (cache/sessions),\nand an object store (S3/GCS/MinIO — the “conversation bucket”).\nKey Repos\nOpenHands Enterprise is assembled from a handful of repositories. Some are open source and shared with the\ncommunity edition; others are commercially licensed and make up the enterprise-only layer.\nEnterprise Application\nRepoLicenseWhat It Provides\nOpenHands\nOpen source (MIT)The web UI, shared by the open source and Enterprise editions.\nsoftware-agent-sdk\nOpen source (MIT)The Python SDK and the agent server that runs inside every sandbox: the agent loop, tools, conversations, and events.\nautomation\nOpen source (MIT)The automation service: cron and webhook triggers, dispatch, run history.\nenterprise\nCommercialThe Enterprise Server: REST/V1 API, conversation orchestration, Git-provider and chat/ticketing integrations, org and user management, and billing.\nruntime-api\nCommercialThe Runtime API: warm pool and lifecycle of sandbox pods. This is a private repository.\nOpenHands-Cloud\nCommercialHelm charts and installer packaging used to deploy the whole stack.\nExtensions\nRepoLicenseWhat It Provides\nextensions\nOpen source (MIT)The public registry of skills, plugins, and automations that agents load.\nDocumentation\nRepoWhat It Provides\ndocs\nThis documentation site.\nenterprise-cookbook\nCode examples and tutorials for OpenHands Enterprise (MIT).\nHow They Fit Together\nOpenHands-Cloud\npackages and deploys the other components onto Kubernetes (or a single VM through the\ninstaller).\nOpenHands\nsupplies the web UI, which the Enterprise Server serves to users alongside its own API.\nenterprise\nis the control plane. It authenticates users, receives webhooks, and asks\nruntime-api\nfor a sandbox for each conversation.\nruntime-api\nkeeps warm sandbox pods ready and starts them from the agent-server image built from\nsoftware-agent-sdk\n.\nsoftware-agent-sdk\nis what actually runs in each sandbox: the agent loop that calls the LLM and executes\ntools, streaming events back to the Enterprise Server.\nautomation\ntriggers agent runs on a schedule or from events. Each run executes in a sandbox, like an\ninteractive conversation.\nextensions\nsupplies the skills, plugins, and automation templates that agents and the Plugin Directory use.\nComponents And Services\nCore Components\nThese are present in every deployment.\nComponentWhat It Does\nOpenHands (Enterprise Server)The main app: web UI, REST/V1 API, conversation orchestration, Git-provider webhook receivers/resolvers, billing routes, and org/user management.\nKeycloakIdentity provider and SSO broker. Terminates",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.openhands.org.cn/sdk/arch/agent",
+      "source_type": "web_page",
+      "title": "[网页正文|zh] Agent - OpenHands 文档",
+      "content": "Agent - OpenHands 文档\n跳至主要内容\nOpenHands 文档主页\n搜索...\n⌘K询问 AI\n搜索...\n导航\nSDK 组件\nAgent (代理)\n概述\nWeb\nCLI\nSDK\n公司\n博客\nOpenHands 云\n软件代理 SDK\n入门\n常见问题解答\n指南\nHello World\n自定义工具\n模型上下文协议\n代理技能与上下文\n插件\n持久性\n上下文压缩器\n子代理委派\n迭代优化\n安全与操作确认\n指标跟踪\n可观察性与追踪\n密钥注册表\nLLM 功能\n代理功能\n对话功能\n远程代理服务器\nGitHub 工作流\n架构\n概述\n设计原则\nSDK 组件\nAgent (代理)\n对话\nTool System & MCP (工具系统 & MCP)\nEvents (事件)\n工作区\nLLM\nSkill (技能)\nCondenser (压缩器)\nSecurity (安全)\nAPI 参考\nopenhands.sdk.agent\nopenhands.sdk.conversation\nopenhands.sdk.event\nopenhands.sdk.llm\nopenhands.sdk.security\nopenhands.sdk.tool\nopenhands.sdk.utils\nopenhands.sdk.workspace\n在此页面上\nCore Responsibilities (核心职责)\n架构\nKey Components (关键组件)\n推理-行动循环\nAgent 上下文\n工具执行\nComponent Relationships (组件关系)\nAgent 交互方式\n参见\nAgent 组件实现了驱动自主任务执行的核心推理-行动循环。它通过无状态、事件驱动的架构协调 LLM 查询、工具执行和上下文管理。 来源:\nopenhands-sdk/openhands/sdk/agent/\n​\nCore Responsibilities (核心职责)\nAgent 系统具有四个主要职责\n推理-行动循环 - 查询 LLM，基于对话历史生成下一步行动\n工具编排 - 选择并执行工具，处理结果和错误\n上下文管理 - 应用 技能，通过 压缩器 管理对话历史\n安全验证 - 通过 安全分析器 分析提议的行动的安全性，再执行\n​\n架构\n​\nKey Components (关键组件)\nComponent (组件)用途Design (设计)\nAgent (代理)\n主要实现无状态推理-行动循环执行器\nAgentBase\n抽象基类定义 Agent 接口和初始化\nAgentContext\n上下文容器管理技能、提示和元数据\nCondenser (压缩器)\n历史压缩当达到 token 限制时，减少上下文\nSecurityAnalyzer\n安全验证在执行前评估行动风险\n​\n推理-行动循环\nAgent 通过单步执行模型运行，每次\nstep()\n调用处理一个推理周期\n步骤执行流程\n待处理的行动： 如果存在等待确认的行动，则执行它们并返回\n压缩： 如果存在压缩器\n使用当前事件视图调用\ncondenser.condense()\n如果返回\nView\n：使用压缩后的事件进行 LLM 查询（在同一步骤中继续）\n如果返回\nCondensation\n：发出事件并返回（将在下一步处理）\nLLM 查询： 使用事件历史中的消息查询 LLM\n如果超过上下文窗口：发出\nCondensationRequest\n并返回\n响应解析： 将 LLM 响应解析为事件\n工具调用 → 创建\nActionEvent\n(s)\n文本消息 → 创建\nMessageEvent\n并返回\n确认检查： 如果行动需要用户批准\n将对话状态设置为\nWAITING_FOR_CONFIRMATION\n并返回\n行动执行： 执行工具并创建\nObservationEvent\n(s)\n主要特性\n无状态： Agent 在步骤之间不保存可变状态\n事件驱动： 从事件历史中读取，写入新事件\n可中断： 每个步骤都是原子性的，可以暂停/恢复\n​\nAgent 上下文\nAgent 应用\nAgentContext\n，其中包含 技能 和 提示，以塑造 LLM 行为\n技能类型激活用例\nrepo始终包含项目特定的上下文、约定\nknowledge触发词/模式领域知识、特殊行为\n请参阅 本指南，了解有关创建和应用 Agent 上下文和技能的详细信息。\n​\n工具执行\n工具遵循严格的行动-观察模式\n执行模式\n模式行为用例\n直接立即执行开发、受信任的环境\n确认存储为待处理，等待用户批准高风险行动、生产环境\n安全集成： 在执行之前，安全分析器会评估每个行动：\n低风险： 立即执行\n中等风险： 记录警告，在监控下执行\n高风险： 阻止执行，请求用户确认\n​\nComponent Relationships (组件关系)\n​\nAgent 交互方式\nRelationship Characteristics (关系特征)\n对话 → Agent：编排步骤执行，提供事件历史\nAgent → LLM：查询下一步行动，接收工具调用或消息\nAgent → 工具：执行行动，接收观察结果\nAgentContext → Agent：将技能和提示注入 LLM 查询\n​\n参见\n对话架构 - Agent 编排和生命周期\n工具系统 - 工具定义和执行模式\n事件 - 事件类型和结构\n技能 - 提示工程和技能模式\nLLM - 语言模型抽象\n此页面有帮助吗？\n是否\n设计原则对话\n⌘我",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.openhands.org.cn/sdk/guides/agent-custom",
+      "source_type": "web_page",
+      "title": "[网页正文|zh] 创建自定义 Agent - OpenHands 文档",
+      "content": "创建自定义 Agent - OpenHands 文档\n跳至主要内容\nOpenHands 文档主页\n搜索...\n⌘K询问 AI\n搜索...\n导航\n代理功能\n创建自定义代理\n概述\nWeb\nCLI\nSDK\n公司\n博客\nOpenHands 云\n软件代理 SDK\n入门\n常见问题解答\n指南\nHello World\n自定义工具\n模型上下文协议\n代理技能与上下文\n插件\n持久性\n上下文压缩器\n子代理委派\n迭代优化\n安全与操作确认\n指标跟踪\n可观察性与追踪\n密钥注册表\nLLM 功能\n代理功能\n交互式终端\n浏览器使用\n创建自定义代理\n自定义可视化工具\n卡住检测器\n心智理论 (TOM) 代理\nCritic (实验性)\n对话功能\n远程代理服务器\nGitHub 工作流\n架构\n概述\n设计原则\nSDK 组件\nAPI 参考\nopenhands.sdk.agent\nopenhands.sdk.conversation\nopenhands.sdk.event\nopenhands.sdk.llm\nopenhands.sdk.security\nopenhands.sdk.tool\nopenhands.sdk.utils\nopenhands.sdk.workspace\n在此页面上\n自定义 Agent 的结构\n1. 自定义工具选择\n2. 系统 Prompt 定制\n完整实现参考\n下一步\n本指南演示了如何创建针对特定用例定制的自定义 Agent。以规划 Agent 为具体示例，您将学习如何设计具有自定义工具集、系统 Prompt 和配置的专用 Agent，以优化特定工作流程的性能。\n此示例可在 GitHub 上找到：examples/01_standalone_sdk/24_planning_agent_workflow.py\n该示例展示了一个两阶段工作流程，其中一个自定义规划 Agent（具有只读工具）分析任务并创建结构化计划，然后由一个执行 Agent 实现这些计划，并具有完全的编辑功能。\nexamples/01_standalone_sdk/24_planning_agent_workflow.py\n复制\n询问 AI\n#!/usr/bin/env python3\n\"\"\"\nPlanning Agent Workflow Example\nThis example demonstrates a two-stage workflow:\n1. Planning Agent: Analyzes the task and creates a detailed implementation plan\n2. Execution Agent: Implements the plan with full editing capabilities\nThe task: Create a Python web scraper that extracts article titles and URLs\nfrom a news website, handles rate limiting, and saves results to JSON.\n\"\"\"\nimport os\nimport tempfile\nfrom pathlib import Path\nfrom pydantic import SecretStr\nfrom openhands.sdk import LLM, Conversation\nfrom openhands.sdk.llm import content_to_str\nfrom openhands.tools.preset.default import get_default_agent\nfrom openhands.tools.preset.planning import get_planning_agent\ndef get_event_content(event):\n\"\"\"Extract content from an event.\"\"\"\nif hasattr(event, \"llm_message\"):\nreturn \"\".join(content_to_str(event.llm_message.content))\nreturn str(event)\n\"\"\"Run the planning agent workflow example.\"\"\"\n# Create a temporary workspace\nworkspace_dir = Path(tempfile.mkdtemp())\nprint(f\"Working in: {workspace_dir}\")\n# Configure LLM\napi_key = os.getenv(\"LLM_API_KEY\")\nassert api_key is not None, \"LLM_API_KEY environment variable is not set.\"\nmodel = os.getenv(\"LLM_MODEL\", \"anthropic/claude-sonnet-4-5-20250929\")\nbase_url = os.getenv(\"LLM_BASE_URL\")\nllm = LLM(\nmodel=model,\nbase_url=base_url,\napi_key=SecretStr(api_key),\nusage_id=\"agent\",\n)\n# Task description\ntask = \"\"\"\nCreate a Python web scraper with the following requirements:\n- Scrape article titles and URLs from a news website\n- Handle HTTP errors gracefully with retry logic\n- Save results to a JSON file with timestamp\n- Use requests and BeautifulSoup for scraping\nDo NOT ask for any clarifying questions. Directly create your implementation plan.\n\"\"\"\nprint(\"=\" * 80)\nprint(\"PHASE 1: PLANNING\")\nprint(\"=\" * 80)\n# Create Planning Agent with read-only tools\nplanning_agent = get_planning_agent(llm=llm)\n# Create conversation for planning\nplanning_conversation = Conversation(\nagent=planning_agent,\nworkspace=str(workspace_dir),\n)\n# Run planning phase\nprint(\"Planning Agent is analyzing the task and creating implementation plan...\")\nplanning_conversation.send_message(\nf\"Please analyze this web scraping task and create a detailed \"\nf\"implementation plan:\\n\\n{task}\"\n)\nplanning_conversation.run()\nprint(\"\\n\" + \"=\" * 80)\nprint(\"PLANNING COMPLETE\")\nprint(\"=\" * 80)\nprint(f\"Implementation plan saved to: {workspace_dir}/PLAN.md\")\nprint(\"\\n\" + \"=\" * 80)\nprint(\"PHASE 2: EXECUTION\")\nprint(\"=\" * 80)\n# Create Execution Agent with full editing capabilities\nexecution_agent = get_default_agent(llm=llm, cli_mode=True)\n# Create conversation for execution\nexecution_conversation = Conversation(\nagent=execution_agent,\nworkspace=str(workspace_dir),\n)\n# Prepare execution prompt with reference to the plan file\nexecution_prompt = f\"\"\"\nPlease implement the web scraping project according to the implementation plan.\nThe detailed implementation plan has been created and saved at: {workspace_dir}/PLAN.md\nPlease read the plan from PLAN.md and implement all components according to it.\nCreate all necessary files, implement the functionality, and ensure everything\nworks together properly.\n\"\"\"\nprint(\"Execution Agent is implementing the plan...\")\nexecution_conversation.send_message(execution_prompt)\nexecution_conversation.run()\n# Get the last message from the conversation\nexecution_result = execution_conversation.state.events[-1]\nprint(\"\\n\" + \"=\" * 80)\nprint(\"EXECUTION RESULT:\")\nprint(\"=\" * 80)\nprint(get_event_content(execution_result))\nprint(\"\\n\" + \"=\" * 80)\nprint(\"WORKFLOW COMPLETE\")\nprint(\"=\" * 80)\nprint(f\"Project files c",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/README.md",
+      "source_type": "github_readme",
+      "title": "All-Hands-AI/OpenHands README (README.md)",
+      "content": "<a name=\"readme-top\"></a>\n\n<div align=\"center\">\n  <img src=\"https://assets.openhands.dev/logo-whitebackground.png\" alt=\"OpenHands logo\" width=\"340\">\n  <h1 align=\"center\" style=\"border-bottom: none\">Agent Canvas</h1>\n  <p align=\"center\">\n    <strong>The self-hosted developer control center for coding agents and automations.</strong>\n  </p>\n  <p align=\"center\">\n    Run OpenHands, Claude Code, Codex, Gemini, Pi, OpenCode, or any ACP-compatible agent across local, remote, and cloud backends.\n  </p>\n</div>\n<div align=\"center\">\n  <a href=\"https://github.com/OpenHands/OpenHands/actions/workflows/ci.yml\"><img src=\"https://img.shields.io/github/actions/workflow/status/OpenHands/OpenHands/ci.yml?branch=main&style=for-the-badge\" alt=\"CI status\"></a>\n  <a href=\"https://www.npmjs.com/package/@openhands/agent-canvas\"><img src=\"https://img.shields.io/npm/v/%40openhands%2Fagent-canvas?style=for-the-badge&logo=npm\" alt=\"npm version\"></a>\n  <a href=\"https://docs.openhands.dev/openhands/usage/agent-canvas/backends\"><img src=\"https://img.shields.io/badge/Documentation-000?logo=googledocs&logoColor=FFE165&style=for-the-badge\" alt=\"Documentation\"></a>\n  <a href=\"https://go.openhands.dev/slack\"><img src=\"https://img.shields.io/badge/Slack-Join%20the%20community-611f69?logo=slack&logoColor=white&style=for-the-badge\" alt=\"Join us on Slack\"></a>\n</div>\n<div align=\"center\">\n  <a href=\"#quickstart\">Quickstart</a> |\n  <a href=\"./docs/README.md\">Docs</a> |\n  <a href=\"./docs/SELF_HOSTING.md\">Self-Hosting</a> |\n  <a href=\"https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents\">ACP Agents</a> |\n  <a href=\"https://docs.openhands.dev/openhands/usage/agent-canvas/prebuilt-automations\">Automations</a> |\n  <a href=\"https://go.openhands.dev/slack\">Slack</a>\n</div>\n<p align=\"center\">\n  <img src=\"https://assets.openhands.dev/screenshot/automation-preview.png\" alt=\"Agent Canvas automation preview\" width=\"100%\">\n</p>\n<hr>\n\nOpenHands Agent Canvas turns your coding agents into a self-hosted, always-on engineering team. It's a developer control center for starting conversations and automating everyday tasks — like generating reports that publish to Slack or automatically decomposing GitHub issues into tasks.\n\nIt runs locally on your machine by default, but can connect to multiple “agent backends”, e.g. running agents in Docker containers, on VMs, or within your company infrastructure. You can optionally choose to run agents on OpenHands Cloud or OpenHands Enterprise infrastructure.\n\nAgent Canvas runs the open source OpenHands agent out-of-the-box, but can use third-party agents such as Claude Code, Codex, Gemini CLI, Pi, and OpenCode.\n\n|                                                                                                                      |                                                                                                                                          |\n| -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |\n| [**Self-host your way**](https://docs.openhands.dev/openhands/usage/agent-canvas/backend-setup/vm)                   | Run agents locally, in Docker, on VMs, or anywhere you can run an agent server backend                                                   |\n| [**Switch between different backends**](https://docs.openhands.dev/openhands/usage/agent-canvas/backends)            | Switch between local, remote, and cloud agents without losing focus                                                                      |\n| [**Create automations**](https://docs.openhands.dev/openhands/usage/agent-canvas/prebuilt-automations)               | Create automations and workflows that integrate with Slack, GitHub, Linear, and more. Run on a schedule or in response to webhook events |\n| [**Integrate with the tools you use**](https://docs.openhands.dev/openhands/usage/agent-canvas/prebuilt-automations) | Connect your automations with third-party services like Slack, GitHub, Notion, and more to automate workflows                            |\n| [**Bring your own model**](https://docs.openhands.dev/openhands/usage/settings/llm-settings#llm-profiles)            | Use with any LLM                                                                                                                         |\n| [**Use with any agent**](https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents)                         | Use with OpenHands, Claude Code, Codex, Gemini, Pi, OpenCode, or any agent with Agent-Client Protocol (ACP).                             |\n\nIf you have questions or feedback, please open a GitHub issue or join the [#proj-agent-canvas channel in Slack](https://openhands.dev/joinslack).\n\n## Quickstart\n\nYou can install OpenHands to run agents on any machine: on your laptop, on a dedicated computer like a Mac Mini,\nor on a server in the cloud.\n\nThe most powerful way to run OpenHands is on a server in the cloud. This allows your agents to continue running\neven when your laptop is shut, and makes it easier to trigger your agents through third-party services\nlike Slack, GitHub, and Datadog. See [SELF_HOSTING.md](docs/SELF_HOSTING.md) for details, especially with respect to security hardening.\n\nNotably, you can run the backend in _multiple different environments_, and switch between\nthem from the same Agent Canvas frontend. E.g. you can share an Agent Server with your team for agents doing\ncode review and dependency updates, then have your personal agents running on your laptop.\n\n### Option 1: Without a Sandbox\n\n> [!WARNING]\n> This runs the agent-server directly on the machine you're installing on — the agent will have full access to your filesystem!\n\n**Prerequisites**: [Node.js](https://nodejs.org/) 24 or later, `uv`\n\n```sh\nnpm install -g @openhands/agent-canvas\nagent-canvas\n```\n\nThe `agent-canvas` command starts the full local stack by default. You can also split it when you want to run pieces separately:\n\n```sh\nagent-canvas --frontend-only  # static frontend + ingress only\nagent-canvas --backend-only   # agent server + automation backend + ingress only\n```\n\n### Option 2: With a Docker Sandbox\n\nInstall Docker Desktop on macOS/Windows, or Docker Engine/Docker Desktop on Linux.\nWindows users can follow the [PowerShell quickstart](./README.windows.md).\n\nThe steps below are for macOS and Linux. A named Docker volume stores settings,\nsecrets, and conversations; projects are mounted at `/projects`.\n\n**1. Prepare a workspace**\n\n```sh\nexport PROJECTS_PATH=\"$HOME/projects\"  # directory containing your project folders\nmkdir -p \"$PROJECTS_PATH\"\n```\n\nOn **Linux Docker Engine**, uid 10001 inside the container must be able to read\nand write the workspace and its existing files. Grant that user access using\nappropriate ownership or ACLs for your system. For a dedicated workspace you are\ncomfortable sharing with all local users, the following is another option:\n\n```sh\nfind \"$PROJECTS_PATH\" -type d -exec chmod a+rwX {} +\nfind \"$PROJECTS_PATH\" -type f -exec chmod a+rw {} +\n```\n\nThese commands grant all host users access to the workspace. Keep it separate\nfrom `~/.openhands` and other sensitive data. Docker Desktop on macOS/Windows\nhandles bind-mount permissions, so those commands are normally unnecessary.\n\n**2. Start Agent Canvas**\n\n```sh\ndocker run -it --rm \\\n  -p 127.0.0.1:8000:8000 \\\n  -e AGENT_CANVAS_ALLOW_LAN_SESSION_KEY=true \\\n  -v openhands-state:/home/openhands/.openhands \\\n  -v \"${PROJECTS_PATH}:/projects\" \\\n  ghcr.io/openhands/agent-canvas:1.46.0 # x-release-please-version\n```\n\nOpen [http://localhost:8000/canvas](http://localhost:8000/canvas). Reuse\n`openhands-state` to retain state across container removals. A fresh volume does\nnot contain existing `~/.openhands` data; inspect or back it up with\n`docker volume inspect openhands-state`.\n\n<details>\n<summary>Linu",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/All-Hands-AI/OpenHands/tree/main",
+      "source_type": "github_tree",
+      "title": "All-Hands-AI/OpenHands 代码目录结构",
+      "content": "仓库: All-Hands-AI/OpenHands\n默认分支: main\n文件总数: 3046\n\n目录树结构:\n.agents/skills/custom-codereview-guide.md\n.agents/skills/desktop-electron/SKILL.md\n.agents/skills/desktop-electron/references/guide.md\n.agents/skills/e2e-testing/SKILL.md\n.agents/skills/e2e-testing/references/guide.md\n.agents/skills/frontend-api-contracts/SKILL.md\n.agents/skills/frontend-api-contracts/references/guide.md\n.agents/skills/frontend-development/SKILL.md\n.agents/skills/frontend-development/references/guide.md\n.agents/skills/local-stack-runtime/SKILL.md\n.agents/skills/local-stack-runtime/references/guide.md\n.agents/skills/pr-design-doc/SKILL.md\n.agents/skills/pr-design-doc/references/html-craft.md\n.agents/skills/release.md\n.agents/skills/telemetry-analytics/SKILL.md\n.agents/skills/telemetry-analytics/references/guide.md\n.agents/skills/verify-openhands/SKILL.md\n.agents/skills/verify-openhands/references/adaptation.md\n.agents/skills/verify-openhands/references/backfills/2026-10-12-open-bugs-checks.json\n.agents/skills/verify-openhands/references/backfills/2026-10-12-open-bugs.json\n.agents/skills/verify-openhands/references/backfills/2026-10-12-open-bugs.md\n.agents/skills/verify-openhands/references/backfills/2026-10-16-main-refresh.json\n.agents/skills/verify-openhands/references/backfills/2026-10-16-main-refresh.md\n.agents/skills/verify-openhands/references/backfills/2026-10-17-weekly.md\n.agents/skills/verify-openhands/references/backfills/2026-10-18-migration.md\n.agents/skills/verify-openhands/references/backfills/evidence/16948-after-refetch.png\n.agents/skills/verify-openhands/references/backfills/evidence/16948-before-refetch.png\n.agents/skills/verify-openhands/references/backfills/evidence/17619-reconnected.png\n.agents/skills/verify-openhands/references/backfills/evidence/17619-socket-cursor.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-16-pause-durability.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-16-planner-100.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-16-planner-99.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-16-planner-boundary.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-16-reconnect-readback.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-16-schedule-custom.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-16-settings-keyboard.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/automation-header-Arabic-long.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/automation-header-English-long.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/automation-header-readback.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/checkedin-app-backend-fixture.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/cleanup-retention-summary.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/controller-live-proof.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/controller-vitest.log\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/coverage-snapshot.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/docker-packaging.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/docker-runtime-proof.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/failure-summary.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/home-finish-consumer.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/map-check-final.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/map-coverage-final.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/map-testids-final.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/model-backed-coverage.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/owned-resource-final-readback.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/paired-proofs.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/pr-ci-description-check.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/pr-description-validator.log\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/pr-readiness-validator.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/proposed-pr-body.md\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/proposed-pr-title.txt\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/publication-prerequisites.md\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/publication-state.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/readiness-decision.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/remaining-blocked-subbranches.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/runtime-checks.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/final/weekly-report.md\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/invalid-draft-readback.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/invalid-draft-stale-success.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/library-host-mount-failure.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/library-host-mount-readback.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/plugin-parameters-before-create.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/plugin-parameters-readback.json\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/preset-baseline.png\n.agents/skills/verify-openhands/references/backfills/evidence/2026-10-17/preset-target.png\n.agents/skills/verify-openhands/references/backfills/evidence/network-state-and-refetch.gif\n.agents/skills/verify-openhands/references/backfills/evidence/network-state-and-refetch.mp4\n.agents/skills/verify-openhands/references/bug-backfill.md\n.agents/skills/verify-openhands/references/daily.md\n.agents/skills/verify-openhands/references/feature-map/F01-first-run-and-sign-in.md\n.agents/skills/verify-openhands/references/feature-map/F02-app-shell.md\n.agents/skills/verify-openhands/references/feature-map/F03-home.md\n.agents/skills/verify-openhands/references/feature-map/F04-conversation-list.md\n.agents/skills/verify-openhands/references/feature-map/F05-composer.md\n.agents/skills/verify-openhands/references/feature-map/F06-agent-activity.md\n.agents/skills/verify-openhands/references/feature-map/F07-conversation-page.md\n.agents/skills/verify-openhands/references/feature-map/F08-workspace-files-and-changes.md\n.agents/skills/verify-openhands/references/feature-map/F09-settings-shell.md\n.agents/skills/verify-openhands/references/feature-map/F10-llm-profiles.md\n.agents/skills/verify-openhands/references/feature-map/F11-provider-connections.md\n.agents/skills/verify-openhands/references/feature-map/F12-model-router.md\n.agents/skills/verify-openhands/references/feature-map/F13-agent-profiles.md\n.agents/skills/verify-openhands/references/feature-map/F14-secrets.md\n.agents/skills/verify-openhands/references/feature-map/F15-agent-behavior-settings.md\n.agents/skills/verify-openhands/references/feature-map/F16-application-settings.md\n.agents/skills/verify-openhands/references/feature-map/F17-mcp-servers.md\n.agents/skills/verify-openhands/references/feature-map/F18-skills.md\n.agents/skills/verify-op",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/playwright.mock-llm-docker.config.ts",
+      "source_type": "github_source",
+      "title": "All-Hands-AI/OpenHands 核心源码: playwright.mock-llm-docker.config.ts",
+      "content": "/**\n * Playwright config for mock-LLM E2E tests against a Docker container.\n *\n * Reuses the same test specs as playwright.mock-llm.config.ts but launches\n * the agent-canvas stack inside a Docker container instead of via\n * bin/agent-canvas.mjs + uvx.\n *\n * Starts two processes:\n *   1. Mock LLM server (Python on the host, using openhands-sdk TestLLM)\n *   2. Docker container running the agent-canvas all-in-one image\n *      (agent-server + automation backend + static frontend + proxy)\n *      The container also starts a second static-server instance on\n *      PUBLIC_MODE_PORT with --auth-required for auth-mode E2E tests.\n *\n * Networking:\n *   Uses --network host on Linux so the container shares the host's network\n *   stack. This means the agent-server inside Docker can reach the mock LLM\n *   server at 127.0.0.1:<port> — identical to the npm path.\n *\n *   For macOS/Windows (Docker Desktop with bridge networking), set\n *   MOCK_LLM_AGENT_URL=http://host.docker.internal:<port> so the\n *   agent-server can reach the host-side mock LLM server.\n *\n * Required:\n *   - A built Docker image. Set MOCK_LLM_DOCKER_IMAGE to the image tag\n *     (default: ghcr.io/openhands/agent-canvas:latest).\n *   - Docker daemon must be running.\n */\n\nimport { defineConfig, devices } from \"@playwright/test\";\nimport { randomBytes } from \"node:crypto\";\nimport { mkdirSync } from \"node:fs\";\nimport { resolve } from \"node:path\";\n\n// ── Docker image ────────────────────────────────────────────────────────\nconst DOCKER_IMAGE =\n  process.env.MOCK_LLM_DOCKER_IMAGE ?? \"ghcr.io/openhands/agent-canvas:latest\";\n\n// Container name for cleanup — unique per run to avoid collisions.\nconst CONTAINER_NAME =\n  process.env.MOCK_LLM_CONTAINER_NAME ??\n  `agent-canvas-mock-llm-${randomBytes(4).toString(\"hex\")}`;\n\n// ── Port allocation (separate from live E2E / dev to avoid collisions) ─\nconst MOCK_LLM_PORT = process.env.MOCK_LLM_PORT ?? \"9999\";\n\n// The Docker container exposes a single port for the unified ingress.\n// With --network host this is accessible at localhost directly.\nconst INGRESS_PORT = process.env.MOCK_LLM_INGRESS_PORT ?? \"18300\";\n\n// Public-mode static server — runs inside the Docker container when\n// PUBLIC_MODE_PORT is set (see docker/entrypoint.sh). With --network host\n// the port is accessible from the host at localhost directly.\nconst PUBLIC_MODE_PORT = process.env.MOCK_LLM_PUBLIC_MODE_PORT ?? \"18301\";\n\n// ── Session API key ────────────────────────────────────────────────────\nconst sessionApiKey =\n  process.env.MOCK_LLM_SESSION_API_KEY?.trim() ||\n  randomBytes(32).toString(\"hex\");\nprocess.env.MOCK_LLM_SESSION_API_KEY = sessionApiKey;\n\n// ── URLs ───────────────────────────────────────────────────────────────\n// The Docker entrypoint starts static-server.mjs with `--host ::` (dual-\n// stack), so it accepts both IPv4 and IPv6 connections — same as the npm\n// path's ingress.mjs.  `localhost` is safe for both configs now.\n// The mock LLM server (Python, host-side) also listens dual-stack.\nconst INGRESS_URL = `http://localhost:${INGRESS_PORT}/`;\nconst MOCK_LLM_URL = `http://127.0.0.1:${MOCK_LLM_PORT}`;\n\n// Python binary for the mock server — defaults to \"python3\" but CI can\n// point this at a venv (e.g. \".mock-llm-venv/bin/python3\") to avoid\n// PEP 668 \"externally managed\" errors on Ubuntu 24.04+.\nconst MOCK_LLM_PYTHON = process.env.MOCK_LLM_PYTHON ?? \"python3\";\n\n// Export for the test helpers — BACKEND_URL points to the ingress (API\n// calls are proxied to the agent-server, so no direct backend port needed).\nprocess.env.MOCK_LLM_BACKEND_URL = `http://localhost:${INGRESS_PORT}`;\nprocess.env.MOCK_LLM_PORT = MOCK_LLM_PORT;\nprocess.env.MOCK_LLM_PUBLIC_MODE_URL = `http://localhost:${PUBLIC_MODE_PORT}`;\nprocess.env.MOCK_LLM_DOCKER_MODE = \"true\";\nprocess.env.VITE_SESSION_API_KEY = sessionApiKey;\n\n// MOCK_LLM_AGENT_URL — the URL the agent-server inside Docker uses to\n// call the mock LLM for inference. With --network host on Linux the\n// agent-server can reach 127.0.0.1 directly. For macOS/Windows Docker\n// Desktop, override this to http://host.docker.internal:<port>.\nif (!process.env.MOCK_LLM_AGENT_URL) {\n  process.env.MOCK_LLM_AGENT_URL = MOCK_LLM_URL;\n}\n\n// ── Skill test support ────────────────────────────────────────────────\n// The skill tests create git repos and user skill files on the host.\n// We volume-mount these into the container so the agent-server can see them.\n\n// Project skills: host creates repos here, container sees them at a fixed path.",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/utils/llm-subscription-schema.ts",
+      "source_type": "github_source",
+      "title": "All-Hands-AI/OpenHands 核心源码: src/utils/llm-subscription-schema.ts",
+      "content": "import type { SettingsSchema } from \"#/types/settings\";\nimport { LLM_SUBSCRIPTION_SCHEMA_FIELDS } from \"#/constants/llm-subscription\";\n\nconst LLM_SECTION_KEY = \"llm\";\n\nexport function withLlmSubscriptionSchemaFields(\n  schema: SettingsSchema | null | undefined,\n): SettingsSchema | null | undefined {\n  if (!schema?.sections) return schema;\n\n  let changed = false;\n  const sections = schema.sections.map((section) => {\n    if (section.key !== LLM_SECTION_KEY) return section;\n\n    const existingKeys = new Set(section.fields.map((field) => field.key));\n    const missingFields = LLM_SUBSCRIPTION_SCHEMA_FIELDS.filter(\n      (field) => !existingKeys.has(field.key),\n    );\n\n    if (missingFields.length === 0) return section;\n    changed = true;\n    return {\n      ...section,\n      fields: [...section.fields, ...missingFields],\n    };\n  });\n\n  if (!changed) return schema;\n  return { ...schema, sections };\n}\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/features/mcp-page/index.ts",
+      "source_type": "github_source",
+      "title": "All-Hands-AI/OpenHands 核心源码: src/components/features/mcp-page/index.ts",
+      "content": "export { InstalledServersSection } from \"./installed-servers-section\";\nexport { InstalledServerCard } from \"./installed-server-card\";\nexport { MarketplaceSection } from \"./marketplace-section\";\nexport { MarketplaceCard } from \"./marketplace-card\";\nexport { InstallServerModal } from \"./install-server-modal\";\nexport { SaveAsSecretToggle } from \"./save-as-secret-toggle\";\nexport { CustomServerEditor } from \"./custom-server-editor\";\nexport { McpToolbar } from \"./mcp-toolbar\";\nexport { McpManagedInSettings } from \"./mcp-managed-in-settings\";\nexport type { McpSectionFilter } from \"./mcp-section-filter\";\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/features/chat/tool-visualizers/index.ts",
+      "source_type": "github_source",
+      "title": "All-Hands-AI/OpenHands 核心源码: src/components/features/chat/tool-visualizers/index.ts",
+      "content": "import { RegisteredVisualizer } from \"./define\";\nimport { bashVisualizer } from \"./bash/bash\";\nimport { fileEditorVisualizer } from \"./file-editor/file-editor\";\nimport { searchVisualizer } from \"./search/search\";\nimport { taskVisualizer } from \"./task/task\";\n\n/**\n * Tool visualizers render a tool call's action / observation card body as React\n * components instead of markdown. Unregistered tools keep using the markdown\n * pipeline (see `dispatcher.ts`), so this list can grow one tool at a time.\n *\n * To add a visualizer:\n *   1. Create `tool-visualizers/<name>/<name>.tsx` exporting\n *      `defineVisualizer({ actionKinds, observationKinds, Body })`.\n *   2. Add one import below and one entry to `ALL`.\n *   3. Add `tool-visualizers/<name>/<name>.test.tsx` (render with fixtures).\n *\n * TypeScript does the rest: `actionKinds` autocompletes from the `Action`\n * union, `Body` receives the narrowed event types, and unknown kinds are\n * compile errors.\n */\nconst ALL: RegisteredVisualizer[] = [\n  bashVisualizer,\n  fileEditorVisualizer,\n  searchVisualizer,\n  taskVisualizer,\n];\n\nconst indexByKind = (\n  kindsOf: (visualizer: RegisteredVisualizer) => string[] | undefined,\n): Map<string, RegisteredVisualizer> =>\n  new Map(\n    ALL.flatMap((visualizer) =>\n      (kindsOf(visualizer) ?? []).map((kind) => [kind, visualizer] as const),\n    ),\n  );\n\nexport const actionVisualizers = indexByKind((v) => v.actionKinds);\nexport const observationVisualizers = indexByKind((v) => v.observationKinds);\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/providers/index.ts",
+      "source_type": "github_source",
+      "title": "All-Hands-AI/OpenHands 核心源码: src/components/providers/index.ts",
+      "content": "export {\n  AgentServerUIProviders,\n  DEFAULT_AGENT_SERVER_ANALYTICS,\n  type AgentServerUIAnalyticsConfig,\n  type AgentServerUIPostHogAnalyticsConfig,\n  type AgentServerUIProvidersProps,\n} from \"./agent-server-ui-providers\";\nexport {\n  AgentServerUIRoot,\n  type AgentServerUIRootProps,\n} from \"./agent-server-ui-root\";\nexport { CloudOrganizationBoundary } from \"../features/backends/cloud-organization-boundary\";\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/src/components/features/markdown/paragraph.tsx",
+      "source_type": "github_source",
+      "title": "All-Hands-AI/OpenHands 核心源码: src/components/features/markdown/paragraph.tsx",
+      "content": "import React from \"react\";\nimport { ExtraProps } from \"react-markdown\";\n\n// Custom component to render <p> in markdown with bottom padding\nexport function paragraph({\n  children,\n}: React.ClassAttributes<HTMLParagraphElement> &\n  React.HTMLAttributes<HTMLParagraphElement> &\n  ExtraProps) {\n  return <p className=\"py-1.5 leading-6 first:pt-0 last:pb-0\">{children}</p>;\n}\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/package.json",
+      "source_type": "github_source",
+      "title": "All-Hands-AI/OpenHands 核心源码: package.json",
+      "content": "{\n  \"name\": \"@openhands/agent-canvas\",\n  \"version\": \"1.46.0\",\n  \"description\": \"Agent Canvas UI for OpenHands - run AI coding agents with a visual interface\",\n  \"license\": \"MIT\",\n  \"private\": false,\n  \"type\": \"module\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/OpenHands/OpenHands\"\n  },\n  \"homepage\": \"https://github.com/OpenHands/OpenHands#readme\",\n  \"bugs\": {\n    \"url\": \"https://github.com/OpenHands/OpenHands/issues\"\n  },\n  \"bin\": {\n    \"agent-canvas\": \"bin/agent-canvas.mjs\"\n  },\n  \"engines\": {\n    \"node\": \">=24\"\n  },\n  \"dependencies\": {\n    \"@heroui/react\": \"3.2.7\",\n    \"@heroui/styles\": \"3.2.7\",\n    \"@microlink/react-json-view\": \"1.31.51\",\n    \"@monaco-editor/react\": \"4.7.0\",\n    \"@openhands/extensions\": \"0.44.0\",\n    \"@openhands/typescript-client\": \"1.64.1\",\n    \"@react-router/node\": \"8.5.1\",\n    \"@tailwindcss/vite\": \"4.3.3\",\n    \"@tanstack/react-query\": \"5.108.0\",\n    \"@tanstack/react-virtual\": \"3.14.26\",\n    \"@types/shell-quote\": \"1.7.5\",\n    \"@uidotdev/usehooks\": \"2.4.1\",\n    \"@xterm/addon-fit\": \"0.11.0\",\n    \"@xterm/xterm\": \"6.0.0\",\n    \"axios\": \"1.21.1\",\n    \"class-variance-authority\": \"0.7.1\",\n    \"clsx\": \"2.1.1\",\n    \"downshift\": \"9.5.0\",\n    \"driver.js\": \"1.14.0\",\n    \"framer-motion\": \"14.14.0\",\n    \"httpxy\": \"0.5.6\",\n    \"i18next\": \"27.1.5\",\n    \"i18next-browser-languagedetector\": \"8.3.1\",\n    \"i18next-http-backend\": \"4.0.10\",\n    \"isbot\": \"5.2.3\",\n    \"lucide-react\": \"1.74.0\",\n    \"mdast-util-from-markdown\": \"2.1.0\",\n    \"mermaid\": \"12.3.0\",\n    \"monaco-editor\": \"0.57.0\",\n    \"posthog-js\": \"1.450.1\",\n    \"react\": \"19.3.1\",\n    \"react-aria\": \"3.53.1\",\n    \"react-aria-components\": \"1.22.1\",\n    \"react-dom\": \"19.3.1\",\n    \"react-hot-toast\": \"2.6.1\",\n    \"react-i18next\": \"18.0.2\",\n    \"react-icons\": \"5.7.0\",\n    \"react-markdown\": \"10.1.0\",\n    \"react-router\": \"8.5.1\",\n    \"react-syntax-highlighter\": \"16.1.2\",\n    \"rehype-raw\": \"7.0.0\",\n    \"rehype-sanitize\": \"6.0.0\",\n    \"remark-breaks\": \"4.0.0\",\n    \"remark-gfm\": \"4.0.1\",\n    \"shell-quote\": \"1.12.0\",\n    \"sirv\": \"3.0.2\",\n    \"sirv-cli\": \"3.0.1\",\n    \"tailwind-merge\": \"3.7.0\",\n    \"tailwind-scrollbar\": \"4.0.2\",\n    \"tw-animate-css\": \"1.4.0\",\n    \"unist-util-visit\": \"5.2.0\",\n    \"uuid\": \"14.0.3\",\n    \"vite\": \"8.3.8\",\n    \"winston\": \"3.19.0\",\n    \"winston-daily-rotate-file\": \"5.0.0\",\n    \"ws\": \"8.23.0\",\n    \"zustand\": \"5.1.0\"\n  },\n  \"scripts\": {\n    \"dev\": \"node --env-file-if-exists=.env scripts/dev-with-automation.mjs\",\n    \"dev:static\": \"node --env-file-if-exists=.env scripts/dev-static.mjs\",\n    \"dev:extra-backend\": \"node --env-file-if-exists=.env scripts/dev-extra-backend.mjs\",\n    \"dev:minimal\": \"node --env-file-if-exists=.env scripts/dev-safe.mjs\",\n    \"dev:frontend\": \"npm run make-i18n && cross-env VITE_MOCK_API=false react-router dev\",\n    \"dev:mock\": \"npm run make-i18n && cross-env VITE_MOCK_API=true react-router dev\",\n    \"build\": \"npm run build:app\",\n    \"build:mock\": \"npm run make-i18n && cross-env VITE_MOCK_API=true react-router build\",\n    \"start\": \"npx sirv-cli build/ --single\",\n    \"test\": \"npm run make-i18n && vitest run\",\n    \"test:e2e\": \"playwright test --pass-with-no-tests\",\n    \"test:e2e:live\": \"node --env-file-if-exists=.env tests/e2e/live/scripts/run-live-e2e.mjs\",\n    \"test:e2e:mock-llm\": \"playwright test --config=playwright.mock-llm.config.ts\",\n    \"test:e2e:mock-llm:docker\": \"playwright test --config=playwright.mock-llm-docker.config.ts\",\n    \"test:e2e:bind-policy\": \"playwright test --config=playwright.bind-policy.config.ts\",\n    \"test:coverage\": \"npm run make-i18n && vitest run --coverage\",\n    \"test:mutation\": \"npm run make-i18n && stryker run\",\n    \"test:mutation:diff\": \"npm run make-i18n && node scripts/stryker-diff.mjs\",\n    \"test:mutation:incremental\": \"npm run make-i18n && stryker run --incremental\",\n    \"dev_wsl\": \"VITE_WATCH_USE_POLLING=true vite\",\n    \"preview\": \"vite preview\",\n    \"make-i18n\": \"node scripts/make-i18n-translations.cjs\",\n    \"prelint\": \"npm run make-i18n\",\n    \"lint\": \"npm run typecheck && eslint src && prettier --check src/**/*.{ts,tsx}\",\n    \"lint:fix\": \"eslint src --fix && prettier --write src/**/*.{ts,tsx}\",\n    \"postinstall\": \"node -e \\\"if (process.env.npm_config_global === 'true') { console.log('\\\\n\\\\x1b[32m\\\\x1b[1m\\\\u2713 @openhands/agent-canvas installed!\\\\x1b[0m\\\\n\\\\nTo start Agent Canvas, run:\\\\n\\\\n  \\\\x1b[36m\\\\x1b[1magent-canvas\\\\x1b[0m\\\\n\\\\nThis launches the full stack at \\\\x1b[36mhttp://localhost:8000\\\\x1b[0m.\\\\n\\\\nDocs: https://docs.openhands.dev/openhands/usage/agent-c",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://docs.all-hands.dev",
+      "source_type": "documentation",
+      "title": "Introduction - OpenHands Docs",
+      "content": "Introduction - OpenHands Docs\nDocumentation Index\nFetch the complete documentation index at: /llms.txt\nUse this file to discover all available pages before exploring further.\nSkip to main content\nAssistant\nResponses are generated using AI and may contain mistakes.\nContact support\nOpenHands is an open platform for running AI coding agents across real engineering work. Run agents in conversations,\nautomate them with schedules and events, extend them with skills, plugins, and MCP servers, and build your own agents\nwith the Software Agent SDK. Use any LLM, or connect an existing coding agent such as Claude Code or Codex.\nWe’d love for you to join the community on Slack.\nChoose a Product\nProductUse It WhenWhere Agents Run\nAgent CanvasYou want a free, open-source workspace on your own machine or serverYour laptop, a VM, Docker, or another backend you connect\nOpenHands CloudYou want to start without installing anythingHosted sandboxes at app.all-hands.dev\nOpenHands EnterpriseYour organization needs self-hosting, access control, and governanceYour own infrastructure\nSoftware Agent SDKYou want to build agents or embed them in your own toolsYour code, or an Agent Server you deploy\nWe recommend starting with Agent Canvas or\nOpenHands Cloud. See the Quick Start.\nHow the Products Fit Together\nEvery product runs agents with the Software Agent SDK. Agent Canvas, OpenHands Cloud, and OpenHands Enterprise share\nthe same Agent Canvas interface and differ in where the backend runs and who manages it.\nAgent Server runs the agent, its tools, and its conversations. It’s part of the Software Agent SDK.\nAutomation Server runs automations on a schedule or in response to events.\nOpenHands Cloud and Enterprise add accounts, sandboxes, integrations, and administration on top of Agent Server\nand Automation Server.\nAgent Canvas\nAgent Canvas is the open-source workspace for running agents. Use it to run\nseveral conversations in parallel, connect agents such as Claude Code or Codex through the Agent Client Protocol, and\ncreate automations.\nInstall Agent Canvas with npm, npx, or Docker, or try the desktop app, which is in preview. By default, Agent Canvas\nstarts a backend on your machine. You can also connect it to a VM, Docker, or OpenHands Cloud.\nInstall Agent Canvas or\nview the source.\nOpenHands Cloud\nOpenHands Cloud is the free hosted version of OpenHands. It runs the same\napplication as OpenHands Enterprise, with Agent Canvas, for a single user. Cloud includes hosted sandboxes, Git and\nSlack integrations, and public webhook URLs for event automations. OpenHands Cloud limits how many conversations you\ncan run.\nSign in to OpenHands Cloud.\nOpenHands Enterprise\nOpenHands Enterprise runs on your own infrastructure. It adds organizations, roles, single\nsign-on, service accounts, budgets, and built-in integrations such as GitHub, Jira Data Center, and Azure DevOps. Use\nDocker Compose for trials and the Teams plan, and Kubernetes for production.\nManage your license, subscription, and support in Customer Center. Learn more\nat openhands.dev/enterprise.\nSoftware Agent SDK and Agent Server\nThe Software Agent SDK is a Python library for building agents that work with code. The same repository\ncontains Agent Server, which exposes agent execution, conversations, tools, and workspaces through REST and WebSocket\nAPIs.\nGet started with the SDK or\nview the source.\nFeatures in Every Product\nThese guides apply to Agent Canvas, OpenHands Cloud, and OpenHands Enterprise. Each guide notes where a product\ndiffers.\nAutomations: Run agents on a schedule or in response to events.\nSkills, Plugins, and MCP: Give agents\nknowledge and tools.\nLLM Configuration: Choose a model and provider.\nComponent and Repository Map\nComponentResponsibilitySource\nAgent CanvasAgent workspace and local stack\nOpenHands/OpenHands\nSoftware Agent SDKAgent framework, tools, conversations, and workspaces\nOpenHands/software-agent-sdk\nAgent ServerRemote agent execution API\nOpenHands/software-agent-sdk\nAutomation ServerScheduled and event-driven automation lifecycle\nOpenHands/automation\nExtensionsReusable skills, plugins, and automation templates\nOpenHands/extensions\nSandbox ServerCommunity-supported standalone API and sandbox control plane\nOpenHands/sandbox-server\nDocumentationDocumentation for the OpenHands ecosystem\nOpenHands/docs\nEvaluationsBenchmark and evaluation infrastructure\nOpenHands/benchmarks\nEach public repository includes its own license. Check the repository you use or modify instead of assuming one\nlicense applies to the entire ecosystem.\nLegacy\nThe OpenHands CLI is no longer actively maintained. The legacy local GUI\nlaunched with\nopenhands serve\nis deprecated. For a maintained local installation, use\nAgent Canvas.\nThe archived\nOpenHands/legacy\nrepository preserves the previous backend and\nruntime source for reference.\nCommunity\nExplore all OpenHands repositories and\njoin us on Slack.\nWas this page helpful?\nYesNo\n{\"docsConfig\":{\"theme\":\"mint\",\"$schema\":\"https://mintlify.com/doc",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://docs.all-hands.dev/overview/model-context-protocol",
+      "source_type": "blog_article",
+      "title": "[深度文章] Model Context Protocol (MCP) - OpenHands Docs",
+      "content": "Model Context Protocol (MCP) - OpenHands Docs\nDocumentation Index\nFetch the complete documentation index at: /llms.txt\nUse this file to discover all available pages before exploring further.\nSkip to main content\nAssistant\nResponses are generated using AI and may contain mistakes.\nContact support\nModel Context Protocol (MCP) is an open standard that allows OpenHands to communicate with external tool servers, extending the agent’s capabilities with custom tools, specialized data processing, external API access, and more. MCP is based on the open standard defined at modelcontextprotocol.io.\nHow MCP Works\nWhen OpenHands starts, it:\nReads the MCP configuration\nConnects to configured servers (SSE, SHTTP, or stdio)\nRegisters tools provided by these servers with the agent\nRoutes tool calls to appropriate MCP servers during execution\nMCP Support Matrix\nPlatformSupport LevelConfiguration MethodDocumentation\nAgent Canvas✅ Full Support\nCustomize > MCP Servers\nin the UIMCP Settings\nSDK✅ Full SupportProgrammatic configurationSDK MCP Guide\nOpenHands Cloud✅ Full SupportCloud UI settingsMCP Settings\nGetting Started with MCP\nFor detailed configuration: See MCP Settings\nFor SDK integration: See SDK MCP Guide\nFor scoping MCP servers to an agent profile in Agent Canvas: See Agent Profiles\nFor architecture details: See MCP Architecture\nWas this page helpful?\nYesNo\n{\"docsConfig\":{\"theme\":\"mint\",\"$schema\":\"https://mintlify.com/docs.json\",\"name\":\"OpenHands Docs\",\"colors\":{\"primary\":\"#99873c\",\"light\":\"#ffe165\",\"dark\":\"#ffe165\"},\"logo\":{\"light\":\"https://mintcdn.com/allhandsai/DjhqLcIy_hW6pRTg/logo/light.png?fit=max\\u0026auto=format\\u0026n=DjhqLcIy_hW6pRTg\\u0026q=85\\u0026s=49b636402b03f7279ca5e1afefeec1d2\",\"dark\":\"https://mintcdn.com/allhandsai/DjhqLcIy_hW6pRTg/logo/dark.png?fit=max\\u0026auto=format\\u0026n=DjhqLcIy_hW6pRTg\\u0026q=85\\u0026s=e0c4017631cebc3a289798438e2c0d7a\"},\"favicon\":\"https://mintcdn.com/allhandsai/DjhqLcIy_hW6pRTg/openhands/logo-square.png?fit=max\\u0026auto=format\\u0026n=DjhqLcIy_hW6pRTg\\u0026q=85\\u0026s=6ef1bab575660ae6e2d44fcc57bc675f\",\"appearance\":{\"default\":\"light\"},\"background\":{\"color\":{\"light\":\"#f7f3ee\",\"dark\":\"#0B0D0E\"}},\"navbar\":{\"links\":[],\"primary\":{\"type\":\"github\",\"href\":\"https://github.com/OpenHands/OpenHands\"}},\"footer\":{\"socials\":{\"slack\":\"https://openhands.dev/joinslack\",\"github\":\"https://github.com/OpenHands\"},\"links\":[{\"header\":\"Links\",\"items\":[{\"label\":\"Company\",\"href\":\"https://openhands.dev/\"},{\"label\":\"Blog\",\"href\":\"https://openhands.dev/blog\"},{\"label\":\"Cloud\",\"href\":\"https://app.all-hands.dev\"},{\"label\":\"Enterprise\",\"href\":\"https://openhands.dev/enterprise\"}]}]},\"seo\":{\"indexing\":\"navigable\"},\"integrations\":{\"gtm\":{\"tagId\":\"GTM-M9S7V5BQ\"}},\"contextual\":{\"options\":[\"copy\",\"view\",\"download-spec\",\"chatgpt\",\"claude\"],\"display\":\"header\"},\"styling\":{\"latex\":false},\"navigation\":{\"pages\":[]}},\"deployment\":{\"deploymentMetadataValue\":{\"subdomain\":\"allhandsai\",\"hasAudioNarration\":false,\"actualSubdomain\":\"allhandsai\",\"customDomains\":[\"docs.openhands.dev\"],\"gitSource\":{\"type\":\"github\",\"owner\":\"openhands\",\"repo\":\"docs\",\"deployBranch\":\"main\",\"contentDirectory\":\"\",\"isPrivate\":true,\"mountPath\":\"\",\"label\":\"\"},\"feedback\":{\"thumbs\":true},\"entitlements\":{\"AI_CHAT\":{\"status\":\"ENABLED\"},\"WEB_MCP\":{\"status\":\"ENABLED\"},\"NARRATION\":{\"status\":\"ENABLED\"}},\"buildId\":\"6b076255c3055e33755c48b2\",\"clientVersion\":\"0.0.4336\",\"searchFilterCounts\":[{\"language\":\"default\",\"tag\":\"Cloud\",\"count\":197},{\"language\":\"default\",\"tag\":\"Cloud API\",\"count\":188},{\"language\":\"default\",\"tag\":\"REST API Reference\",\"count\":186},{\"language\":\"default\",\"tag\":\"SDK\",\"count\":129},{\"language\":\"default\",\"tag\":\"Guides\",\"count\":106},{\"language\":\"default\",\"tag\":\"API Reference\",\"count\":95},{\"language\":\"default\",\"tag\":\"Enterprise\",\"count\":93},{\"language\":\"default\",\"tag\":\"Remote Agent Server\",\"count\":56},{\"language\":\"default\",\"tag\":\"Home\",\"count\":53},{\"language\":\"default\",\"tag\":\"Agent Canvas\",\"count\":43}]},\"assistantConfig\":{\"deflection\":{\"enabled\":true,\"email\":\"contact@openhands.dev\",\"showHelpButton\":true}},\"basePath\":\"\",\"hasChatPermissions\":true,\"hasWebMcpPermissions\":true,\"toggles\":[{\"name\":\"kill-isr\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"enabled\":false,\"feature_enabled\":true},\"impressionData\":false},{\"name\":\"custom-rbac-roles\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"enabled\":false,\"feature_enabled\":true},\"impressionData\":false},{\"name\":\"agent-mintlify-slack\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"enabled\":false,\"feature_enabled\":true},\"impressionData\":false},{\"name\":\"agent-integrations-settings\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"enabled\":false,\"feature_enabled\":true},\"impressionData\":false},{\"name\":\"rbac-expansion\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"enabled\":false,\"feature_enabled\":true},\"impressionData\":false},{\"name\":\"automations-pr-grouping\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"enabled\":false,\"feature_enabled\":true},\"impressionData\":false},{\"name\":\"custom-prefix\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"en",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://docs.all-hands.dev/openhands/usage/agent-canvas/setup",
+      "source_type": "blog_article",
+      "title": "[深度文章] Install Agent Canvas - OpenHands Docs",
+      "content": "Install Agent Canvas - OpenHands Docs\nDocumentation Index\nFetch the complete documentation index at: /llms.txt\nUse this file to discover all available pages before exploring further.\nSkip to main content\nAssistant\nResponses are generated using AI and may contain mistakes.\nContact support\nQuick Start\nInstall Agent Canvas with npm and start the full local stack:\nnpm install -g @openhands/agent-canvas\nagent-canvas\nAgent Canvas starts on\nhttp://localhost:8000\n; open that URL manually if your browser does not. Then follow First Time Setup to configure a model and open a workspace. If installation or startup fails, see Verify Prerequisites.\nIf you would rather not install npm packages, prefer an installer with bundled Node.js and\nuv\n, or want a sandboxed setup, see More Install Options below.\nTreat agents and ACP processes as untrusted: they can run shell commands and read or write files with your user account’s permissions. Agent Canvas is the client and does not isolate them — use a container, sandbox, or VM for a tighter boundary, and review VM / Self-Hosted Installation before exposing backend services to a network you do not control.\nMore Install Options\nThe\nagent-canvas\nlauncher runs the Canvas client with Agent Server, Automation Server, and ingress as an all-in-one local stack. Use npm or npx for direct local execution, or Docker for a containerized stack with explicit project mounts. You can also run the client separately and connect it to an existing backend.\nMethodUse It WhenWhat The Agent Can Access\nDesktop app (preview)You want an installer with bundled Node.js and\nuv\n. Go to macOS, Windows, or Linux instructions.The default local backend runs directly on your machine and can work in local workspaces you open.\nnpm local installYou want the quickest local browser setup.Runs directly on your machine and can work in local workspaces you open.\nDockerYou want a local sandbox with clearer file boundaries.Runs inside a container and can access mounted project directories.\nnpxYou want to try Agent Canvas without installing the package globally.Runs directly on your machine and can work in local workspaces you open.\nVM / self-hostedYou want an always-on backend, stronger hardware, or a team-accessible server.Runs on the VM or dedicated host you configure.\nFrom sourceYou are contributing to Agent Canvas or changing the frontend/backend stack.Runs your local development checkout.\nFor an installer, choose the desktop preview below. For a browser setup, use\nnpx\nfor a quick first run or npm for a reusable\nagent-canvas\ncommand. Use Docker when you specifically want sandboxing.\nDesktop App (Preview Build)\nThe desktop app is an early preview for user testing. It bundles Node.js and\nuv\n, starts its local backend automatically, and does not require you to install npm packages, clone the source, or keep a terminal open. Skip the command-line prerequisites and installation sections below.\nPreview builds may have rough edges. The macOS app is not yet signed with an Apple Developer ID or notarized, so Gatekeeper may block it; see desktop troubleshooting. Windows may show a SmartScreen prompt. Current installers support Apple silicon and Intel Macs, and x64 Windows and Linux.\nDownload the file for your operating system from the Assets list on the latest OpenHands release. Replace\n<version>\nin the filenames below with the release version. Older builds are on the releases page.\nmacOS\nDownload\nOpenHands-Agent-Canvas-<version>-universal.dmg\nfrom the latest release assets.\nOpen the disk image and drag OpenHands Agent Canvas to Applications.\nLaunch OpenHands Agent Canvas from Applications.\nThe universal disk image includes Node.js and\nuv\nfor both Apple silicon and Intel Macs.\nWindows\nDownload\nOpenHands-Agent-Canvas-Setup-<version>.exe\nfrom the latest release assets.\nRun the installer. If Windows SmartScreen prompts you, confirm that the installer came from the official OpenHands release before continuing.\nLaunch OpenHands Agent Canvas from the Start menu.\nLinux\nChoose a package from the latest release assets:\nAppImage: Download\nOpenHands.Agent.Canvas-<version>.AppImage\n, make it executable in your file manager’s permissions or with\nchmod +x\n, then run the file.\nDebian / Ubuntu: Download\nagent-canvas_<version>_amd64.deb\n, install it with your package manager (for example,\nsudo apt install ./agent-canvas_<version>_amd64.deb\n), then launch OpenHands Agent Canvas from your applications menu.\nFirst Launch\nDuring startup, select Show details to view and copy the live startup log if startup takes longer than expected or fails. Once the app opens, follow First Time Setup to configure a model and open a workspace.\nThe desktop app can also run conversations in DigitalOcean sandboxes. See DigitalOcean Managed Agents.\nTroubleshooting and Lifecycle\nIf macOS reports that the app is damaged or cannot be opened, first confirm that you downloaded it from the official OpenHands release. After moving it to Applications, clear its quarantine attribu",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://docs.all-hands.dev/openhands/usage/agent-canvas/overview",
+      "source_type": "blog_article",
+      "title": "[深度文章] Agent Canvas Overview - OpenHands Docs",
+      "content": "Agent Canvas Overview - OpenHands Docs\nDocumentation Index\nFetch the complete documentation index at: /llms.txt\nUse this file to discover all available pages before exploring further.\nSkip to main content\nAssistant\nResponses are generated using AI and may contain mistakes.\nContact support\nAgent Canvas is an open-source control surface for agentic work. From one place, you can manage conversations, files, terminals, model configuration, backends, and automations.\nThe browser interface connects to one or more backends that run the agent and its tools. By default, that backend runs on your machine, but you can instead use Docker, a VM, Modal, or OpenHands Cloud. The LLM models can run locally, through a provider API or be accessed through an ACP agent.\nWhen To Use Agent Canvas\nChoose the path that matches where and how you want your agents to run:\nInstall Agent Canvas\nRun OpenHands locally in a browser.\nUse Docker\nUse a sandboxed local environment with mounted project directories.\nVM / Self-Hosted\nRun agents on an always-on machine you control.\nCloud Backend\nConnect to managed cloud sandboxes.\nACP Agents\nUse Claude Code, Codex, Gemini CLI, or another ACP agent.\nDesktop Preview\nTest a preview build of the native desktop app.\nHow Agent Canvas Works\nAgent Canvas is the browser client. It connects to backend services that own execution and persistent state:\nConceptWhat It MeansWhy It Matters\nBrowser UIThe web interface you open in your browser.This is where you chat, inspect files, manage settings, and configure automations.\nBackendThe agent server that runs conversations, tools, settings, secrets, and automations.This determines where the agent runs and what machine or sandbox it can access.\nWorkspaceThe folder, repository, container mount, or cloud sandbox the agent works in.This determines which files the agent can read and write.\nAgent and modelThe OpenHands agent or an ACP agent, plus the model credentials it uses.This determines which LLM or provider receives conversation context and powers the agent.\nThe\nagent-canvas\nlauncher can package the client and backend services into one local stack. You can also run the client separately and connect it to services on a VM, in Docker or Kubernetes, or through OpenHands Cloud or OpenHands Enterprise.\nSee Agent Canvas Architecture for the complete service and deployment model.\nSwitching backends switches the environment the agent is using. For details on how conversations and workspaces remain separate, see Conversations and Backends.\nEnterprise License Warnings\nOn an instance-locked OpenHands Enterprise Canvas, check the banner at the top of the page for license warnings, such as a missing or expired license or an upcoming trial end. The banner appears only when the instance reports a relevant status. It does not appear for a license in good standing, when enforcement is off, or when the instance does not provide a supported license status route.\nChoosing A Trust Boundary\nBefore installing, decide where you want the agent to run and what files it should be able to access.\nSetupTrust BoundaryBest For\nnpm local installRuns directly on your machine. The agent server can operate on the local filesystem.Fastest local setup when you trust the machine and understand the file access.\nDockerRuns inside a container and only sees the directories you mount.Local sandboxing and clearer file boundaries.\nVM or dedicated machineRuns on the remote host you control.Always-on agents, heavier compute, team-shared backends, or personal/work separation.\nOpenHands CloudRuns in managed OpenHands Cloud sandboxes.Cloud execution without maintaining your own machine or VM backend.\nAgent Canvas can run agents that execute shell commands, read files, write files, and use connected tools. Only connect a backend to files, secrets, and networks that you are willing to let the agent use.\nWhat Happens When You Close the Terminal?\nFor a local npm or npx installation, closing the terminal stops the Agent Canvas process, so the browser UI can no longer use its local backend. Start Agent Canvas again with the same command to continue. A Docker container, VM, or cloud backend continues running until that backend is stopped.\nSee Install to restart Agent Canvas and Troubleshooting if the browser cannot reconnect.\nModel Access\nAgent Canvas supports several model access patterns:\nDirect provider key — enter an API key from Anthropic, OpenAI, Google, or another supported provider.\nOpenHands LLM API key — use an OpenHands LLM API key for verified hosted models.\nACP agent subscription login — use a signed-in provider, such as Claude Code, Codex, or Gemini, when the backend runs on the same machine as that login.\nLocal or OpenAI-compatible provider — connect providers such as Ollama, LM Studio, LiteLLM, or a compatible gateway through model settings.\nSee Configure a Model, Manage LLM Profiles, and ACP Agents for details.\nCustomize Your Agent\nAfter the first conversation, choose the extension point that matches you",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://news.ycombinator.com/item?id=31797288",
+      "source_type": "user_review",
+      "title": "[Hacker News 用户讨论] OpenHands (10 条评论)",
+      "content": "- @asaddhamani: This is a great idea to use AI to enable accessibility in the other direction too.\n- @blamestross: The hackathon: \"let's make a machine that interprets sign language\" trope is a personal bugbear of mine. Being able to read out finger spelling is kinda useless when most of the relevant population can't spell (why bother with an abitrary phonetic encoding for words in a language you don't know) Newer systems can read entire signs, which is cooler, but still useless because they can't handle the g",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://github.com/All-Hands-AI/OpenHands/issues",
+      "source_type": "user_review",
+      "title": "[GitHub Issues 一线用户痛点] All-Hands-AI/OpenHands",
+      "content": "- [closed, 204 评论] [Bug]: detect ports automatically instead of always using 3001: ### Operating System  macOS  ### Installation Method  npm (`npx @openhands/agent-canvas` or `npm install -g @openhands/agent-canvas`)  ### Agent Canvas Version  1.20.0  ### Bug Description  So as the title explains, user\n- [closed, 139 评论] Nightly Integration Tests Runs: This is a placeholder issue for the nightly integration tests runs.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://zhuanlan.zhihu.com/p/2018450684861792754",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] GitHub霸榜！OpenHands开源炸裂：全能AI程序员真的来了？",
+      "content": "Mar 20, 2026 · 阅读指引：这是一篇旨在打破“AI只会写Hello World”刻板印象的深度硬核测评。 本文不仅是对OpenHands这一现象级开源项目的拆解，更是对未来软件工程形态的一次前瞻性推演。 全文约 3500 字，阅读需 8 分钟，建议收…",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.zhihu.com/question/1888656774510405327",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] OpenHands, MetaGPT, OpenManus, LangGraph等框架如何选择？",
+      "content": "在 OpenHands、MetaGPT、OpenManus 和 LangGraph 等框架中选择时，需结合具体场景需求和技术特点进行权衡。 以下是各框架的核心差异及选型建议： 1. 框架定位与适用场景 ... 2. 关键决策维度 (1) 任务复杂度 简单任务（如自动生成周报）",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://zhuanlan.zhihu.com/p/2030684535390745084",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] OpenHands：从代码补全到自主执行，这款 GitHub 7万星神器正重塑开发...",
+      "content": "Apr 23, 2026 · OpenHands 的价值在于它不只是一个静态的 代码生成器，而是一个具备目标感、能自我纠错、会主动学习的 数字开发助手。 对于个人开发者而言，它是突破生产力瓶颈的利器；对于技术团队，它是探索 AI 辅助开发 （AIGC for Software Engineering）最值得实践的 开源框架。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://juejin.cn/post/7683024148631420937",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] AI 日报 2026-09-09一、AI Coding 动态 1. OpenHands 1.0 发布：开源...",
+      "content": "Sep 8, 2026 · 对工程管理者，落地路径很具体：先在非关键服务上试点多 agent Workspace，配 OpenHands 沙箱做 staging，度量缺陷率/评审开销/速度后再扩。 但也提示一个新的组织问题——多 agent 并发写同一仓库时的\"上下文冲突与责任归属\"会成为新的协作成本。",
+      "is_primary": false
+    }
+  ],
+  "prompt_contract": {
+    "categories": [
+      "engineering",
+      "data",
+      "knowledge",
+      "creative",
+      "automation"
+    ],
+    "common_dimensions": [
+      {
+        "dimension": "agent_orchestration",
+        "label": "Agent 编排",
+        "weight": 5
+      },
+      {
+        "dimension": "model_routing",
+        "label": "模型路由",
+        "weight": 5
+      },
+      {
+        "dimension": "tool_chain",
+        "label": "工具链",
+        "weight": 5
+      },
+      {
+        "dimension": "prompt_engineering",
+        "label": "提示词工程",
+        "weight": 4
+      },
+      {
+        "dimension": "context_engineering",
+        "label": "上下文工程",
+        "weight": 5
+      },
+      {
+        "dimension": "data_flow_state",
+        "label": "数据流与状态管理",
+        "weight": 4
+      },
+      {
+        "dimension": "security_sandbox",
+        "label": "安全沙箱",
+        "weight": 5
+      },
+      {
+        "dimension": "human_ai_collaboration",
+        "label": "人机协同",
+        "weight": 5
+      },
+      {
+        "dimension": "extensibility_ecosystem",
+        "label": "扩展生态",
+        "weight": 5
+      }
+    ],
+    "specialized_dimensions_by_category": {
+      "engineering": [
+        {
+          "dimension": "sandbox_model",
+          "label": "沙箱隔离模型"
+        },
+        {
+          "dimension": "code_understanding",
+          "label": "代码理解引擎"
+        },
+        {
+          "dimension": "diff_management",
+          "label": "Diff 与变更管理"
+        },
+        {
+          "dimension": "terminal_management",
+          "label": "终端与进程管理"
+        },
+        {
+          "dimension": "checkpoint_rollback",
+          "label": "检查点与回滚"
+        }
+      ],
+      "data": [
+        {
+          "dimension": "nl2sql_pipeline",
+          "label": "NL2SQL 转换管线"
+        },
+        {
+          "dimension": "data_source_adapter",
+          "label": "多源异构数据适配"
+        },
+        {
+          "dimension": "schema_discovery",
+          "label": "数据模式自动发现"
+        },
+        {
+          "dimension": "query_optimization",
+          "label": "查询优化与安全"
+        },
+        {
+          "dimension": "visualization_engine",
+          "label": "数据可视化引擎"
+        }
+      ],
+      "knowledge": [
+        {
+          "dimension": "rag_pipeline",
+          "label": "RAG 检索管线"
+        },
+        {
+          "dimension": "index_vector_store",
+          "label": "知识索引与向量存储"
+        },
+        {
+          "dimension": "citation_management",
+          "label": "引用链管理与溯源"
+        },
+        {
+          "dimension": "multi_doc_reasoning",
+          "label": "多文档综合推理"
+        },
+        {
+          "dimension": "knowledge_update",
+          "label": "知识动态更新机制"
+        }
+      ],
+      "creative": [
+        {
+          "dimension": "multimodal_pipeline",
+          "label": "多模态生成管线"
+        },
+        {
+          "dimension": "version_variant",
+          "label": "版本与变体管理"
+        },
+        {
+          "dimension": "realtime_preview",
+          "label": "实时渲染与预览"
+        },
+        {
+          "dimension": "style_consistency",
+          "label": "风格一致性控制"
+        },
+        {
+          "dimension": "template_reuse",
+          "label": "模板与资产复用"
+        }
+      ],
+      "automation": [
+        {
+          "dimension": "dag_state_machine",
+          "label": "DAG/状态机引擎"
+        },
+        {
+          "dimension": "multi_agent_protocol",
+          "label": "多 Agent 通信协议"
+        },
+        {
+          "dimension": "fault_tolerance",
+          "label": "容错与重试恢复"
+        },
+        {
+          "dimension": "external_integration",
+          "label": "外部系统与连接器集成"
+        },
+        {
+          "dimension": "trigger_scheduling",
+          "label": "事件触发与调度机制"
+        }
+      ]
+    },
+    "pattern_catalog": [
+      {
+        "name": "single_agent",
+        "display_name": "单 Agent",
+        "description": "单个 LLM 配合工具集，适用于任务边界清晰的场景"
+      },
+      {
+        "name": "multi_agent_hierarchical",
+        "display_name": "多 Agent 层级式",
+        "description": "Planner-Worker 模式，规划 Agent 分解任务，执行 Agent 完成子任务"
+      },
+      {
+        "name": "multi_agent_peer",
+        "display_name": "多 Agent 对等协作式",
+        "description": "多个专业领域 Agent 平级协作，通过共享上下文或消息传递交换信息、相互校验"
+      },
+      {
+        "name": "multi_agent_swarm",
+        "display_name": "多 Agent 蜂群式",
+        "description": "去中心化或轻量协调的 Agent 协作网络，支持基于任务和环境的动态转交 (Handoff) 与动态扩缩容"
+      },
+      {
+        "name": "agent_pipeline",
+        "display_name": "Agent 管线式",
+        "description": "任务按固定阶段线性或有向无环图 (DAG) 顺序流转，每个阶段由专有 Agent 负责"
+      },
+      {
+        "name": "agent_loop",
+        "display_name": "Agent 自治循环式",
+        "description": "基于目标驱动的 ReAct 或 Plan-Execute-Reflect 持续迭代循环，直至达到终止条件"
+      },
+      {
+        "name": "sliding_window_fifo",
+        "display_name": "滑动窗口截断",
+        "description": "基于固定 Token 预算或消息条数维护窗口，丢弃最久的历史记录，仅保留最新上下文"
+      },
+      {
+        "name": "hierarchical_recursive_summary",
+        "display_name": "分层递归摘要压缩",
+        "description": "当上下文达到容量阈值时，自动调用模型对早期交互进行结构化压缩与摘要提炼"
+      },
+      {
+        "name": "rag_dynamic_retrieval",
+        "display_name": "RAG 动态检索注入",
+        "description": "将海量历史记录、知识库或代码库切分向量化，根据当前上下文动态召回相关片段按需装载"
+      },
+      {
+        "name": "prefix_kv_cache_reuse",
+        "display_name": "静态前缀缓存优化",
+        "description": "规范化排列上下文，将固定的 System Prompt、工具定义与知识前缀集中前置，最大化复用 KV Cache"
+      },
+      {
+        "name": "structured_scratchpad_isolation",
+        "display_name": "结构化工作区与暂存隔离",
+        "description": "划分独立的命名空间分区（如目标、步骤计划、参考资料、临时便签），保持上下文整洁"
+      },
+      {
+        "name": "hybrid_tiered_memory",
+        "display_name": "分层多级混合记忆系统",
+        "description": "构建包含工作记忆、情节记忆与长期语义概念记忆的三级认知记忆网络"
+      },
+      {
+        "name": "single_model_static",
+        "display_name": "单模型静态绑定",
+        "description": "系统全量请求统一路由至单一固定模型，架构最简"
+      },
+      {
+        "name": "capability_tier_routing",
+        "display_name": "能力阶梯路由",
+        "description": "依据任务预估复杂度与推理要求，在轻量模型与旗舰模型之间按需动态分流"
+      },
+      {
+        "name": "intent_semantic_routing",
+        "display_name": "意图语义分类路由",
+        "description": "基于用户意图的语义特征与分类标签，将请求路由至领域微调或垂直专用模型"
+      },
+      {
+        "name": "cascade_fallback_routing",
+        "display_name": "级联降级与容灾路由",
+        "description": "优先调用低成本或本地模型，若输出校验失败、超时或限流，自动回退到备选大模型"
+      },
+      {
+        "name": "speculative_draft_routing",
+        "display_name": "投机草稿路由",
+        "description": "轻量模型快速生成初稿或补全建议，大模型进行并行校验或增量精修"
+      },
+      {
+        "name": "ensemble_mixture_routing",
+        "display_name": "混合集成共识路由",
+        "description": "并行分发给多个不同厂商的基座模型，再由聚合模型进行整合、评判与共识融合"
+      },
+      {
+        "name": "function_calling_schema",
+        "display_name": "原生函数调用",
+        "description": "通过标准 JSON Schema 描述工具元数据，由 LLM 原生输出符合 Schema 的结构化调用参数"
+      },
+      {
+        "name": "react_tool_interleaving",
+        "display_name": "ReAct 交互式工具循环",
+        "description": "交替进行思考 (Thought)、行动 (Action) 与观察 (Observation)，根据前序工具返回值动态推导后续调用"
+      },
+      {
+        "name": "mcp_protocol_standard",
+        "display_name": "MCP 标准化协议集成",
+        "description": "基于开放标准协议 (Model Context Protocol) 统一接入本地与远程工具及数据源"
+      },
+      {
+        "name": "code_interpreter_sandbox",
+        "display_name": "代码解释器与沙箱即工具",
+        "description": "AI 将多步骤复杂操作编写为程序脚本，在受限隔离沙箱中批量执行并获取执行结果"
+      },
+      {
+        "name": "dag_orchestrated_pipeline",
+        "display_name": "DAG 有向图编排工具流",
+        "description": "通过有向无环图 (DAG) 显式组织工具执行依赖，支持拓扑调度、并发加速与断点续跑"
+      },
+      {
+        "name": "human_in_the_loop_guard",
+        "display_name": "人机介入安全防护工具",
+        "description": "对高危或不可逆操作（写库、删改文件、系统配置、支付）引入人机协同审批断点"
+      }
+    ],
+    "guard_rules": {
+      "core_requires_primary_verbatim_quote": true,
+      "moderate_requires_any_verbatim_quote": true,
+      "unverified_max_confidence": 2
+    },
+    "expected_draft_schema": {
+      "app_name": "string",
+      "category": "engineering|data|knowledge|creative|automation",
+      "architecture_summary": "string",
+      "key_insights": [
+        "string"
+      ],
+      "common_dimensions": [
+        {
+          "dimension": "agent_orchestration",
+          "summary": "string",
+          "details": "string",
+          "key_decisions": [
+            "string"
+          ],
+          "takeaways": [
+            "string"
+          ],
+          "verbatim_quotes": [
+            "exact substring copied from collected_items"
+          ],
+          "evidence_sources": [
+            "url or title"
+          ],
+          "confidence": 4
+        }
+      ],
+      "specialized_dimensions": "same shape using 5 keys from specialized_dimensions_by_category[category]",
+      "matched_patterns": [
+        {
+          "pattern_name": "string",
+          "description": "string",
+          "evidence": [
+            "string"
+          ],
+          "confidence": 4
+        }
+      ],
+      "user_reviews": {
+        "review_sources": [
+          "url"
+        ],
+        "praises": [
+          "string"
+        ],
+        "pain_points": [
+          "string"
+        ],
+        "trust_and_ux_friction": [
+          "string"
+        ],
+        "sample_quotes": [
+          "string"
+        ]
+      },
+      "pm_guidance": {
+        "suitable_product_forms": [
+          "string"
+        ],
+        "autonomy_level": "L2 (...)",
+        "interaction_design": "string",
+        "cost_latency_tradeoffs": "string",
+        "mvp_must_haves": [
+          "string"
+        ],
+        "mvp_nice_to_haves": [
+          "string"
+        ],
+        "anti_patterns_to_avoid": [
+          "string"
+        ]
+      }
+    }
+  }
+}

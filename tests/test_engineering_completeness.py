@@ -305,6 +305,127 @@ def test_cli_online_pipeline_e2e_mocked(tmp_path, monkeypatch):
     assert inter_path.exists()
 
     md_text = md_path.read_text(encoding="utf-8")
-    assert "识别到的架构模式" in md_text
+    assert md_text and "识别到的架构模式" in md_text
     assert "`mcp_protocol_standard`" in md_text
     assert "strict_verified" in inter_path.read_text(encoding="utf-8")
+
+
+def test_dual_entrypoint_agent_native_collect_and_finalize_parity(tmp_path, monkeypatch):
+    """Verify Coding-Agent-native entrypoint (collect -> draft -> finalize) runs without any API key
+    and enforces identical Guard, cache, report, and compare parity as CLI API mode."""
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setenv("HARNESS_CACHE_DIR", str(tmp_path / "cache"))
+    monkeypatch.setenv("HARNESS_REPORTS_DIR", str(tmp_path / "reports"))
+    cfg._settings = None
+
+    primary_quote = "Cline runs commands inside VS Code terminal with explicit human approval per action."
+    fake_blog = [
+        CollectedData(
+            source_url="https://github.com/cline/cline/README.md",
+            source_type="github_readme",
+            title="Cline README",
+            content=primary_quote,
+        )
+    ]
+
+    async def fake_gh(self, app_obj):
+        return fake_blog
+
+    async def fake_search_empty(self, app_name, planned_queries=None):
+        self.last_coverage_items = [
+            QueryCoverageItem(query="Cline harness", language="en", angle="architecture_qa", hits_count=1, chars_collected=80)
+        ]
+        self.last_blocked_sources = []
+        return []
+
+    async def fake_refill_empty(self, app_name, missing_angles, existing_urls=None):
+        return [], []
+
+    async def fake_empty(self, app_obj):
+        return []
+
+    out_dir = tmp_path / "agent_reports"
+    with (
+        patch("harness_analyzer.collectors.search.WebSearchCollector.search_app", fake_search_empty),
+        patch("harness_analyzer.collectors.search.WebSearchCollector.refill_missing_angles", fake_refill_empty),
+        patch("harness_analyzer.collectors.github.GitHubCollector.collect", fake_gh),
+        patch("harness_analyzer.collectors.blog.BlogCollector.collect", fake_empty),
+        patch("harness_analyzer.collectors.reverse_eng.ReverseEngineeringCollector.collect", fake_empty),
+        patch("harness_analyzer.collectors.reviews.UserReviewCollector.collect", fake_empty),
+    ):
+        res_collect = runner.invoke(app, ["collect", "Cline", "-O", str(out_dir)])
+
+    assert res_collect.exit_code == 0, res_collect.stdout
+    collected_path = out_dir / "cline.collected.json"
+    assert collected_path.exists()
+    bundle_data = json.loads(collected_path.read_text(encoding="utf-8"))
+    assert len(bundle_data["prompt_contract"]["common_dimensions"]) == 9
+    assert len(bundle_data["prompt_contract"]["specialized_dimensions_by_category"]["engineering"]) == 5
+
+    # Agent writes draft with 1 real quote (should pass strict Guard) and 1 fabricated quote (should be capped!)
+    draft_path = out_dir / "cline.agent_draft.json"
+    draft_payload = {
+        "app_name": "cline",
+        "category": "engineering",
+        "architecture_summary": "Cline is an IDE coding agent with HITL approval.",
+        "key_insights": ["Human-in-the-loop terminal approval"],
+        "common_dimensions": [
+            {
+                "dimension": "human_ai_collaboration",
+                "summary": "Per-action approval in VS Code",
+                "verbatim_quotes": [primary_quote],
+                "evidence_sources": ["https://github.com/cline/cline/README.md"],
+                "confidence": 5,
+            },
+            {
+                "dimension": "model_routing",
+                "summary": "Claimed secret routing without evidence",
+                "verbatim_quotes": ["Nonexistent fabricated sentence never collected"],
+                "evidence_sources": ["https://example.com"],
+                "confidence": 5,
+            },
+        ],
+        "specialized_dimensions": [
+            {
+                "dimension": "terminal_management",
+                "summary": "VS Code terminal integration",
+                "verbatim_quotes": [primary_quote],
+                "confidence": 5,
+            }
+        ],
+        "matched_patterns": [
+            {
+                "pattern_name": "human_in_the_loop_guard",
+                "description": "Explicit human approval before commands",
+                "evidence": [primary_quote],
+                "confidence": 5,
+            }
+        ],
+        "pm_guidance": {
+            "suitable_product_forms": ["IDE Extension"],
+            "autonomy_level": "L2",
+            "interaction_design": "Approve every terminal command",
+            "cost_latency_tradeoffs": "BYOK model choice",
+            "mvp_must_haves": ["Approval UI"],
+            "mvp_nice_to_haves": ["Checkpoints"],
+            "anti_patterns_to_avoid": ["Silent shell exec"],
+        },
+    }
+    draft_path.write_text(json.dumps(draft_payload, ensure_ascii=False), encoding="utf-8")
+
+    res_finalize = runner.invoke(app, ["finalize", str(draft_path), "-O", str(out_dir)])
+    assert res_finalize.exit_code == 0, res_finalize.stdout
+    assert (out_dir / "cline.md").exists()
+    inter = json.loads((out_dir / "cline.intermediate.json").read_text(encoding="utf-8"))
+    assert inter["guard_summary"]["strict_verified"] == 2
+    assert inter["guard_summary"]["unverified_capped"] == 1
+
+    # Verify cross-entrypoint compare compatibility with cached offline benchmark
+    runner.invoke(app, ["analyze", "cursor", "--offline"])
+    cmp_path = out_dir / "cmp_agent_vs_offline.md"
+    res_cmp = runner.invoke(app, ["compare", "cline", "cursor", "-o", str(cmp_path)])
+    assert res_cmp.exit_code == 0, res_cmp.stdout
+    assert cmp_path.exists()
+
