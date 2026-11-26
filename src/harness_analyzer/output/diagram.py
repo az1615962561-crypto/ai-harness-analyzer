@@ -145,6 +145,43 @@ class DiagramGenerator:
             f'    Decide -. 避坑红线 .-> Avoid["严禁 ({len(anti_patterns)} 项): {anti_sample}"]'
         )
 
+    _SHORT_AXIS_LABELS: dict[str, str] = {
+        "agent_orchestration": "编排",
+        "model_routing": "路由",
+        "tool_chain": "工具",
+        "prompt_engineering": "提示",
+        "context_engineering": "上下文",
+        "data_flow_state": "状态",
+        "security_sandbox": "沙箱",
+        "human_ai_collaboration": "协同",
+        "extensibility_ecosystem": "生态",
+        "Agent 编排": "编排",
+        "模型路由": "路由",
+        "工具调用链": "工具",
+        "工具链": "工具",
+        "Prompt 工程": "提示",
+        "提示词工程": "提示",
+        "上下文工程": "上下文",
+        "数据流与状态": "状态",
+        "数据流与状态管理": "状态",
+        "安全与沙箱": "沙箱",
+        "安全沙箱": "沙箱",
+        "人机协作": "协同",
+        "人机协同": "协同",
+        "扩展性与生态": "生态",
+        "扩展生态": "生态",
+    }
+
+    @classmethod
+    def _axis_token(cls, key: Any, label: Any) -> str:
+        """生成不带空格和引号的紧凑 2-3 字 X 轴标签，避免 xychart-beta 横向重叠和显示引号"""
+        for cand in (str(key or "").strip(), str(label or "").strip()):
+            if cand in cls._SHORT_AXIS_LABELS:
+                return cls._SHORT_AXIS_LABELS[cand]
+        raw = str(label or key or "dim")
+        cleaned = re.sub(r'[\s"\'()\[\]{}:/\\,]+', "", raw)
+        return cleaned[:4] or "dim"
+
     def generate_evidence_flow(self, artifact: Any, analysis: Any = None) -> str:
         """生成中间产物 Guard 分层验证与采集漏斗 Mermaid 图"""
         source_count = self._get(analysis, "source_count", default=0) if analysis else 0
@@ -161,13 +198,13 @@ class DiagramGenerator:
 
         lines = [
             "flowchart LR",
-            f'    Collect["五路采集 ({source_count} 条信源 | 中{zh_hits}/英{en_hits} | 覆盖率 {cov_pct})"] --> Guard{{"分维度 Guard 原文校验"}}',
-            f'    Guard -- "一级/多重实证 ({strict_n})" --> Core["✅ P0 强实证锚点"]',
-            f'    Guard -- "单条/二手实证 ({partial_n})" --> Mod["⚠️ 受限补充论据 (≤3★)"]',
-            f'    Guard -- "缺原文实证 ({capped_n})" --> Warn["🚧 推断封顶警示 (≤2★)"]',
+            f'    Collect["采集: {source_count}源 / 中{zh_hits}英{en_hits} / {cov_pct}"] --> Guard{{"分维度 Guard 校验"}}',
+            f'    Guard -- "严格 ({strict_n})" --> Core["P0 强实证锚点"]',
+            f'    Guard -- "受限 ({partial_n})" --> Mod["补充论据 ≤3★"]',
+            f'    Guard -- "封顶 ({capped_n})" --> Warn["推断警示 ≤2★"]',
         ]
         if blocked_n:
-            lines.append(f'    Collect -. "反爬/429熔断" .-> Blocked["🛡️ 礼貌跳过 ({blocked_n} 处)"]')
+            lines.append(f'    Collect -. "429/反爬" .-> Blocked["礼貌跳过 ({blocked_n} 处)"]')
         return "\n".join(lines)
 
     def generate_dimensions_chart(
@@ -176,27 +213,26 @@ class DiagramGenerator:
         title: str = "维度实证置信度分布",
         weights_map: dict[str, int] | None = None,
     ) -> str:
-        """生成维度置信度（及权重）xychart-beta 柱状图"""
+        """生成维度置信度（及权重）xychart-beta 图（紧凑标签 + Y 轴上限留白 6 防止折线撞图例）"""
         if not dims:
             return ""
         labels = []
         confs = []
         weights = []
         for d in dims[:9]:
+            dim_key = str(self._get(d, "dimension", default=""))
             raw_lbl = self._get(d, "label", "dimension_label", "dimension", default="dim")
-            clean_lbl = self._safe_label(raw_lbl, max_len=10)
-            labels.append(f'"{clean_lbl}"')
+            labels.append(self._axis_token(dim_key, raw_lbl))
             c = self._get(d, "confidence", default=3)
             confs.append(str(max(1, min(5, int(round(float(c) * 5 if isinstance(c, float) and c <= 1 else float(c)))))))
             if weights_map is not None:
-                dim_key = str(self._get(d, "dimension", default=""))
                 weights.append(str(weights_map.get(dim_key, 3)))
 
         lines = [
             "xychart-beta",
             f'    title "{self._safe_label(title, 36)}"',
             f'    x-axis [{", ".join(labels)}]',
-            '    y-axis "评分 (1-5★)" 0 --> 5',
+            '    y-axis "评分(满分5)" 0 --> 6',
             f'    bar [{", ".join(confs)}]',
         ]
         if weights:
@@ -409,22 +445,25 @@ class DiagramGenerator:
 
     def generate_comparison_chart(self, analyses: list[Any]) -> str:
         """仅当对比维度足够多（多应用间至少 4 个共性维度）时生成多维对比 xychart-beta，
-        单一总评分对比（仅两三个数字）不浪费篇幅画柱状图。
+        使用紧凑 2-3 字无引号 X 轴标签与 Y 轴上限 6 避免遮挡图例。
         """
         if len(analyses) < 2:
             return ""
-        common_labels: list[str] = []
-        app_scores: list[list[int]] = []
+        common_keys_and_labels: list[tuple[str, str]] = []
+        seen_labels: set[str] = set()
         for a in analyses:
             dims = self._get(a, "common_dimensions", default=[]) or []
             for d in dims:
+                dim_key = str(self._get(d, "dimension", default=""))
                 lbl = str(self._get(d, "label", "dimension_label", "dimension", default=""))
-                if lbl and lbl not in common_labels:
-                    common_labels.append(lbl)
-        if len(common_labels) < 4:
+                if lbl and lbl not in seen_labels:
+                    seen_labels.add(lbl)
+                    common_keys_and_labels.append((dim_key, lbl))
+        if len(common_keys_and_labels) < 4:
             return ""
 
-        chart_labels = common_labels[:9]
+        chart_items = common_keys_and_labels[:9]
+        app_scores: list[list[int]] = []
         for a in analyses[:4]:
             dims = self._get(a, "common_dimensions", default=[]) or []
             score_map = {
@@ -433,14 +472,16 @@ class DiagramGenerator:
                 )
                 for d in dims
             }
-            app_scores.append([score_map.get(lbl, 0) for lbl in chart_labels])
+            app_scores.append([score_map.get(lbl, 0) for _, lbl in chart_items])
 
-        x_items = ", ".join(f'"{self._safe_label(l, 8)}"' for l in chart_labels)
+        app1_name = self._safe_label(self._get(analyses[0], "app_display_name", "app_name", default="App1"), 14)
+        app2_name = self._safe_label(self._get(analyses[1], "app_display_name", "app_name", default="App2"), 14)
+        x_items = ", ".join(self._axis_token(k, l) for k, l in chart_items)
         lines = [
             "xychart-beta",
-            '    title "共性维度实证置信度横向对比 (柱状=首应用, 折线=次应用)"',
+            f'    title "{app1_name}(柱) vs {app2_name}(折线) 共性维度实证评分"',
             f"    x-axis [{x_items}]",
-            '    y-axis "置信度 (0-5★)" 0 --> 5',
+            '    y-axis "置信度(满分5)" 0 --> 6',
             f"    bar [{', '.join(str(v) for v in app_scores[0])}]",
         ]
         if len(app_scores) >= 2:

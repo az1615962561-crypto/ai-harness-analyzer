@@ -1,7 +1,7 @@
 {
   "app_name": "claude-code",
   "category": "engineering",
-  "generated_at": "2026-11-26T13:40:42.751477",
+  "generated_at": "2026-11-26T13:43:09.401300",
   "core_verified_facts": [
     "[沙箱隔离模型] 混合模型：本地终端通过可执行权限网关与写入范围受控执行（不依赖重容器即可本地读写），云端/API 工具层配合沙箱容器隔离 (置信度 4★ | core/strict_verified)",
     "[代码理解引擎] 以多轮 Agentic Search 实时探测工程结构与跨文件依赖，不要求用户手工勾选或预建复杂外部向量库 (置信度 3★ | core/partial_verified)",

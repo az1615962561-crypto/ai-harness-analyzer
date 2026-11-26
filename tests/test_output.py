@@ -120,3 +120,13 @@ def test_selective_diagrams_suppress_trivial_and_render_multidim():
     md = gen.generate(analysis)
     # Only overall topology diagram; trivial single-dim model_routing should NOT add boilerplate diagram
     assert md.count("```mermaid") == 1
+
+    # Verify xychart-beta uses unquoted compact axis ticks and Y ceiling=6 headroom
+    chart = DiagramGenerator().generate_dimensions_chart(
+        [
+            DimensionAnalysis(dimension="agent_orchestration", label="Agent 编排", summary="s", confidence=5),
+            DimensionAnalysis(dimension="data_flow_state", label="数据流与状态管理", summary="s", confidence=4),
+        ]
+    )
+    assert "x-axis [编排, 状态]" in chart
+    assert "0 --> 6" in chart

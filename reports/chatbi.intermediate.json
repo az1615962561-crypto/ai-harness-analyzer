@@ -1,7 +1,7 @@
 {
   "app_name": "chatbi",
   "category": "data",
-  "generated_at": "2026-11-26T13:40:46.784529",
+  "generated_at": "2026-11-26T13:43:13.947074",
   "core_verified_facts": [
     "[NL2SQL 转换管线] 意图解析 -> 知识检索 -> SQL 生成 -> 语法纠错 -> 自动重试 (置信度 4★ | core/strict_verified)",
     "[多源异构数据适配] 统一 JDBC/ODBC 抽象层与方言适配器 (置信度 4★ | core/strict_verified)",

@@ -1,7 +1,7 @@
 {
   "app_name": "openhands",
   "category": "engineering",
-  "generated_at": "2026-11-26T13:40:44.106977",
+  "generated_at": "2026-11-26T13:43:10.896580",
   "core_verified_facts": [
     "[沙箱隔离模型] 可切换多层执行隔离模型（本地直接运行 / 挂载目录的 Docker 容器 / VM / Modal / OpenHands Cloud 托管沙箱） (置信度 5★ | core/strict_verified)",
     "[终端与进程管理] 内置 xterm 终端管理与专属 Bash Action/Observation 可视化组件，支持本地与远端后端会话交互 (置信度 5★ | core/strict_verified)",
