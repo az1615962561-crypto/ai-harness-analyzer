@@ -5,7 +5,10 @@ from harness_analyzer.models.dimension import (
     DimensionAnalysis,
     DIMENSION_WEIGHTS,
 )
+from harness_analyzer.logging_utils import get_logger
 from .llm import LLMClient
+
+logger = get_logger(__name__)
 
 
 DIMENSION_PROMPTS: dict[str, str] = {
@@ -139,6 +142,7 @@ class CommonDimensionExtractor:
                 verbatim_quotes=result.get("verbatim_quotes", []) or [],
             )
         except Exception as e:
+            logger.warning("Common dimension '%s' extraction failed: %s", dim_value, e)
             return DimensionAnalysis(
                 dimension=dim_value,
                 label=dim_label,

@@ -350,6 +350,7 @@ class MarkdownReportGenerator:
         pm_guidance = self._get_val(analysis, "pm_guidance", default=None)
         common_dimensions = self._get_val(analysis, "common_dimensions", default=[])
         specialized_dimensions = self._get_val(analysis, "specialized_dimensions", default=[])
+        matched_patterns = self._get_val(analysis, "matched_patterns", default=[])
         key_insights = self._get_val(analysis, "key_insights", default=[])
         raw_sources = self._get_val(analysis, "raw_sources", "evidence_sources", default=[])
 
@@ -400,6 +401,20 @@ class MarkdownReportGenerator:
                 parts.append(self._render_dimension_item(sdim))
         else:
             parts.append("*暂无品类专属分析数据。*\n")
+
+        # 6.5. 经典架构模式识别 (Architecture Patterns)
+        if matched_patterns and isinstance(matched_patterns, list):
+            parts.append("### 3. 识别到的架构模式 (Architecture Patterns)\n")
+            parts.append("| 模式名称 | 落地说明 | 证据要点 | 置信度 |")
+            parts.append("| :--- | :--- | :--- | :---: |")
+            for p in matched_patterns:
+                pname = self._get_val(p, "pattern_name", default="-")
+                pdesc = str(self._get_val(p, "description", default="-")).replace("\n", " ")
+                pevid = self._get_val(p, "evidence", default=[])
+                ev_str = "; ".join(str(e) for e in pevid[:2]) if isinstance(pevid, list) else str(pevid)
+                pconf = self._format_stars(self._get_val(p, "confidence", default=3))
+                parts.append(f"| `{pname}` | {pdesc} | {ev_str or '-'} | {pconf} |")
+            parts.append("")
 
         # 7. 核心架构洞察
         parts.append("## 💡 关键架构洞察 (Key Insights)\n")

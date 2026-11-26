@@ -1,12 +1,12 @@
 {
   "app_name": "chatbi",
   "category": "data",
-  "generated_at": "2026-11-25T11:11:45.659601",
+  "generated_at": "2026-11-26T10:56:08.154265",
   "core_verified_facts": [
     "[NL2SQL 转换管线] 意图解析 -> 知识检索 -> SQL 生成 -> 语法纠错 -> 自动重试 (置信度 4★ | core/strict_verified)",
     "[多源异构数据适配] 统一 JDBC/ODBC 抽象层与方言适配器 (置信度 4★ | core/strict_verified)",
     "[数据模式自动发现] 元数据采集 + 样本数据语义推导 + 业务指标字典映射 (置信度 5★ | core/strict_verified)",
-    "[查询生成与优化] 智能索引推荐与分区裁剪检查 (置信度 4★ | core/strict_verified)",
+    "[查询优化与安全] 智能索引推荐与分区裁剪检查 (置信度 4★ | core/strict_verified)",
     "[数据可视化引擎] 查询结果自动匹配图表形态与数据洞察总结 (置信度 4★ | core/strict_verified)",
     "[工具链] 只读数据库执行器 + 语法解析器 + 图表推荐引擎 (置信度 5★ | core/strict_verified)",
     "[提示词工程] 动态 Schema 注入 + Few-Shot SQL 黄金案例库 (置信度 5★ | core/strict_verified)"
@@ -35,6 +35,7 @@
       "对话查数很爽，但如果不能点开看到用的是哪张表和过滤条件，我们根本不敢拿去周会汇报。"
     ]
   },
+  "search_coverage": null,
   "guard_summary": {
     "strict_verified": 9,
     "partial_verified": 0,

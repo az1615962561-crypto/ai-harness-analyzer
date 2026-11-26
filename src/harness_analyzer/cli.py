@@ -1,6 +1,9 @@
 """AI Harness Analyzer CLI"""
 import asyncio
 import json as json_module
+import os
+import shutil
+import sys
 from pathlib import Path
 
 import typer
@@ -9,12 +12,24 @@ from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
+from harness_analyzer.logging_utils import configure_logging
+
 app = typer.Typer(
     name="harness",
     help="🔍 AI Harness Architecture Analyzer - 分析 AI 应用背后的 Harness 架构",
     rich_markup_mode="rich",
 )
+cache_app = typer.Typer(help="管理本地 SQLite 分析结果缓存")
+app.add_typer(cache_app, name="cache")
 console = Console()
+
+
+@app.callback()
+def main(
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="开启详细调试日志"),
+):
+    """AI Harness Architecture Analyzer CLI"""
+    configure_logging(verbose=verbose)
 
 CATEGORY_ICONS = {
     "engineering": "🔧",
@@ -135,8 +150,12 @@ def analyze(
     local_app: Path = typer.Option(None, "--local-app", "-l", help="本地客户端解包目录或 app.asar（逆向提取 Prompt/Rules）"),
     use_rea: bool = typer.Option(False, "--use-rea", help="显式启用 rea-agents 对本地 ASAR/JS 应用做深度结构化逆向（需 Node.js）"),
     offline: bool = typer.Option(False, "--offline", help="使用专家基准知识库离线分析（无需配置 API Key）"),
+    output_dir: Path = typer.Option(None, "--output-dir", "-O", help="自定义报告输出目录（覆盖 HARNESS_REPORTS_DIR）"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="开启详细调试日志"),
 ):
     """分析 AI 应用的 Harness 架构（支持预置应用、未知应用全网探测及本地逆向解包）"""
+    if verbose:
+        configure_logging(verbose=True)
     from harness_analyzer.config import get_settings
     from harness_analyzer.registry.loader import AppRegistry
     from harness_analyzer.models.app import AIApp, AppCategory, InfoSource
@@ -354,27 +373,32 @@ def analyze(
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
             task = progress.add_task("🧪 Stage 1: 并发提炼高密度技术事实底座 (Fact Sheet)...", total=None)
 
+            from harness_analyzer.analyzer.patterns import PatternMatcher
+
             extractor = CommonDimensionExtractor(llm)
             spec_analyzer = get_specialized_analyzer(cat_val, llm)
+            pattern_matcher = PatternMatcher(llm)
 
             async def run_two_stage_analysis():
                 fact_sheet = await FactSheetExtractor(llm).build_fact_sheet(
                     app_obj.display_name, collected_items
                 )
-                progress.update(task, description=f"⚡ Stage 2: 并发拆解 9 共性 + {cat_lbl}专属 5 维度...")
-                c_dims, s_dims = await asyncio.gather(
+                progress.update(task, description=f"⚡ Stage 2: 并发拆解 9 共性 + {cat_lbl}专属 5 维度 + 架构模式...")
+                c_dims, s_dims, matched_patterns = await asyncio.gather(
                     extractor.aextract_all(
                         app_info,
                         fact_sheet,
                         category=cat_val,
                         depth=depth,
                         only_dimensions=only_dims,
+                        max_concurrency=settings.max_concurrency,
                     ),
-                    spec_analyzer.aanalyze(app_info, fact_sheet),
+                    spec_analyzer.aanalyze(app_info, fact_sheet, max_concurrency=settings.max_concurrency),
+                    pattern_matcher.amatch(app_info, fact_sheet),
                 )
-                return c_dims, s_dims
+                return c_dims, s_dims, matched_patterns
 
-            common_dims, spec_dims = asyncio.run(run_two_stage_analysis())
+            common_dims, spec_dims, matched_patterns = asyncio.run(run_two_stage_analysis())
 
             progress.update(task, description="🛡️ 按联系程度执行分维度独立 Guard 校验（比对原始语料）...")
             common_dims, spec_dims = verify_all_dimensions(
@@ -408,6 +432,7 @@ def analyze(
             pm_guidance=pm_guidance,
             common_dimensions=common_dims,
             specialized_dimensions=spec_dims,
+            matched_patterns=matched_patterns,
             architecture_summary=f"{app_obj.display_name} 是一个{cat_lbl}类 AI 应用",
             key_insights=[d.summary for d in common_dims if d.confidence >= 3][:5],
             raw_sources=raw_sources,
@@ -415,6 +440,8 @@ def analyze(
             confidence_overall=round(sum(d.confidence for d in all_verified_dims) / max(len(all_verified_dims), 1)),
         )
         analysis.mermaid_diagram = DiagramGenerator().generate(analysis)
+
+    target_reports_dir = output_dir or settings.reports_dir
 
     # Cache (确保存入字符串分类名)
     cache = AnalysisCache(settings.cache_dir)
@@ -424,15 +451,15 @@ def analyze(
     intermediate_path = None
     if analysis.intermediate_artifact is not None:
         intermediate_path = IntermediateArtifactBuilder.save_to_disk(
-            analysis.intermediate_artifact, settings.reports_dir, app_obj.name
+            analysis.intermediate_artifact, target_reports_dir, app_obj.name
         )
 
     # Generate report
     report_gen = MarkdownReportGenerator()
     report_text = report_gen.generate(analysis)
 
-    settings.reports_dir.mkdir(parents=True, exist_ok=True)
-    report_path = settings.reports_dir / f"{app_obj.name}.md"
+    target_reports_dir.mkdir(parents=True, exist_ok=True)
+    report_path = target_reports_dir / f"{app_obj.name}.md"
     report_path.write_text(report_text, encoding="utf-8")
 
     console.print("\n[green]✅ 分析完成！[/green]")
@@ -450,6 +477,7 @@ def analyze(
 def compare(
     apps: list[str] = typer.Argument(help="要对比的应用名称（至少2个）"),
     output: Path = typer.Option(None, "--output", "-o", help="输出文件路径"),
+    output_dir: Path = typer.Option(None, "--output-dir", "-O", help="对比报告输出目录（未指定 -o 时生效）"),
 ):
     """对比多个 AI 应用的 Harness 架构"""
     from harness_analyzer.config import get_settings
@@ -479,11 +507,124 @@ def compare(
     gen = ComparisonReportGenerator()
     report_text = gen.generate(analyses)
 
-    out_path = output or settings.reports_dir / "comparison.md"
+    out_path = output or ((output_dir or settings.reports_dir) / "comparison.md")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(report_text, encoding="utf-8")
 
     console.print(f"[green]✅ 对比报告已保存到: {out_path}[/green]")
+
+
+@app.command()
+def doctor():
+    """检查运行环境、API 密钥、搜索引擎、逆向工具与内置注册表就绪状态"""
+    from harness_analyzer.config import get_settings
+    from harness_analyzer.registry.loader import AppRegistry
+    from harness_analyzer.analyzer.patterns import load_pattern_catalog
+
+    settings = get_settings()
+    registry = AppRegistry()
+    apps = registry.list_apps()
+    patterns = load_pattern_catalog()
+
+    table = Table(title="🩺 AI Harness Analyzer 环境自检 (Doctor)", show_header=True, header_style="bold cyan")
+    table.add_column("检查项", style="bold")
+    table.add_column("状态", justify="center")
+    table.add_column("详情")
+
+    py_ver = sys.version.split()[0]
+    py_ok = sys.version_info >= (3, 11)
+    table.add_row("Python 版本", "✅" if py_ok else "⚠️", f"{py_ver} (建议 >= 3.11)")
+
+    llm_keys = [k for k in ("GEMINI_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY") if os.getenv(k)]
+    table.add_row(
+        "LLM API Key",
+        "✅" if llm_keys else "⚠️",
+        ", ".join(llm_keys) if llm_keys else "未配置（仅可运行 --offline 模式；在线分析需至少配置一个）",
+    )
+    table.add_row(
+        "默认模型与并发",
+        "ℹ️",
+        f"{settings.llm_model} (max_concurrency={settings.max_concurrency}, retries={settings.llm_max_retries})",
+    )
+
+    tavily_ok = bool(os.getenv("TAVILY_API_KEY"))
+    try:
+        import ddgs  # noqa: F401
+        ddgs_ver = getattr(ddgs, "__version__", "installed")
+        ddgs_status = f"ddgs {ddgs_ver}"
+    except Exception:
+        ddgs_status = "未安装 ddgs"
+    table.add_row(
+        "全网搜索引擎",
+        "✅" if tavily_ok else "ℹ️",
+        f"Tavily API {'已配置' if tavily_ok else '未配置（将自动使用 ' + ddgs_status + '）'}",
+    )
+
+    gh_ok = bool(os.getenv("GITHUB_TOKEN"))
+    table.add_row(
+        "GitHub Token",
+        "✅" if gh_ok else "ℹ️",
+        "已配置（高限额 5000 req/h）" if gh_ok else "未配置（匿名限额 60 req/h）",
+    )
+
+    node_bin = shutil.which("node")
+    npx_bin = shutil.which("npx")
+    rea_bin = shutil.which("rea")
+    re_details = []
+    if rea_bin:
+        re_details.append(f"rea={rea_bin}")
+    elif node_bin and npx_bin:
+        re_details.append(f"node+npx 就绪（支持 --use-rea）")
+    else:
+        re_details.append("未检测到 node/npx/rea（仅启用内置静态 ASAR/规则扫描，不影响常规分析）")
+    table.add_row("本地逆向工具链", "✅" if (rea_bin or (node_bin and npx_bin)) else "ℹ️", "; ".join(re_details))
+
+    table.add_row("内置应用注册表", "✅" if apps else "❌", f"{len(apps)} 个应用 ({registry.registry_path})")
+    table.add_row("架构模式目录", "✅" if patterns else "⚠️", f"{len(patterns)} 个参考模式")
+    table.add_row("缓存与报告目录", "ℹ️", f"cache={settings.cache_dir} | reports={settings.reports_dir}")
+
+    console.print(table)
+
+
+@cache_app.command("list")
+def cache_list():
+    """列出本地已缓存的分析结果"""
+    from harness_analyzer.config import get_settings
+    from harness_analyzer.storage.cache import AnalysisCache
+
+    settings = get_settings()
+    cache = AnalysisCache(settings.cache_dir)
+    rows = cache.list_cached()
+    if not rows:
+        console.print(f"[yellow]缓存目录 {settings.cache_dir} 中暂无分析记录[/yellow]")
+        return
+
+    table = Table(title="🗄️ 本地分析缓存", show_header=True, header_style="bold cyan")
+    table.add_column("应用 ID", style="bold")
+    table.add_column("分类", justify="center")
+    table.add_column("缓存时间 (UTC)")
+    for row in rows:
+        table.add_row(row["app_name"], str(row.get("category") or "-"), str(row.get("analyzed_at") or "-"))
+    console.print(table)
+    console.print(f"共 {len(rows)} 条缓存记录")
+
+
+@cache_app.command("clear")
+def cache_clear(
+    app_name: str = typer.Argument(None, help="指定清除的应用 ID；留空则清空全部缓存"),
+):
+    """清除指定应用或全部本地分析缓存"""
+    from harness_analyzer.config import get_settings
+    from harness_analyzer.storage.cache import AnalysisCache
+
+    settings = get_settings()
+    cache = AnalysisCache(settings.cache_dir)
+    if app_name:
+        cache.clear(app_name)
+        console.print(f"[green]✅ 已清除 '{app_name}' 的本地缓存[/green]")
+    else:
+        cache.clear()
+        console.print("[green]✅ 已清空全部本地分析缓存[/green]")
 
 
 @app.command()

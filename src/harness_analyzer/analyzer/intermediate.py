@@ -15,7 +15,10 @@ from harness_analyzer.models.dimension import (
     SpecializedDimensionAnalysis,
 )
 from harness_analyzer.models.harness import IntermediateArtifact, SearchCoverageReport, UserReviewSummary
+from harness_analyzer.logging_utils import get_logger
 from .llm import LLMClient
+
+logger = get_logger(__name__)
 
 
 class IntermediateArtifactBuilder:
@@ -64,8 +67,8 @@ class IntermediateArtifactBuilder:
                     trust_and_ux_friction=data.get("trust_and_ux_friction", []) or [],
                     sample_quotes=data.get("sample_quotes", []) or [],
                 )
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.warning("User review synthesis fallback used for %s: %s", app_name, exc)
 
         # 无 LLM 或解析失败时做确定性摘录兜底
         fallback_quotes = [

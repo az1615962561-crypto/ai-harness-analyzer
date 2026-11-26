@@ -2,6 +2,9 @@
 import asyncio
 from abc import ABC, abstractmethod
 from harness_analyzer.models.dimension import SpecializedDimensionAnalysis
+from harness_analyzer.logging_utils import get_logger
+
+logger = get_logger(__name__)
 
 
 class BaseSpecializedAnalyzer(ABC):
@@ -46,6 +49,7 @@ class BaseSpecializedAnalyzer(ABC):
                 verbatim_quotes=result.get("verbatim_quotes", []) or [],
             )
         except Exception as e:
+            logger.warning("Specialized dimension '%s' analysis failed: %s", dim_key, e)
             return SpecializedDimensionAnalysis(
                 dimension=dim_key, label=label,
                 summary=f"分析失败: {e}", confidence=1, is_inferred=True,

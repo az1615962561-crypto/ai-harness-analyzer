@@ -1,9 +1,9 @@
 {
   "app_name": "perplexity",
   "category": "knowledge",
-  "generated_at": "2026-11-25T11:11:46.816260",
+  "generated_at": "2026-11-26T10:56:09.493686",
   "core_verified_facts": [
-    "[RAG 全链路设计] 动态多路由检索 + 实时重排序模型 (Cross-Encoder Reranker) (置信度 5★ | core/strict_verified)",
+    "[RAG 检索管线] 动态多路由检索 + 实时重排序模型 (Cross-Encoder Reranker) (置信度 5★ | core/strict_verified)",
     "[引用链管理与溯源] 句子级细粒度引用锚定与源文快照 (置信度 5★ | core/strict_verified)",
     "[多文档综合推理] 冲突检测与多方观点汇总 (置信度 4★ | core/strict_verified)",
     "[上下文工程] 网页实时清洗 + 段落级语义片段重排 (Reranking) (置信度 5★ | core/strict_verified)"
@@ -34,6 +34,7 @@
       "Perplexity replaced 80% of my Google searches, though I still click the inline citations whenever numbers matter."
     ]
   },
+  "search_coverage": null,
   "guard_summary": {
     "strict_verified": 7,
     "partial_verified": 0,

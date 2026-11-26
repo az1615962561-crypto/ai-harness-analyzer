@@ -17,6 +17,9 @@ from harness_analyzer.collectors.github import GitHubCollector
 from harness_analyzer.collectors.query_planner import BilingualQueryPlanner
 from harness_analyzer.collectors.web_utils import run_search_query
 from harness_analyzer.models.harness import QueryCoverageItem
+from harness_analyzer.logging_utils import get_logger
+
+logger = get_logger(__name__)
 
 
 class UserReviewCollector(BaseCollector):
@@ -86,13 +89,14 @@ class UserReviewCollector(BaseCollector):
                         title=f"[Hacker News 用户讨论] {title} ({hit.get('num_comments', 0)} 条评论)",
                         content="\n".join(comments),
                     )
-                except Exception:
+                except Exception as exc:
+                    logger.debug("Failed to fetch HN item comments: %s", exc)
                     return None
 
             gathered = await asyncio.gather(*[_get_comments(h) for h in relevant_hits], return_exceptions=True)
             results.extend(r for r in gathered if isinstance(r, CollectedData))
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("HN search failed for %s: %s", app_name, exc)
         return results
 
     async def _fetch_github_issue_feedback(self, client: httpx.AsyncClient, app: Any) -> list[CollectedData]:
@@ -138,7 +142,8 @@ class UserReviewCollector(BaseCollector):
                     content="\n".join(lines),
                 )
             ]
-        except Exception:
+        except Exception as exc:
+            logger.debug("GitHub issues review fetch failed: %s", exc)
             return []
 
     def _search_authoritative_review_sites(self, app_name: str) -> list[CollectedData]:
@@ -168,8 +173,8 @@ class UserReviewCollector(BaseCollector):
                                 content=body,
                             )
                         )
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.debug("Review search query '%s' failed: %s", pq.query, exc)
             cov_items.append(cov)
 
         self.last_coverage_items = cov_items

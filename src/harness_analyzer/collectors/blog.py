@@ -3,8 +3,11 @@ import asyncio
 from typing import Any
 from urllib.parse import urlparse
 import httpx
+from harness_analyzer.logging_utils import get_logger
 from .base import BaseCollector, CollectedData
 from .web_utils import DomainRateLimiter, fetch_clean_page, rank_article_links
+
+logger = get_logger(__name__)
 
 
 class BlogCollector(BaseCollector):
@@ -74,7 +77,8 @@ class BlogCollector(BaseCollector):
                         )
                     if links and self._is_index_page(url_str):
                         drilldown_candidates.extend(rank_article_links(url_str, links, limit=self.max_drilldown))
-                except Exception:
+                except Exception as exc:
+                    logger.debug("Blog fetch failed for %s: %s", url_str, exc)
                     continue
 
             unique_sub_links = []
@@ -97,8 +101,8 @@ class BlogCollector(BaseCollector):
                                 title=f"[深度文章] {p_title or sub_title}",
                                 content=p_text,
                             )
-                    except Exception:
-                        pass
+                    except Exception as exc:
+                        logger.debug("Blog drilldown failed for %s: %s", sub_url, exc)
                     return None
 
                 sub_results = await asyncio.gather(

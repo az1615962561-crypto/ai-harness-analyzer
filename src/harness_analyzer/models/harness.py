@@ -84,6 +84,7 @@ class HarnessAnalysis(BaseModel):
     pm_guidance: PMGuidance | None = None
     common_dimensions: list[DimensionAnalysis] = Field(default_factory=list)
     specialized_dimensions: list[SpecializedDimensionAnalysis] = Field(default_factory=list)
+    matched_patterns: list[dict] = Field(default_factory=list, description="识别到的经典工程架构模式")
     architecture_summary: str = ""
     key_insights: list[str] = Field(default_factory=list)
     mermaid_diagram: str = ""

@@ -288,7 +288,7 @@ class OfflineBenchmarkProvider:
             ),
             SpecializedDimensionAnalysis(
                 dimension="code_understanding",
-                label="代码库理解引擎",
+                label="代码理解引擎",
                 summary="LSP 静态分析 + Tree-sitter AST + 增量向量混合索引",
                 details="利用 Tree-sitter 进行代码块分块解析，结合语义嵌入和 LSP 的定义跳转引用关系，构建高保真代码拓扑网。",
                 key_decisions=["AST 级 Chunking 替代暴力切文本", "LSP 符号索引注入"],
@@ -297,7 +297,7 @@ class OfflineBenchmarkProvider:
             ),
             SpecializedDimensionAnalysis(
                 dimension="diff_management",
-                label="Diff 生成与管理",
+                label="Diff 与变更管理",
                 summary="高效流式 SEARCH/REPLACE 块解析与实时语法合规性检查",
                 details="模型仅输出更改前后片段，客户端在内存中快速做 Levenshtein 模糊匹配定位，并在应用变更前验证语法完整性。",
                 key_decisions=["模糊匹配容错解决行号漂移问题", "流式生成流式渲染"],
@@ -448,7 +448,7 @@ class OfflineBenchmarkProvider:
             ),
             SpecializedDimensionAnalysis(
                 dimension="query_optimization",
-                label="查询生成与优化",
+                label="查询优化与安全",
                 summary="智能索引推荐与分区裁剪检查",
                 details="防止大模型写出全表扫描或跨分区死锁的低效 SQL，自动检查时间分区字段是否存在。",
                 key_decisions=["强制分区字段校验", "大表聚合前置检查"],
@@ -562,7 +562,7 @@ class OfflineBenchmarkProvider:
         specialized_dims = [
             SpecializedDimensionAnalysis(
                 dimension="rag_pipeline",
-                label="RAG 全链路设计",
+                label="RAG 检索管线",
                 summary="动态多路由检索 + 实时重排序模型 (Cross-Encoder Reranker)",
                 details="结合公开 Web 索引与特定知识库，多路召回后统一做语义去重与深度重排打分。",
                 key_decisions=["多路并发召回", "重排打分硬截断过滤低质来源"],
@@ -676,7 +676,7 @@ class OfflineBenchmarkProvider:
         specialized_dims = [
             SpecializedDimensionAnalysis(
                 dimension="dag_state_machine",
-                label="DAG 与状态机引擎",
+                label="DAG/状态机引擎",
                 summary="有向无环图 (DAG) 任务编排与状态流转",
                 details="将复杂自动化目标解析为具备依赖关系的 DAG 节点，支持并行执行与前后依赖阻塞。",
                 key_decisions=["任务图依赖动态更新", "持久化任务状态以支持暂停与恢复"],
@@ -694,7 +694,7 @@ class OfflineBenchmarkProvider:
             ),
             SpecializedDimensionAnalysis(
                 dimension="trigger_scheduling",
-                label="触发与调度机制",
+                label="事件触发与调度机制",
                 summary="事件驱动 Webhook 监听与定时 Cron 调度",
                 details="不仅支持人机交互对话触发，还支持监听外部 Webhook 事件或按时间表自动化执行周期性工作流。",
                 key_decisions=["集成工作流调度网关", "事件 payload 自动转化为初始提示词"],

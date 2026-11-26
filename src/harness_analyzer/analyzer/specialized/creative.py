@@ -1,5 +1,6 @@
 """创意类 AI 应用专属分析器"""
 from .base import BaseSpecializedAnalyzer
+from harness_analyzer.models.dimension import SpecializedDimension
 
 
 class CreativeAnalyzer(BaseSpecializedAnalyzer):
@@ -7,49 +8,49 @@ class CreativeAnalyzer(BaseSpecializedAnalyzer):
 
     def get_dimension_prompts(self) -> dict[str, tuple[str, str]]:
         return {
-            "generation_pipeline": (
-                "生成管线",
-                "分析内容生成管线：\n"
-                "1) 生成流程架构（单步生成/多步迭代/级联生成）？\n"
-                "2) 生成模型选型（文本LLM/图像扩散模型/音频模型）？\n"
-                "3) 条件控制机制（风格/主题/格式/长度约束）？\n"
-                "4) 批量生成与变体生成能力？\n"
-                "5) 生成过程的可控性与可解释性？",
+            SpecializedDimension.CREA_MULTIMODAL_PIPELINE.value: (
+                SpecializedDimension.CREA_MULTIMODAL_PIPELINE.label,
+                "分析多模态生成管线：\n"
+                "1) 生成流程架构（单步生成/多步迭代/多模态级联协调）？\n"
+                "2) 生成模型选型（文本 LLM/图像扩散模型/音视频模型路由）？\n"
+                "3) 跨模态对齐、条件控制与约束注入机制？\n"
+                "4) 生成结果质量过滤与安全审核？\n"
+                "5) 异步渲染调度与成本控制？",
             ),
-            "style_control": (
-                "风格控制",
-                "分析风格控制：\n"
-                "1) 风格定义方式（模板/示例/描述/参数化）？\n"
-                "2) 风格一致性保持机制（全篇/跨章节/跨作品）？\n"
-                "3) 风格迁移与融合能力？\n"
-                "4) 品牌调性与企业规范遵循？\n"
-                "5) 用户自定义风格的学习与存储？",
+            SpecializedDimension.CREA_VERSION_VARIANT.value: (
+                SpecializedDimension.CREA_VERSION_VARIANT.label,
+                "分析版本与变体管理：\n"
+                "1) 多候选变体并发生成与对比选择机制？\n"
+                "2) 局部重绘/局部改写（Inpainting / Selective Edit）与迭代收敛策略？\n"
+                "3) 历史版本树、Seed 复现与回滚对比能力？\n"
+                "4) 用户自然语言反馈到精细参数修改的映射？\n"
+                "5) 导出多尺寸/多格式变体工作流？",
             ),
-            "iteration_refinement": (
-                "迭代优化",
-                "分析迭代优化：\n"
-                "1) 用户反馈的理解与执行精度？\n"
-                "2) 局部修改与全局一致性维护？\n"
-                "3) 修改历史追踪与版本对比？\n"
-                "4) 自动优化建议与改进方向推荐？\n"
-                "5) 多轮迭代的收敛策略？",
+            SpecializedDimension.CREA_REALTIME_PREVIEW.value: (
+                SpecializedDimension.CREA_REALTIME_PREVIEW.label,
+                "分析实时渲染与预览：\n"
+                "1) 流式预览架构（草稿帧/低步数扩散预览/代码沙箱热重载）？\n"
+                "2) 交互式画布或分屏同步编辑延迟？\n"
+                "3) 增量局部渲染而非全量重算优化？\n"
+                "4) 客户端渲染 vs 云端 GPU 推送策略？\n"
+                "5) 加载反馈与可打断生成体验？",
             ),
-            "multimodal_coordination": (
-                "多模态协同",
-                "分析多模态协同：\n"
-                "1) 支持的模态组合（文本+图像/文本+音频/图文视频）？\n"
-                "2) 跨模态内容对齐与一致性？\n"
-                "3) 模态间的引用与联动机制？\n"
-                "4) 多模态输出的统一排版与呈现？\n"
-                "5) 模态特定的质量控制？",
+            SpecializedDimension.CREA_STYLE_CONSISTENCY.value: (
+                SpecializedDimension.CREA_STYLE_CONSISTENCY.label,
+                "分析风格一致性控制：\n"
+                "1) 风格定义方式（参考图/LoRA/示例/Design Token/文字规范）？\n"
+                "2) 跨页面/跨帧/跨章节角色与视觉调性一致性保障？\n"
+                "3) 风格迁移与多风格混合控制？\n"
+                "4) 品牌调性与企业视觉规范强制约束？\n"
+                "5) 用户偏好风格的沉淀与复用？",
             ),
-            "template_asset_management": (
-                "模板与素材管理",
-                "分析模板与素材管理：\n"
-                "1) 模板体系设计（分类/层级/组合/继承）？\n"
-                "2) 素材库管理（上传/检索/标签/版本控制）？\n"
-                "3) 模板参数化与动态填充能力？\n"
-                "4) 素材推荐与智能匹配？\n"
-                "5) 企业素材合规与版权管理？",
+            SpecializedDimension.CREA_TEMPLATE_REUSE.value: (
+                SpecializedDimension.CREA_TEMPLATE_REUSE.label,
+                "分析模板与资产复用：\n"
+                "1) 模板体系设计（组件化/层级继承/约束插槽）？\n"
+                "2) 资产库管理（上传/语义检索/标签/版本控制）？\n"
+                "3) 模板参数化与动态内容填充能力？\n"
+                "4) 智能版式匹配与素材自动推荐？\n"
+                "5) 企业素材权限、合规与版权水印追踪？",
             ),
         }

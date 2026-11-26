@@ -1,7 +1,9 @@
 """LLM 客户端封装"""
 import json
 import os
+import random
 import re
+import time
 from typing import Any
 
 # 避免无外网/沙箱环境下 litellm 启动时反复拉取远程价格表并打印警告
@@ -9,14 +11,49 @@ os.environ.setdefault("LITELLM_LOCAL_MODEL_COST_MAP", "True")
 
 import litellm
 from harness_analyzer.config import get_settings
+from harness_analyzer.logging_utils import get_logger
+
+logger = get_logger(__name__)
+
+_TRANSIENT_KEYWORDS = (
+    "rate limit",
+    "ratelimit",
+    "429",
+    "timeout",
+    "timed out",
+    "connection",
+    "temporarily unavailable",
+    "overloaded",
+    "502",
+    "503",
+    "504",
+    "server error",
+    "service unavailable",
+)
+
+
+def _is_transient_error(exc: Exception) -> bool:
+    cls_name = type(exc).__name__.lower()
+    if any(tok in cls_name for tok in ("ratelimit", "timeout", "connection", "serviceunavailable", "internalserver")):
+        return True
+    msg = str(exc).lower()
+    return any(tok in msg for tok in _TRANSIENT_KEYWORDS)
 
 
 class LLMClient:
     """统一 LLM 调用客户端，支持 Gemini/Claude/OpenAI"""
 
-    def __init__(self, model: str | None = None, api_key: str | None = None):
+    def __init__(
+        self,
+        model: str | None = None,
+        api_key: str | None = None,
+        max_retries: int | None = None,
+        retry_base_delay: float | None = None,
+    ):
         settings = get_settings()
         self.model = model or settings.llm_model
+        self.max_retries = max_retries if max_retries is not None else settings.llm_max_retries
+        self.retry_base_delay = retry_base_delay if retry_base_delay is not None else settings.llm_retry_base_delay
         key = api_key or settings.api_key
         if key:
             lower_model = self.model.lower()
@@ -55,17 +92,33 @@ class LLMClient:
         raise json.JSONDecodeError("无法从响应中解析有效 JSON", raw_text, 0)
 
     def analyze(self, prompt: str, system_prompt: str | None = None) -> str:
-        """调用 LLM 进行分析"""
+        """调用 LLM 进行分析（支持瞬态限流/超时指数退避重试）"""
         messages = []
         if system_prompt:
             messages.append({"role": "system", "content": system_prompt})
         messages.append({"role": "user", "content": prompt})
 
-        try:
-            response = litellm.completion(model=self.model, messages=messages, temperature=0.3)
-            return response.choices[0].message.content or ""
-        except Exception as e:
-            raise RuntimeError(f"LLM 调用失败: {e}") from e
+        attempts = max(1, self.max_retries)
+        last_exc: Exception | None = None
+        for attempt in range(1, attempts + 1):
+            try:
+                response = litellm.completion(model=self.model, messages=messages, temperature=0.3)
+                return response.choices[0].message.content or ""
+            except Exception as e:
+                last_exc = e
+                if attempt < attempts and _is_transient_error(e):
+                    delay = self.retry_base_delay * (2 ** (attempt - 1)) + random.uniform(0, 0.25 * self.retry_base_delay)
+                    logger.warning(
+                        "Transient LLM error on attempt %d/%d (%s): retrying in %.2fs",
+                        attempt, attempts, e, delay,
+                    )
+                    if delay > 0:
+                        time.sleep(delay)
+                    continue
+                logger.debug("LLM invocation failed on attempt %d/%d: %s", attempt, attempts, e)
+                raise RuntimeError(f"LLM 调用失败: {e}") from e
+
+        raise RuntimeError(f"LLM 调用失败: {last_exc}") from last_exc
 
     def structured_analyze(self, prompt: str, system_prompt: str | None = None) -> Any:
         """调用 LLM 并解析 JSON 输出"""

@@ -51,68 +51,68 @@ class CommonDimension(str, Enum):
 class SpecializedDimension(str, Enum):
     """品类专属特性维度"""
     # 工程型 (Engineering)
-    ENG_SANDBOX_MODEL = "eng_sandbox_model"
-    ENG_CODE_UNDERSTANDING = "eng_code_understanding"
-    ENG_DIFF_MANAGEMENT = "eng_diff_management"
-    ENG_TERMINAL_MANAGEMENT = "eng_terminal_management"
-    ENG_CHECKPOINT_ROLLBACK = "eng_checkpoint_rollback"
+    ENG_SANDBOX_MODEL = "sandbox_model"
+    ENG_CODE_UNDERSTANDING = "code_understanding"
+    ENG_DIFF_MANAGEMENT = "diff_management"
+    ENG_TERMINAL_MANAGEMENT = "terminal_management"
+    ENG_CHECKPOINT_ROLLBACK = "checkpoint_rollback"
 
     # 数据型 (Data)
-    DATA_NL2SQL_PIPELINE = "data_nl2sql_pipeline"
+    DATA_NL2SQL_PIPELINE = "nl2sql_pipeline"
     DATA_SOURCE_ADAPTER = "data_source_adapter"
-    DATA_SCHEMA_DISCOVERY = "data_schema_discovery"
-    DATA_QUERY_OPTIMIZATION = "data_query_optimization"
-    DATA_VISUALIZATION_ENGINE = "data_visualization_engine"
+    DATA_SCHEMA_DISCOVERY = "schema_discovery"
+    DATA_QUERY_OPTIMIZATION = "query_optimization"
+    DATA_VISUALIZATION_ENGINE = "visualization_engine"
 
     # 知识型 (Knowledge)
-    KNOW_RAG_PIPELINE = "know_rag_pipeline"
-    KNOW_INDEX_VECTOR_STORE = "know_index_vector_store"
-    KNOW_CITATION_MANAGEMENT = "know_citation_management"
-    KNOW_MULTI_DOC_REASONING = "know_multi_doc_reasoning"
-    KNOW_KNOWLEDGE_UPDATE = "know_knowledge_update"
+    KNOW_RAG_PIPELINE = "rag_pipeline"
+    KNOW_INDEX_VECTOR_STORE = "index_vector_store"
+    KNOW_CITATION_MANAGEMENT = "citation_management"
+    KNOW_MULTI_DOC_REASONING = "multi_doc_reasoning"
+    KNOW_KNOWLEDGE_UPDATE = "knowledge_update"
 
     # 创作型 (Creative)
-    CREA_MULTIMODAL_PIPELINE = "crea_multimodal_pipeline"
-    CREA_VERSION_VARIANT = "crea_version_variant"
-    CREA_REALTIME_PREVIEW = "crea_realtime_preview"
-    CREA_STYLE_CONSISTENCY = "crea_style_consistency"
-    CREA_TEMPLATE_REUSE = "crea_template_reuse"
+    CREA_MULTIMODAL_PIPELINE = "multimodal_pipeline"
+    CREA_VERSION_VARIANT = "version_variant"
+    CREA_REALTIME_PREVIEW = "realtime_preview"
+    CREA_STYLE_CONSISTENCY = "style_consistency"
+    CREA_TEMPLATE_REUSE = "template_reuse"
 
     # 自动化型 (Automation)
-    AUTO_DAG_STATE_MACHINE = "auto_dag_state_machine"
-    AUTO_MULTI_AGENT_PROTOCOL = "auto_multi_agent_protocol"
-    AUTO_FAULT_TOLERANCE = "auto_fault_tolerance"
-    AUTO_EXTERNAL_INTEGRATION = "auto_external_integration"
-    AUTO_TRIGGER_SCHEDULING = "auto_trigger_scheduling"
+    AUTO_DAG_STATE_MACHINE = "dag_state_machine"
+    AUTO_MULTI_AGENT_PROTOCOL = "multi_agent_protocol"
+    AUTO_FAULT_TOLERANCE = "fault_tolerance"
+    AUTO_EXTERNAL_INTEGRATION = "external_integration"
+    AUTO_TRIGGER_SCHEDULING = "trigger_scheduling"
 
     @property
     def label(self) -> str:
         _labels = {
             SpecializedDimension.ENG_SANDBOX_MODEL: "沙箱隔离模型",
-            SpecializedDimension.ENG_CODE_UNDERSTANDING: "代码库理解",
-            SpecializedDimension.ENG_DIFF_MANAGEMENT: "Diff 生成与管理",
+            SpecializedDimension.ENG_CODE_UNDERSTANDING: "代码理解引擎",
+            SpecializedDimension.ENG_DIFF_MANAGEMENT: "Diff 与变更管理",
             SpecializedDimension.ENG_TERMINAL_MANAGEMENT: "终端与进程管理",
             SpecializedDimension.ENG_CHECKPOINT_ROLLBACK: "检查点与回滚",
             SpecializedDimension.DATA_NL2SQL_PIPELINE: "NL2SQL 转换管线",
             SpecializedDimension.DATA_SOURCE_ADAPTER: "多源异构数据适配",
             SpecializedDimension.DATA_SCHEMA_DISCOVERY: "数据模式自动发现",
-            SpecializedDimension.DATA_QUERY_OPTIMIZATION: "查询生成与优化",
+            SpecializedDimension.DATA_QUERY_OPTIMIZATION: "查询优化与安全",
             SpecializedDimension.DATA_VISUALIZATION_ENGINE: "数据可视化引擎",
-            SpecializedDimension.KNOW_RAG_PIPELINE: "RAG 检索增强管线",
+            SpecializedDimension.KNOW_RAG_PIPELINE: "RAG 检索管线",
             SpecializedDimension.KNOW_INDEX_VECTOR_STORE: "知识索引与向量存储",
-            SpecializedDimension.KNOW_CITATION_MANAGEMENT: "引用与事实溯源",
-            SpecializedDimension.KNOW_MULTI_DOC_REASONING: "跨文档综合推理",
+            SpecializedDimension.KNOW_CITATION_MANAGEMENT: "引用链管理与溯源",
+            SpecializedDimension.KNOW_MULTI_DOC_REASONING: "多文档综合推理",
             SpecializedDimension.KNOW_KNOWLEDGE_UPDATE: "知识动态更新机制",
             SpecializedDimension.CREA_MULTIMODAL_PIPELINE: "多模态生成管线",
-            SpecializedDimension.CREA_VERSION_VARIANT: "版本与变体生成",
+            SpecializedDimension.CREA_VERSION_VARIANT: "版本与变体管理",
             SpecializedDimension.CREA_REALTIME_PREVIEW: "实时渲染与预览",
             SpecializedDimension.CREA_STYLE_CONSISTENCY: "风格一致性控制",
             SpecializedDimension.CREA_TEMPLATE_REUSE: "模板与资产复用",
-            SpecializedDimension.AUTO_DAG_STATE_MACHINE: "DAG/状态机工作流",
-            SpecializedDimension.AUTO_MULTI_AGENT_PROTOCOL: "多智能体通信协议",
-            SpecializedDimension.AUTO_FAULT_TOLERANCE: "容错重试与断点续跑",
+            SpecializedDimension.AUTO_DAG_STATE_MACHINE: "DAG/状态机引擎",
+            SpecializedDimension.AUTO_MULTI_AGENT_PROTOCOL: "多 Agent 通信协议",
+            SpecializedDimension.AUTO_FAULT_TOLERANCE: "容错与重试恢复",
             SpecializedDimension.AUTO_EXTERNAL_INTEGRATION: "外部系统与连接器集成",
-            SpecializedDimension.AUTO_TRIGGER_SCHEDULING: "事件触发与任务调度",
+            SpecializedDimension.AUTO_TRIGGER_SCHEDULING: "事件触发与调度机制",
         }
         return _labels[self]
 

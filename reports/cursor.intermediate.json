@@ -1,11 +1,11 @@
 {
   "app_name": "cursor",
   "category": "engineering",
-  "generated_at": "2026-11-25T11:11:44.480167",
+  "generated_at": "2026-11-26T10:56:06.810779",
   "core_verified_facts": [
     "[沙箱隔离模型] 宿主安全确认模式 + 本地执行边界 (置信度 4★ | core/strict_verified)",
-    "[代码库理解引擎] LSP 静态分析 + Tree-sitter AST + 增量向量混合索引 (置信度 5★ | core/strict_verified)",
-    "[Diff 生成与管理] 高效流式 SEARCH/REPLACE 块解析与实时语法合规性检查 (置信度 5★ | core/strict_verified)",
+    "[代码理解引擎] LSP 静态分析 + Tree-sitter AST + 增量向量混合索引 (置信度 5★ | core/strict_verified)",
+    "[Diff 与变更管理] 高效流式 SEARCH/REPLACE 块解析与实时语法合规性检查 (置信度 5★ | core/strict_verified)",
     "[终端与进程管理] 集成 VS Code PTY 终端会话与命令输出环形缓冲区 (置信度 5★ | core/strict_verified)",
     "[检查点与回滚] Git 兼容的轻量暂存区快照与多步撤销树 (置信度 5★ | core/strict_verified)",
     "[Agent 编排] 多 Agent 协作流 (Tab 快速补全 Agent + Composer 全局编辑 Agent + Background Indexing Agent) (置信度 5★ | core/strict_verified)",
@@ -42,6 +42,7 @@
       "Composer is great for scaffolding, but on large files it still occasionally drops unrelated code unless you watch the diff carefully."
     ]
   },
+  "search_coverage": null,
   "guard_summary": {
     "strict_verified": 14,
     "partial_verified": 0,

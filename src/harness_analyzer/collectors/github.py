@@ -4,7 +4,10 @@ import os
 import re
 from typing import Any
 import httpx
+from harness_analyzer.logging_utils import get_logger
 from .base import BaseCollector, CollectedData
+
+logger = get_logger(__name__)
 
 
 # 按架构信号价值加权的路径关键词
@@ -175,7 +178,8 @@ class GitHubCollector(BaseCollector):
                             title=f"{owner}/{repo} README ({fname})",
                             content=resp.text,
                         )
-                except Exception:
+                except Exception as exc:
+                    logger.debug("README fetch failed for %s/%s (%s): %s", owner, repo, branch, exc)
                     continue
         return None
 
@@ -221,7 +225,8 @@ class GitHubCollector(BaseCollector):
                             content="\n".join(content_lines),
                         )
                         return tree_item, branch, paths
-            except Exception:
+            except Exception as exc:
+                logger.debug("Repo tree fetch failed for %s/%s (%s): %s", owner, repo, branch, exc)
                 continue
         return None
 
@@ -246,8 +251,8 @@ class GitHubCollector(BaseCollector):
                         title=f"{owner}/{repo} 核心源码: {path}",
                         content=resp.text[:4500],
                     )
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.debug("Key source fetch failed for %s/%s/%s: %s", owner, repo, path, exc)
             return None
 
         results = await asyncio.gather(*[_get_one(p) for p in file_paths], return_exceptions=True)

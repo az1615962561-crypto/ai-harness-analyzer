@@ -9,7 +9,10 @@ import asyncio
 from typing import Sequence
 
 from harness_analyzer.collectors.base import CollectedData
+from harness_analyzer.logging_utils import get_logger
 from .llm import LLMClient
+
+logger = get_logger(__name__)
 
 
 class FactSheetExtractor:
@@ -78,7 +81,8 @@ class FactSheetExtractor:
             async with sem:
                 try:
                     return await asyncio.to_thread(self._extract_chunk_sync, app_name, chunk_text)
-                except Exception:
+                except Exception as exc:
+                    logger.warning("FactSheet chunk distillation fallback used for %s: %s", app_name, exc)
                     return chunk_text[:2000]
 
         summaries = await asyncio.gather(*[_run_chunk(ch) for ch in chunks])

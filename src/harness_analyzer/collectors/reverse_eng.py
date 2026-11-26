@@ -17,6 +17,9 @@ from typing import Any
 import httpx
 
 from harness_analyzer.collectors.base import BaseCollector, CollectedData
+from harness_analyzer.logging_utils import get_logger
+
+logger = get_logger(__name__)
 
 
 class ReverseEngineeringCollector(BaseCollector):
@@ -110,7 +113,8 @@ class ReverseEngineeringCollector(BaseCollector):
                     content=formatted,
                 )
             ]
-        except Exception:
+        except Exception as exc:
+            logger.debug("Local path scan failed for %s: %s", root, exc)
             return []
 
     async def collect(self, app) -> list[CollectedData]:
@@ -207,7 +211,8 @@ class ReverseEngineeringCollector(BaseCollector):
                             )
                     except Exception:
                         continue
-            except Exception:
+            except Exception as exc:
+                logger.debug("GitHub RE search failed for query '%s': %s", q, exc)
                 continue
 
         return results

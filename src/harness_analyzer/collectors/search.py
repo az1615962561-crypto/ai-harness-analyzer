@@ -17,6 +17,9 @@ from harness_analyzer.collectors.base import BaseCollector, CollectedData
 from harness_analyzer.collectors.query_planner import BilingualQueryPlanner, PlannedQuery
 from harness_analyzer.collectors.web_utils import DomainRateLimiter, fetch_clean_page, run_search_query
 from harness_analyzer.models.harness import BlockedSource, QueryCoverageItem
+from harness_analyzer.logging_utils import get_logger
+
+logger = get_logger(__name__)
 
 
 class WebSearchCollector(BaseCollector):
@@ -82,8 +85,8 @@ class WebSearchCollector(BaseCollector):
                     {"title": r.get("title", ""), "href": r.get("url", ""), "body": r.get("content", "")}
                     for r in resp.json().get("results", [])
                 ]
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Tavily query failed for '%s': %s", pq.query, exc)
         return []
 
     async def _execute_query_batch(

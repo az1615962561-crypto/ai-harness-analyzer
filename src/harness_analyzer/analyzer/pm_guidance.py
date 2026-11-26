@@ -6,8 +6,11 @@ from __future__ import annotations
 
 from harness_analyzer.models.dimension import DimensionAnalysis, SpecializedDimensionAnalysis
 from harness_analyzer.models.harness import IntermediateArtifact, PMGuidance
+from harness_analyzer.logging_utils import get_logger
 from .intermediate import IntermediateArtifactBuilder
 from .llm import LLMClient
+
+logger = get_logger(__name__)
 
 
 class PMGuidanceExtractor:
@@ -83,7 +86,8 @@ class PMGuidanceExtractor:
                 mvp_nice_to_haves=data.get("mvp_nice_to_haves", []) or [],
                 anti_patterns_to_avoid=data.get("anti_patterns_to_avoid", []) or [],
             )
-        except Exception:
+        except Exception as exc:
+            logger.warning("PM guidance extraction fallback used for %s: %s", artifact.app_name, exc)
             return self._fallback_guidance(artifact.category)
 
     def extract(
