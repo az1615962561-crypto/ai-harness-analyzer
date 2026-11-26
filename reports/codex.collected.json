@@ -1,0 +1,863 @@
+{
+  "schema_version": "1.0",
+  "collected_at": "2026-11-26T11:49:21.963825",
+  "app_name": "codex",
+  "app_display_name": "codex",
+  "category": "engineering",
+  "is_adhoc": true,
+  "description": "动态探测应用: codex",
+  "website": null,
+  "github_url": "https://github.com/openai/codex",
+  "question_lang": "zh",
+  "bilingual_names": {
+    "local": "codex",
+    "en": "codex"
+  },
+  "raw_sources": [
+    "https://deepwiki.com/openai/codex/1.3-architecture-overview",
+    "https://devstudio360.com/how-openai-codex-works-inside-the-architecture-of-an-ai-coding-agent/",
+    "https://openai.com/business/learn/how-openai-uses-codex/",
+    "https://newsletter.pragmaticengineer.com/p/how-codex-is-built",
+    "https://github.com/morluto/rea",
+    "https://blog.csdn.net/qq_20042935/article/details/157213551",
+    "https://blog.csdn.net/2303_80243004/article/details/161397557",
+    "https://javaguide.cn/ai-coding/practices/codex-best-practices.html",
+    "https://zhuanlan.zhihu.com/p/2061175091782739370",
+    "https://blog.csdn.net/gitblog_00222/article/details/153313554",
+    "https://raw.githubusercontent.com/openai/codex/main/README.md",
+    "https://github.com/openai/codex/tree/main",
+    "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs",
+    "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch_tests.rs",
+    "https://raw.githubusercontent.com/openai/codex/main/codex-rs/app-server-protocol/schema/typescript/v2/HookPromptFragment.ts",
+    "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/orchestrator.rs",
+    "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/apps_instructions.rs",
+    "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/base_instructions.rs",
+    "https://raw.githubusercontent.com/openai/codex/main/package.json",
+    "https://github.com/asgeirtj/system_prompts_leaks",
+    "https://github.com/cobusgreyling/loop-engineering",
+    "https://github.com/weave-os/router",
+    "https://github.com/qybaihe/bla",
+    "https://github.com/ljagiello/ctf-skills",
+    "https://github.com/cutetailbud/ff-ruyijs",
+    "https://news.ycombinator.com/item?id=46902638",
+    "https://news.ycombinator.com/item?id=47796469",
+    "https://news.ycombinator.com/item?id=35803435",
+    "https://github.com/openai/codex/issues",
+    "https://www.g2.com/products/openai-codex/reviews",
+    "https://www.producthunt.com/products/codex-by-openai-1/reviews",
+    "https://www.producthunt.com/products/codex-3-0-by-openai",
+    "https://www.g2.com/products/openai-codex/reviews?page=3",
+    "https://www.reddit.com/r/Piracy/comments/szq2ne/codex_says_goodbye/",
+    "https://www.reddit.com/r/codex/",
+    "https://www.reddit.com/r/codex/comments/1pkalev/first_impressions_on_gpt_52/",
+    "https://www.reddit.com/r/PiratedGames/comments/167fqou/which_would_be_better/",
+    "https://www.zhihu.com/question/2057495861937153314",
+    "https://www.v2ex.com/t/1171528",
+    "https://www.zhihu.com/question/1972596458084627013",
+    "https://zhuanlan.zhihu.com/p/2068016741008121952"
+  ],
+  "search_coverage": {
+    "question_language": "zh",
+    "bilingual_names": {
+      "local": "codex",
+      "en": "codex"
+    },
+    "items": [
+      {
+        "query": "how the codex works AI architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 4,
+        "pages_fetched": 1,
+        "chars_collected": 4500
+      },
+      {
+        "query": "codex AI engineering blog system architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex system prompt tools agent harness",
+        "language": "en",
+        "angle": "implementation_tech",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex AI agent github reverse engineering",
+        "language": "en",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex的架构是什么",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex AI 底层原理 技术架构 拆解",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex 提示词 工具调用 Agent 工作流",
+        "language": "zh",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex 开源 源码 逆向",
+        "language": "zh",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"codex\" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1734
+      },
+      {
+        "query": "\"codex\" (\"pros and cons\" OR \"frustrating\" OR \"review\" OR \"issues\") site:reddit.com",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1102
+      },
+      {
+        "query": "\"codex\" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com OR site:juejin.cn)",
+        "language": "zh",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 525
+      }
+    ],
+    "zh_hits": 12,
+    "en_hits": 16,
+    "covered_angles": [
+      "architecture_qa",
+      "implementation_tech",
+      "source_reverse",
+      "user_reviews"
+    ],
+    "missing_angles": [],
+    "coverage_score": 1.0,
+    "refill_triggered": false,
+    "blocked_sources": [
+      {
+        "url": "https://blog.csdn.net/qq_20042935/article/details/157213551",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://blog.csdn.net/2303_80243004/article/details/161397557",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://deepwiki.com/openai/codex/1.3-architecture-overview",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      },
+      {
+        "url": "https://blog.csdn.net/qq_20042935/article/details/157213551",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://blog.csdn.net/2303_80243004/article/details/161397557",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://deepwiki.com/openai/codex/1.3-architecture-overview",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      }
+    ]
+  },
+  "collected_items": [
+    {
+      "source_url": "https://deepwiki.com/openai/codex/1.3-architecture-overview",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] Architecture Overview | openai/codex | DeepWiki",
+      "content": "Nov 12, 2026 · Codex is an AI coding agent supporting multiple execution modes—including terminal UI, CLI multitool, integrated app server for IDEs, headless exec mode, and cloud tasks—all powered by a shared core r",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://devstudio360.com/how-openai-codex-works-inside-the-architecture-of-an-ai-coding-agent/",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] How OpenAI Codex Works: Inside the Architecture of an AI ...",
+      "content": "How OpenAI Codex Works: Inside the Architecture of an AI Coding Agent When OpenAI introduced Codex as a cloud-based coding agent, it marked a shift in how developers interact with AI systems.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://openai.com/business/learn/how-openai-uses-codex/",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] How OpenAI Uses Codex to Accelerate Engineering",
+      "content": "Jan 14, 2026 · A detailed look at how OpenAI teams use Codex to understand code, refactor systems, improve performance, boost velocity, and enhance engineering workflows.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://newsletter.pragmaticengineer.com/p/how-codex-is-built",
+      "source_type": "search_snippet",
+      "title": "[en/architecture_qa] How Codex is built - by Gergely Orosz",
+      "content": "Feb 17, 2026 · Technology and architecture choices. Why Rust and open source? In-depth on how the agent loop works. How Codex builds itself. Codex itself writes more than 90% of the app’s code, the team estimates. Also: interesting engineering practices like tiered code review, Codex self-testing itself, and onboarding new engineers to the team via pairing ...",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://github.com/morluto/rea",
+      "source_type": "search_snippet",
+      "title": "[en/source_reverse] GitHub - morluto/rea: Reverse engineer anything with agents ...",
+      "content": "Jul 12, 2026 · REA connects your agent to tools for inspecting native binaries, JavaScript and Electron apps, .NET assemblies, and websites. You can also use the same tools from your terminal. Analysis runs locally, and results include the evidence and limitations behind each conclusion.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/qq_20042935/article/details/157213551",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] Codex 完整指南（七）：Agent Skills 详解｜工作流封装、复用与团队共...",
+      "content": "Jan 21, 2026 · 本文深入解析 Codex Agent Skills 的定义、创建与复用机制，涵盖技能格式、存储位置、触发方式及问题排查。 介绍主流技能仓库如 openai/skills 和 agentskills.io，助力团队实现标准化、可共享的工作流封装。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/2303_80243004/article/details/161397557",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] Codex 多角色 Agent 工作流新手指南 - CSDN博客",
+      "content": "May 25, 2026 · 详细说明如何创建项目、配置Agent、定义Skill、启动并行/串行工作流，并强调交接文档在信息传递与任务衔接中的关键作用，适用于AI辅助软件工程全流程自动化。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://javaguide.cn/ai-coding/practices/codex-best-practices.html",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] Codex 使用指南：配置、AGENTS.md 与 Agentic 工作流 | JavaGuide",
+      "content": "Jul 26, 2026 · 结合 OpenAI 官方文档和 Codex CLI 社区实践，讲清 Codex 的任务描述、计划阶段、AGENTS.md、config.toml、权限控制、MCP、Skills、Subagents、Hooks 和 Scheduled Tasks。 重点围绕 任务别只写一句话、复杂任务先让它看路等核心内容。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://zhuanlan.zhihu.com/p/2061175091782739370",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] 产品经理如何用 Codex/Claude Code 搭建 Agent 工作流？先从这 7 个 S...",
+      "content": "但对产品经理或者产品技术团队来说，更有价值的是把它接进 Agent 工作流，也就是这个 imini-api-integration-skill。 它不是简单告诉你「去调用某个接口」，而是让 Codex、Claude Code、Cursor 这类 Agent 理解 iMini 的模型选择、 异步任务 、轮询、结果提取和错误处理。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/gitblog_00222/article/details/153313554",
+      "source_type": "search_snippet",
+      "title": "[zh/source_reverse] Codex-X 逆向实战教程：三步配齐提示词与 Skills-CSDN博客",
+      "content": "Oct 17, 2026 · 本文介绍如何使用 Codex-X 工具统一管理逆向分析所需的提示词、Skills 和 API 供应商配置。 通过可视化界面完成三步操作：启用逆向提示词模板（如破甲/海鸥）、安装并启用 ZIP 格式逆向 Skills（如 Frida、协议分析）、添加并验证第三方 API 供应商。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://devstudio360.com/how-openai-codex-works-inside-the-architecture-of-an-ai-coding-agent/",
+      "source_type": "web_page",
+      "title": "[网页正文|en] How OpenAI Codex Works: Inside the Architecture of an AI Coding Agent – DevStudio360",
+      "content": "How OpenAI Codex Works: Inside the Architecture of an AI Coding Agent – DevStudio360\nSkip to content\nHow OpenAI Codex Works: Inside the Architecture of an AI Coding Agent\nWhen OpenAI introduced Codex as a cloud-based coding agent, it marked a shift in how developers interact with AI systems. Rather than functioning as a simple autocomplete engine or code generator, Codex operates as an autonomous agent capable of reasoning, executing tasks, and interacting with development environments.\nAt first glance, it might seem that the intelligence of Codex lies primarily in its underlying model. In reality, the model is only one part of a much larger system. The true engineering challenge lies in orchestrating how the model interacts with tools, manages context, and operates consistently across different interfaces.\nThis article explores how Codex works behind the scenes, focusing on three critical layers: the agent loop, context and prompt management, and the multi-interface architecture that enables seamless integration across platforms.\nWhat Codex Actually Does\nCodex is designed to assist developers across a wide range of tasks, including:\nWriting new features\nDebugging and fixing issues\nAnswering questions about a codebase\nGenerating and refining pull requests\nEach task is executed within an isolated environment that contains the relevant codebase. This isolation ensures safety, reproducibility, and the ability to run multiple tasks in parallel.\nHowever, the visible output—code suggestions or fixes—is only the final step in a much more complex process.\nThe Agent Loop: The Core Execution Engine\nAt the heart of Codex is what can be described as an agent loop. This loop defines how the system processes a request and iteratively works toward a solution.\nThe process begins when a user submits a task. The system constructs a prompt and sends it to the model. Instead of always returning a final answer, the model often responds with an action—such as executing a command or retrieving additional information.\nThis leads to a cycle:\nThe model generates a response (often a tool instruction)\nThe system executes the instruction (e.g., run tests, read files)\nThe results are appended to the context\nThe updated context is sent back to the model\nThe cycle repeats until a final result is produced\nThis iterative process allows Codex to behave more like an active collaborator than a passive responder.\nFor example, a request to fix a bug may involve:\nInspecting relevant files\nRunning existing test suites\nIdentifying failing cases\nModifying code\nRe-running tests to verify the fix\nThe model handles reasoning at each step, while the surrounding system—often referred to as the harness—manages execution, permissions, and state transitions.\nTools and Execution Capabilities\nCodex’s effectiveness depends heavily on its ability to interact with tools. These include:\nFile system access (reading and editing code)\nShell command execution\nTest runners and linters\nType checkers and build systems\nThe agent does not operate in isolation; it actively engages with the development environment. This capability transforms it from a text generator into a functional problem-solving system.\nHowever, tool execution introduces risk. Commands may alter code or system state, so Codex incorporates permission controls and approval mechanisms to ensure safe operation.\nPrompt Construction and Context Management\nOne of the most complex aspects of Codex is how it constructs and manages prompts.\nWhen a user submits a request, that input is only a small part of the total context sent to the model. The full prompt typically includes:\nSystem-level instructions\nDeveloper-defined configurations\nTool definitions\nEnvironment details (e.g., directory structure, shell state)\nProject-specific guidelines\nConversation history, including previous actions and outputs\nEach layer serves a distinct purpose and is assigned a role that determines its priority in influencing the model’s behavior.\nThe Challenge of Growing Context\nAs the agent loop progresses, the context grows rapidly. Every action taken by the system—such as running a command or editing a file—produces output that must be included in subsequent prompts.\nAdditionally, each new interaction includes the full history of previous steps. This creates a compounding effect where the size of the prompt increases significantly over time.\nThis design is intentional. By keeping each request self-contained, Codex avoids relying on server-side ",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
+      "source_type": "github_readme",
+      "title": "openai/codex README (README.md)",
+      "content": "<p align=\"center\"><strong>Codex CLI</strong> is a coding agent from OpenAI that runs locally on your computer.\n<p align=\"center\">\n  <img src=\"https://github.com/openai/codex/blob/main/.github/codex-cli-splash.png\" alt=\"Codex CLI splash\" width=\"80%\" />\n</p>\n</br>\nIf you want Codex in your code editor (VS Code, Cursor, Windsurf), <a href=\"https://developers.openai.com/codex/ide\">install in your IDE.</a>\n</br>If you want the desktop app experience, run <code>codex app</code> or visit <a href=\"https://chatgpt.com/codex?app-landing-page=true\">the Codex App page</a>.\n</br>If you are looking for the <em>cloud-based agent</em> from OpenAI, <strong>Codex Web</strong>, go to <a href=\"https://chatgpt.com/codex\">chatgpt.com/codex</a>.</p>\n\n---\n\n## Quickstart\n\n### Installing and running Codex CLI\n\nRun the following on Mac or Linux to install Codex CLI:\n\n```shell\ncurl -fsSL https://chatgpt.com/codex/install.sh | sh\n```\n\nRun the following on Windows to install Codex CLI:\n\n```shell\npowershell -ExecutionPolicy ByPass -c \"irm https://chatgpt.com/codex/install.ps1 | iex\"\n```\n\nThe standalone installers download from `https://releases.openai.com/codex` by default and fall back to GitHub Releases if a metadata or asset download is unavailable. To force GitHub Releases, set `CODEX_INSTALLER_USE_RELEASES_OPENAI_COM` to `false` (`0` and `no` are also accepted):\n\n```shell\ncurl -fsSL https://chatgpt.com/codex/install.sh | CODEX_INSTALLER_USE_RELEASES_OPENAI_COM=false sh\n```\n\n```powershell\n$env:CODEX_INSTALLER_USE_RELEASES_OPENAI_COM='false'; irm https://chatgpt.com/codex/install.ps1 | iex\n```\n\nCodex CLI can also be installed via the following package managers:\n\n```shell\n# Install using npm\nnpm install -g @openai/codex\n```\n\n```shell\n# Install using Homebrew\nbrew install --cask codex\n```\n\nThen simply run `codex` to get started.\n\n<details>\n<summary>You can also go to the <a href=\"https://github.com/openai/codex/releases/latest\">latest GitHub Release</a> and download the appropriate binary for your platform.</summary>\n\nEach GitHub Release contains many executables, but in practice, you likely want one of these:\n\n- macOS\n  - Apple Silicon/arm64: `codex-aarch64-apple-darwin.tar.gz`\n  - x86_64 (older Mac hardware): `codex-x86_64-apple-darwin.tar.gz`\n- Linux\n  - x86_64: `codex-x86_64-unknown-linux-musl.tar.gz`\n  - arm64: `codex-aarch64-unknown-linux-musl.tar.gz`\n\nEach archive contains a single entry with the platform baked into the name (e.g., `codex-x86_64-unknown-linux-musl`), so you likely want to rename it to `codex` after extracting it.\n\n</details>\n\n### Using Codex with your ChatGPT plan\n\nRun `codex` and select **Sign in with ChatGPT**. We recommend signing into your ChatGPT account to use Codex as part of your Plus, Pro, Business, Edu, or Enterprise plan. [Learn more about what's included in your ChatGPT plan](https://help.openai.com/en/articles/11369540-codex-in-chatgpt).\n\nYou can also use Codex with an API key, but this requires [additional setup](https://developers.openai.com/codex/auth#sign-in-with-an-api-key).\n\n## Docs\n\n- [**Codex Documentation**](https://developers.openai.com/codex)\n- [**Contributing**](./docs/contributing.md)\n- [**Installing & building**](./docs/install.md)\n- [**Open source fund**](./docs/open-source-fund.md)\n\nThis repository is licensed under the [Apache-2.0 License](LICENSE).\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/openai/codex/tree/main",
+      "source_type": "github_tree",
+      "title": "openai/codex 代码目录结构",
+      "content": "仓库: openai/codex\n默认分支: main\n文件总数: 10598\n\n目录树结构:\n.bazelignore\n.bazelrc\n.bazelversion\n.cargo/config.toml\n.codespellignore\n.codespellrc\n.gitattributes\n.github/CODEOWNERS\n.github/ISSUE_TEMPLATE/1-codex-app.yml\n.github/ISSUE_TEMPLATE/2-extension.yml\n.github/ISSUE_TEMPLATE/3-cli.yml\n.github/ISSUE_TEMPLATE/4-bug-report.yml\n.github/ISSUE_TEMPLATE/5-feature-request.yml\n.github/ISSUE_TEMPLATE/6-docs-issue.yml\n.github/actions/build-bazel-package-binaries/action.yml\n.github/actions/build-bazel-release/action.yml\n.github/actions/build-cargo-package-binaries/action.yml\n.github/actions/build-codex-packages/action.yml\n.github/actions/check-clean-worktree/action.yml\n.github/actions/linux-code-sign/action.yml\n.github/actions/prepare-bazel-ci/action.yml\n.github/actions/publish-dotslash/action.yml\n.github/actions/publish-dotslash/requirements.txt\n.github/actions/run-argument-comment-lint/action.yml\n.github/actions/setup-akv-pkcs11-codesigning/action.yaml\n.github/actions/setup-bazel-windows/action.yml\n.github/actions/setup-ci/action.yml\n.github/actions/setup-msvc-env/action.yml\n.github/actions/setup-msvc-env/setup-msvc-env.ps1\n.github/actions/setup-python-release-tools/action.yml\n.github/actions/setup-python-release-tools/pyproject.toml\n.github/actions/setup-python-release-tools/uv.lock\n.github/actions/setup-rusty-v8/action.yml\n.github/actions/windows-code-sign/action.yml\n.github/blob-size-allowlist.txt\n.github/codex-cli-splash.png\n.github/codex/home/config.toml\n.github/codex/labels/codex-attempt.md\n.github/codex/labels/codex-review.md\n.github/codex/labels/codex-rust-review.md\n.github/codex/labels/codex-triage.md\n.github/dependabot.yaml\n.github/dotslash-argument-comment-lint-config.json\n.github/dotslash-config.json\n.github/dotslash-provisioned-config.json\n.github/scripts/archive-release-symbols-and-strip-binaries.sh\n.github/scripts/build-codex-package-archive.sh\n.github/scripts/check_ci_results.py\n.github/scripts/compute-bazel-windows-path.ps1\n.github/scripts/contract_releases.py\n.github/scripts/fixtures/codex-0.167.0-alpha.2-assets.txt\n.github/scripts/install-musl-build-tools.sh\n.github/scripts/install-musl-openssl.sh\n.github/scripts/issue_labeler.py\n.github/scripts/macos-signing/README.md\n.github/scripts/macos-signing/codex-app-server.entitlements.plist\n.github/scripts/macos-signing/codex-code-mode-host.entitlements.plist\n.github/scripts/macos-signing/codex-exec-server.entitlements.plist\n.github/scripts/macos-signing/codex-responses-api-proxy.entitlements.plist\n.github/scripts/macos-signing/codex-voice-host.entitlements.plist\n.github/scripts/macos-signing/codex.entitlements.plist\n.github/scripts/macos-signing/notarize_macos_binary_with_akv.sh\n.github/scripts/macos-signing/notarize_macos_dmg_with_akv.sh\n.github/scripts/macos-signing/notarize_with_akv.py\n.github/scripts/macos-signing/provisioned_macos_cli_package.py\n.github/scripts/macos-signing/sign_macos_cli_package.py\n.github/scripts/macos-signing/sign_macos_code.sh\n.github/scripts/macos-signing/test_notarize_with_akv.py\n.github/scripts/macos-signing/test_provisioned_macos_cli_package.py\n.github/scripts/macos-signing/test_sign_macos_cli_package.py\n.github/scripts/npm_alpha_tag.py\n.github/scripts/publish-github-release.sh\n.github/scripts/publish_r2_release.py\n.github/scripts/releases.py\n.github/scripts/resolve_exec_server_releases.py\n.github/scripts/resolve_python_cli_release.py\n.github/scripts/run-argument-comment-lint-bazel.sh\n.github/scripts/run-bazel-ci.sh\n.github/scripts/run-bazel-query-ci.sh\n.github/scripts/run_bazel.py\n.github/scripts/rusty_v8_bazel.py\n.github/scripts/rusty_v8_module_bazel.py\n.github/scripts/select_windows_bazel_targets.py\n.github/scripts/setup-dev-drive.ps1\n.github/scripts/setup-voice-windows.ps1\n.github/scripts/test_contract_releases.py\n.github/scripts/test_macos_signing_entitlements.py\n.github/scripts/test_releases.py\n.github/scripts/test_resolve_python_cli_release.py\n.github/scripts/test_run_bazel.py\n.github/scripts/test_rusty_v8_bazel.py\n.github/scripts/test_select_windows_bazel_targets.py\n.github/scripts/test_v8_canary_changes.py\n.github/scripts/test_verify_pypi_release.py\n.github/scripts/test_voice_cygwin_inputs.py\n.github/scripts/v8_canary_changes.py\n.github/scripts/verify_bazel_clippy_lints.py\n.github/scripts/verify_cargo_workspace_manifests.py\n.github/scripts/verify_pypi_release.py\n.github/scripts/verify_tui_core_boundary.py\n.github/scripts/voice-cygwin-inputs.py\n.github/scripts/voice-cygwin-snapshot.json\n.github/scripts/voice_windows_tools.py\n.github/scripts/watch_voice_bazel.py\n.github/scripts/windows_bazel_test_durations.tsv\n.github/workflows/Dockerfile.bazel\n.github/workflows/README.md\n.github/workflows/bazel.yml\n.github/workflows/blob-size-policy.yml\n.github/workflows/blocking-ci.yml\n.github/workflows/cargo-deny.yml\n.github/workflows/cla.yml\n.github/workflows/close-stale-contributor-prs.yml\n.github/workflows/codespell.yml\n.github/workflows/issue-deduplicator.yml\n.github/workflows/issue-labeler.yml\n.github/workflows/issue-translator.yml\n.github/workflows/postmerge-ci.yml\n.github/workflows/python-runtime-build.yml\n.github/workflows/python-runtime-release.yml\n.github/workflows/python-sdk-build.yml\n.github/workflows/python-sdk-cli-release.yml\n.github/workflows/python-sdk-release.yml\n.github/workflows/r2-release.yml\n.github/workflows/repo-checks.yml\n.github/workflows/rust-ci-full-nextest-platform.yml\n.github/workflows/rust-ci-full.yml\n.github/workflows/rust-ci.yml\n.github/workflows/rust-release-argument-comment-lint.yml\n.github/workflows/rust-release-provisioned-macos.yml\n.github/workflows/rust-release-windows.yml\n.github/workflows/rust-release.yml\n.github/workflows/rusty-v8-release.yml\n.github/workflows/sdk.yml\n.github/workflows/v8-canary.yml\n.github/workflows/zstd\n.gitignore\n.markdownlint-cli2.yaml\n.npmrc\n.nvmrc\n.prettierignore\n.prettierrc.toml\n.vscode/extensions.json\n.vscode/launch.json\n.vscode/settings.json\n.worktreeinclude\nBUILD.bazel\nCHANGELOG.md\nLICENSE\nMODULE.bazel\nMODULE.bazel.lock\nNOTICE\nREADME.md\nSECURITY.md\nannouncement_tip.toml\nbazel/build-info/BUILD.bazel\nbazel/extensions/BUILD.bazel\nbazel/extensions/codex_release_archive.bzl\nbazel/modules/BUILD.bazel\nbazel/modules/wine.MODULE.bazel\nbazel/platforms/BUILD.bazel\nbazel/platforms/release_binaries.bzl\nbazel/rules/BUILD.bazel\nbazel/rules/e2e_benchmark.bzl\nbazel/rules/runtime_package.bzl\nbazel/rules/schema_bundle.bzl\nbazel/rules/testing/BUILD.bazel\nbazel/rules/testing/compat/BUILD.bazel\nbazel/rules/testing/compat/exec_server_compat_test.bzl\nbazel/rules/testing/compat/exec_server_compat_test.rs\nbazel/rules/testing/foreign_platform_binary.bzl\nbazel/rules/testing/wine/BUILD.bazel\nbazel/rules/testing/wine/fixtures/windows_smoke.rs\nbazel/rules/testing/wine/src/lib.rs\nbazel/rules/testing/wine/src/lib_tests.rs\nbazel/rules/testing/wine/wine.bzl\nbazel/rules/testing/wine/wine_runtime.bzl\nbazel/schema/BUILD.bazel\nbazel/schema/tools/BUILD.bazel\nbazel/schema/tools/python_codegen.py\nbazel/toolchains/prost/BUILD.bazel\nbazel/tools/BUILD.bazel\nbazel/tools/dsymutil\ncodex-cli/.gitignore\ncodex-cli/bin/codex.js\ncodex-cli/package.json\ncodex-cli/scripts/README.md\ncodex-cli/scripts/build_npm_package.py\ncodex-cli/scripts/init_firewall.sh\ncodex-cli/scripts/run_in_container.sh\ncodex-cli/tests/exit-status.test.mjs\ncodex-cli/tests/test_build_npm_package.py\ncodex-rs/.cargo/audit.toml\ncodex-rs/.cargo/config.toml\ncodex-rs/.config/nextest.toml\ncodex-rs/.gitignore\ncodex-rs/BUILD.bazel\ncodex-rs/Cargo.lock\ncodex-rs/Cargo.toml\ncodex-rs/README.md\ncodex-rs/agent-graph-store/BUILD.bazel\ncodex-rs/agent-graph-store/Cargo.toml\ncodex-rs/agent-graph-store/src/error.rs\ncodex-rs/agent-graph-store/src/lib.rs\ncodex-rs/agent-graph-store/src/local.rs\ncodex-rs/agent-graph-store/src/store.rs\ncodex-rs/agent-graph-store/src/types.rs\ncodex-rs/agent-identity/BUILD.bazel\ncodex-rs/agent-identity/Cargo.toml\ncodex-rs/agent-identity/src/lib.rs\ncodex-rs/agent-message-board-client/BUILD.bazel\ncodex-rs/agent-message-board-client/Cargo.toml\ncodex-rs/agent-message-board-client/src/client.rs\nc",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs",
+      "source_type": "github_source",
+      "title": "openai/codex 核心源码: codex-rs/core/src/tools/runtimes/apply_patch.rs",
+      "content": "//! Apply Patch runtime: executes verified patches under the orchestrator.\n//!\n//! Assumes `apply_patch` verification/approval happened upstream. Reuses the\n//! selected turn environment filesystem for both local and remote turns, with\n//! sandboxing enforced by the explicit filesystem sandbox context.\nuse crate::exec::is_likely_sandbox_denied;\nuse crate::session::turn_context::TurnEnvironment;\nuse crate::tools::sandboxing::Approvable;\nuse crate::tools::sandboxing::ApprovalAction;\nuse crate::tools::sandboxing::ExecApprovalRequirement;\nuse crate::tools::sandboxing::SandboxAttempt;\nuse crate::tools::sandboxing::Sandboxable;\nuse crate::tools::sandboxing::ToolCtx;\nuse crate::tools::sandboxing::ToolError;\nuse crate::tools::sandboxing::ToolRuntime;\nuse crate::tools::sandboxing::ensure_native_sandbox;\nuse crate::tools::sandboxing::executor_windows_sandbox_selection;\nuse codex_apply_patch::AppliedPatchDelta;\nuse codex_apply_patch::AppliedPatchFileChange;\nuse codex_apply_patch::ApplyPatchAction;\nuse codex_apply_patch::ApplyPatchOptions;\nuse codex_exec_server::FileSystemSandboxContext;\nuse codex_protocol::error::CodexErr;\nuse codex_protocol::error::SandboxErr;\nuse codex_protocol::exec_output::ExecToolCallOutput;\nuse codex_protocol::exec_output::StreamOutput;\nuse codex_protocol::models::AdditionalPermissionProfile;\nuse codex_protocol::protocol::AskForApproval;\nuse codex_protocol::protocol::FileChange;\nuse codex_sandboxing::SandboxType;\nuse codex_sandboxing::SandboxablePreference;\nuse codex_sandboxing::is_likely_executor_managed_sandbox_denied;\nuse codex_sandboxing::policy_transforms::effective_permission_profile;\nuse codex_sandboxing::record_filesystem_sandbox_violation;\nuse codex_utils_path_uri::PathUri;\nuse std::path::PathBuf;\nuse std::sync::Arc;\nuse std::time::Instant;\n\n#[derive(Clone, Debug, Eq, PartialEq, Hash, serde::Serialize)]\npub(crate) struct ApplyPatchApprovalKey {\n    pub(crate) environment_id: String,\n    pub(crate) path: PathUri,\n}\n\n#[derive(Debug)]\npub struct ApplyPatchRequest {\n    pub turn_environment: TurnEnvironment,\n    pub action: ApplyPatchAction,\n    pub file_paths: Vec<PathUri>,\n    pub changes: Arc<std::collections::HashMap<PathBuf, FileChange>>,\n    pub exec_approval_requirement: ExecApprovalRequirement,\n    pub additional_permissions: Option<AdditionalPermissionProfile>,\n    pub permissions_preapproved: bool,\n}\n\nimpl ApplyPatchRequest {\n    pub(crate) fn approval_action(&self, call_id: &str) -> ApprovalAction {\n        ApprovalAction::ApplyPatch {\n            id: call_id.to_string(),\n            environment_id: self.turn_environment.selection.environment_id.clone(),\n            cwd: self.action.cwd.clone(),\n            files: self.file_paths.clone(),\n            patch: self.action.patch.clone(),\n            changes: Arc::clone(&self.changes),\n            permissions_preapproved: self.permissions_preapproved,\n        }\n    }\n}\n\n#[derive(Default)]\npub struct ApplyPatchRuntime {\n    committed_delta: AppliedPatchDelta,\n}\n\n#[derive(Debug)]\npub struct ApplyPatchRuntimeOutput {\n    pub exec_output: ExecToolCallOutput,\n    pub delta: AppliedPatchDelta,\n}\n\nimpl ApplyPatchRuntime {\n    pub fn new() -> Self {\n        Self::default()\n    }\n\n    pub fn committed_delta(&self) -> &AppliedPatchDelta {\n        &self.committed_delta\n    }\n\n    fn file_system_sandbox_context_for_attempt(\n        req: &ApplyPatchRequest,\n        attempt: &SandboxAttempt<'_>,\n    ) -> Option<FileSystemSandboxContext> {\n        if !attempt.sandbox_requested {\n            return None;\n        }\n\n        let permissions = effective_permission_profile(\n            attempt.exec_server_permissions,\n            req.additional_permissions.as_ref(),\n        );\n        Some(FileSystemSandboxContext {\n            sandbox_override: attempt.sandbox_override,\n            permissions,\n            cwd: attempt.sandbox_cwd.clone(),\n            workspace_roots: attempt.workspace_roots.to_vec(),\n            user_home_dir: req.turn_environment.user_home_dir.clone(),\n            temporary_directories: None,\n            windows_sandbox_selection: executor_windows_sandbox_selection(\n                attempt.windows_sandbox_type,\n                attempt.windows_sandbox_level,\n                attempt.sandbox_cwd,\n            ),\n            windows_sandbox_proxy_settings_mode: None,\n            use_legacy_landlock: attempt.use_legacy_landlock,\n        })\n    }\n}\n\nimpl Sandboxable for ApplyPatchRuntime {\n    fn sandbox_preference(&self) -> SandboxablePreference {\n  ",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch_tests.rs",
+      "source_type": "github_source",
+      "title": "openai/codex 核心源码: codex-rs/core/src/tools/runtimes/apply_patch_tests.rs",
+      "content": "use super::*;\nuse crate::config::PermissionProfileSnapshot;\nuse crate::environment_selection::EnvironmentConfigOrigin;\nuse crate::tools::sandboxing::SandboxAttempt;\nuse codex_protocol::config_types::WindowsSandboxLevel;\nuse codex_protocol::models::AdditionalPermissionProfile;\nuse codex_protocol::models::FileSystemPermissions;\nuse codex_protocol::models::PermissionProfile;\nuse codex_protocol::permissions::NetworkSandboxPolicy;\nuse codex_protocol::protocol::EnvironmentConfig;\nuse codex_protocol::protocol::EnvironmentConfigState;\nuse codex_protocol::protocol::GranularApprovalConfig;\nuse codex_protocol::protocol::TurnEnvironmentSelection;\nuse codex_protocol::sandbox::SandboxOverride;\nuse codex_sandboxing::SandboxManager;\nuse codex_sandboxing::SandboxSelection;\nuse codex_sandboxing::SandboxType;\nuse codex_sandboxing::policy_transforms::effective_file_system_sandbox_policy;\nuse codex_sandboxing::policy_transforms::effective_network_sandbox_policy;\nuse codex_utils_path_uri::PathUri;\nuse core_test_support::PathBufExt;\nuse pretty_assertions::assert_eq;\nuse std::collections::HashMap;\nfn test_turn_environment(environment_id: &str) -> crate::session::turn_context::TurnEnvironment {\n    crate::session::turn_context::TurnEnvironment::new(\n        TurnEnvironmentSelection {\n            selected_capability_roots: Default::default(),\n            environment_id: environment_id.to_string(),\n            cwd: PathUri::from_abs_path(&std::env::temp_dir().abs()),\n            workspace_roots: Vec::new(),\n            config: EnvironmentConfigState::Ready(EnvironmentConfig {\n                environment_hooks: Default::default(),\n                allow_login_shell: true,\n                workspace_roots: Vec::new(),\n                windows_sandbox_level: WindowsSandboxLevel::Disabled,\n                windows_sandbox_type: SandboxType::None,\n                use_legacy_landlock: false,\n                permission_profile: PermissionProfileSnapshot::legacy(\n                    PermissionProfile::read_only(),\n                ),\n                shell_environment_policy: Default::default(),\n                exec_policy: None,\n                plugins: Default::default(),\n                mcp_policy: None,\n                network_policy: None,\n                selected_capability_roots: Vec::new(),\n            }),\n        },\n        EnvironmentConfigOrigin::Thread,\n        std::sync::Arc::new(codex_exec_server::Environment::default_for_tests()),\n        /*shell*/ None,\n    )\n}\n\n#[test]\nfn wants_no_sandbox_approval_granular_respects_sandbox_flag() {\n    let runtime = ApplyPatchRuntime::new();\n    assert!(runtime.wants_no_sandbox_approval(AskForApproval::OnRequest));\n    assert!(\n        !runtime.wants_no_sandbox_approval(AskForApproval::Granular(GranularApprovalConfig {\n            sandbox_approval: false,\n            rules: true,\n            skill_approval: true,\n            request_permissions: true,\n            mcp_elicitations: true,\n        }))\n    );\n    assert!(\n        runtime.wants_no_sandbox_approval(AskForApproval::Granular(GranularApprovalConfig {\n            sandbox_approval: true,\n            rules: true,\n            skill_approval: true,\n            request_permissions: true,\n            mcp_elicitations: true,\n        }))\n    );\n}\n\n#[tokio::test]\nasync fn approval_action_preserves_patch_path_uris() {\n    let path = PathUri::parse(\"file:///C:/workspace/guardian-apply-patch-test.txt\")\n        .expect(\"valid foreign path URI\");\n    let action = ApplyPatchAction::new_add_for_test(&path, \"hello\".to_string());\n    let expected_cwd = action.cwd.clone();\n    let expected_patch = action.patch.clone();\n    let request = ApplyPatchRequest {\n        turn_environment: test_turn_environment(codex_exec_server::LOCAL_ENVIRONMENT_ID),\n        action,\n        file_paths: vec![path.clone()],\n        changes: Arc::new(HashMap::new()),\n        exec_approval_requirement: ExecApprovalRequirement::NeedsApproval {\n            reason: None,\n            proposed_execpolicy_amendment: None,\n        },\n        additional_permissions: None,\n        permissions_preapproved: false,\n    };\n\n    let approval_action = request.approval_action(\"call-1\");\n\n    assert_eq!(\n        approval_action,\n        ApprovalAction::ApplyPatch {\n            id: \"call-1\".to_string(),\n            environment_id: codex_exec_server::LOCAL_ENVIRONMENT_ID.to_string(),\n            cwd: expected_cwd,\n            files: vec![path],\n            patch: expected_patch,\n            changes: Arc::new(HashM",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/codex-rs/app-server-protocol/schema/typescript/v2/HookPromptFragment.ts",
+      "source_type": "github_source",
+      "title": "openai/codex 核心源码: codex-rs/app-server-protocol/schema/typescript/v2/HookPromptFragment.ts",
+      "content": "// GENERATED CODE! DO NOT MODIFY BY HAND!\n\n// This file was generated by [ts-rs](https://github.com/Aleph-Alpha/ts-rs). Do not edit this file manually.\n\nexport type HookPromptFragment = { text: string, hookRunId: string, };\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/orchestrator.rs",
+      "source_type": "github_source",
+      "title": "openai/codex 核心源码: codex-rs/core/src/tools/orchestrator.rs",
+      "content": "//! Coordinates tool approval, sandbox selection, and retries after sandbox denial.\n//! Guardian approval applies to the reviewed authority; escalating a sandboxed\n//! attempt requires a fresh review of the retry.\nuse crate::config::NetworkProxySpec;\nuse crate::guardian::GuardianReviewContext;\nuse crate::network_policy_decision::network_approval_context_from_payload;\nuse crate::sandboxing::SandboxPermissions;\nuse crate::tools::approvals::ApprovalAction;\nuse crate::tools::approvals::ApprovalContext;\nuse crate::tools::approvals::ApprovalResolutionSource;\nuse crate::tools::flat_tool_name;\nuse crate::tools::network_approval::ActiveNetworkApproval;\nuse crate::tools::network_approval::DeferredNetworkApproval;\nuse crate::tools::network_approval::NetworkApprovalSpec;\nuse crate::tools::network_approval::begin_network_approval;\nuse crate::tools::network_approval::finish_deferred_network_approval;\nuse crate::tools::sandboxing::ExecApprovalRequirement;\nuse crate::tools::sandboxing::SandboxAttempt;\nuse crate::tools::sandboxing::SandboxOverride;\nuse crate::tools::sandboxing::ToolCtx;\nuse crate::tools::sandboxing::ToolError;\nuse crate::tools::sandboxing::ToolRuntime;\nuse crate::tools::sandboxing::default_exec_approval_requirement;\nuse crate::tools::sandboxing::ensure_executor_can_escalate_with_denied_reads;\nuse crate::tools::sandboxing::ensure_native_sandbox;\nuse crate::tools::sandboxing::sandbox_override_for_first_attempt;\nuse codex_otel::ToolDecisionSource;\nuse codex_protocol::error::CodexErrorDetails;\nuse codex_protocol::error::SandboxErr;\nuse codex_protocol::exec_output::ExecToolCallOutput;\nuse codex_protocol::models::PermissionProfile;\nuse codex_protocol::permissions::PROTECTED_METADATA_PATH_NAMES;\nuse codex_protocol::permissions::file_system_root;\nuse codex_protocol::protocol::AskForApproval;\nuse codex_protocol::protocol::ReviewDecision;\nuse codex_sandboxing::SandboxManager;\nuse codex_sandboxing::SandboxSelection;\nuse codex_sandboxing::SandboxType;\nuse codex_sandboxing::policy_transforms::effective_network_sandbox_policy;\nuse codex_utils_path_uri::PathConvention;\nuse std::sync::Arc;\nuse std::time::Instant;\n\npub(crate) struct ToolOrchestrator;\n\npub(crate) struct OrchestratorRunResult<Out> {\n    pub output: Out,\n    pub deferred_network_approval: Option<DeferredNetworkApproval>,\n}\n\nimpl ToolOrchestrator {\n    pub fn new() -> Self {\n        Self\n    }\n\n    async fn run_attempt<Rq, Out, T>(\n        tool: &mut T,\n        req: &Rq,\n        tool_ctx: &ToolCtx,\n        attempt: &SandboxAttempt<'_>,\n        network_approval_spec: Option<NetworkApprovalSpec>,\n    ) -> (Result<Out, ToolError>, Option<DeferredNetworkApproval>)\n    where\n        T: ToolRuntime<Rq, Out>,\n    {\n        let network_approval = match begin_network_approval(\n            &tool_ctx.session,\n            &tool_ctx.step_context.turn,\n            &tool_ctx.step_context.environments,\n            attempt.enforce_managed_network,\n            network_approval_spec,\n        )\n        .await\n        {\n            Ok(network_approval) => network_approval,\n            Err(err) => return (Err(err), None),\n        };\n\n        let attempt_tool_ctx = ToolCtx {\n            session: tool_ctx.session.clone(),\n            step_context: Arc::clone(&tool_ctx.step_context),\n            cancellation_token: tool_ctx.cancellation_token.clone(),\n            call_id: tool_ctx.call_id.clone(),\n            tool_name: tool_ctx.tool_name.clone(),\n        };\n        let attempt_with_network_approval = SandboxAttempt {\n            network_denial_cancellation_token: network_approval\n                .as_ref()\n                .map(ActiveNetworkApproval::cancellation_token),\n            network_proxy: network_approval\n                .as_ref()\n                .map(ActiveNetworkApproval::execution_proxy),\n            ..*attempt\n        };\n        let run_result = tool\n            .run(req, &attempt_with_network_approval, &attempt_tool_ctx)\n            .await;\n\n        let Some(network_approval) = network_approval else {\n            return (run_result, None);\n        };\n\n        let deferred = Some(network_approval.into_deferred());\n        if run_result.is_err() {\n            let finalize_result = finish_deferred_network_approval(deferred);\n            if let Err(err) = finalize_result {\n                return (Err(err), None);\n            }\n            return (run_result, None);\n        }\n        (run_result, deferred)\n    }\n\n    pub async fn run<Rq, Out, T>(\n        &mut self,\n        tool: &mut T,\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/apps_instructions.rs",
+      "source_type": "github_source",
+      "title": "openai/codex 核心源码: codex-rs/core/src/context/apps_instructions.rs",
+      "content": "//! Renders bundled Apps guidance and catalog updates with the same developer provenance.\n//! Older clients recognize only the bundled markers when recovering from retained history.\n\nuse codex_mcp::CODEX_APPS_MCP_SERVER_NAME;\nuse codex_protocol::protocol::APPS_INSTRUCTIONS_CLOSE_TAG;\nuse codex_protocol::protocol::APPS_INSTRUCTIONS_OPEN_TAG;\nuse codex_protocol::protocol::CATALOG_APPS_INSTRUCTIONS_CLOSE_TAG;\nuse codex_protocol::protocol::CATALOG_APPS_INSTRUCTIONS_OPEN_TAG;\n\nuse super::ContextualUserFragment;\nuse codex_protocol::models::ContentItem;\nuse codex_protocol::models::ContentItemKind;\nuse codex_protocol::models::input_text;\n\n#[derive(Debug, Clone, PartialEq)]\npub(crate) struct AppsInstructions(pub(crate) String);\n\nimpl Default for AppsInstructions {\n    fn default() -> Self {\n        Self(\n            codex_prompts::ResolvedModelMessages::bundled()\n                .apps_usage_instructions(CODEX_APPS_MCP_SERVER_NAME)\n                .usage_instructions,\n        )\n    }\n}\n\nimpl ContextualUserFragment for AppsInstructions {\n    fn content_kind(&self) -> ContentItemKind {\n        ContentItemKind(\"apps.instructions\".to_string())\n    }\n\n    fn role(&self) -> &'static str {\n        \"developer\"\n    }\n\n    fn markers(&self) -> (&'static str, &'static str) {\n        Self::type_markers()\n    }\n\n    fn type_markers() -> (&'static str, &'static str) {\n        (APPS_INSTRUCTIONS_OPEN_TAG, APPS_INSTRUCTIONS_CLOSE_TAG)\n    }\n\n    fn body(&self) -> ContentItem {\n        input_text(self.0.clone())\n    }\n}\n\n#[derive(Debug, Clone, PartialEq)]\npub(crate) struct CatalogAppsInstructions(pub(crate) String);\n\nimpl ContextualUserFragment for CatalogAppsInstructions {\n    fn content_kind(&self) -> ContentItemKind {\n        ContentItemKind(\"apps.instructions\".to_string())\n    }\n\n    fn role(&self) -> &'static str {\n        \"developer\"\n    }\n\n    fn markers(&self) -> (&'static str, &'static str) {\n        Self::type_markers()\n    }\n\n    fn type_markers() -> (&'static str, &'static str) {\n        (\n            CATALOG_APPS_INSTRUCTIONS_OPEN_TAG,\n            CATALOG_APPS_INSTRUCTIONS_CLOSE_TAG,\n        )\n    }\n\n    fn body(&self) -> ContentItem {\n        input_text(self.0.clone())\n    }\n}\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/base_instructions.rs",
+      "source_type": "github_source",
+      "title": "openai/codex 核心源码: codex-rs/core/src/context/base_instructions.rs",
+      "content": "//! Initial base instructions, recorded in history for incremental-tools windows.\n\nuse super::ContextualUserFragment;\nuse codex_protocol::models::ContentItem;\nuse codex_protocol::models::ContentItemKind;\nuse codex_protocol::models::ResponseItem;\nuse codex_protocol::models::input_text;\n\n#[derive(Clone, Debug, PartialEq, Eq)]\npub(crate) struct BaseInstructionsFragment(pub(crate) String);\n\nimpl BaseInstructionsFragment {\n    pub(crate) const KIND: &str = \"model.base_instructions\";\n\n    /// Reads only a dedicated, harness-classified base item, including an explicitly empty base.\n    pub(crate) fn text_from_item(item: &ResponseItem) -> Option<&str> {\n        let ResponseItem::Message {\n            role,\n            content,\n            internal_chat_message_metadata_passthrough: Some(metadata),\n            ..\n        } = item\n        else {\n            return None;\n        };\n        match (\n            role.as_str(),\n            content.as_slice(),\n            metadata.content_item_kinds.as_deref(),\n        ) {\n            (\"developer\", [ContentItem::InputText { text }], Some([kind]))\n                if kind.as_str() == Self::KIND =>\n            {\n                Some(text)\n            }\n            _ => None,\n        }\n    }\n}\n\nimpl ContextualUserFragment for BaseInstructionsFragment {\n    fn content_kind(&self) -> ContentItemKind {\n        ContentItemKind(Self::KIND.to_string())\n    }\n\n    fn role(&self) -> &'static str {\n        \"developer\"\n    }\n\n    fn markers(&self) -> (&'static str, &'static str) {\n        Self::type_markers()\n    }\n\n    fn type_markers() -> (&'static str, &'static str) {\n        (\"\", \"\")\n    }\n\n    fn body(&self) -> ContentItem {\n        input_text(self.0.clone())\n    }\n}\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/openai/codex/main/package.json",
+      "source_type": "github_source",
+      "title": "openai/codex 核心源码: package.json",
+      "content": "{\n  \"name\": \"codex-monorepo\",\n  \"private\": true,\n  \"description\": \"Tools for repo-wide maintenance.\",\n  \"scripts\": {\n    \"format\": \"prettier --check *.json *.md docs/*.md .github/workflows/*.yml **/*.js\",\n    \"format:fix\": \"prettier --write *.json *.md docs/*.md .github/workflows/*.yml **/*.js\",\n    \"write-hooks-schema\": \"cargo run --manifest-path ./codex-rs/Cargo.toml -p codex-hooks --bin write_hooks_schema_fixtures\"\n  },\n  \"devDependencies\": {\n    \"prettier\": \"^3.5.3\"\n  },\n  \"resolutions\": {\n    \"@modelcontextprotocol/sdk\": \"1.32.0\",\n    \"braces\": \"^3.0.3\",\n    \"esbuild\": \"0.28.1\",\n    \"fast-uri\": \"3.1.1\",\n    \"flatted\": \"3.4.2\",\n    \"glob@10.4.5\": \"10.5.0\",\n    \"handlebars\": \"4.7.9\",\n    \"hono\": \"4.12.25\",\n    \"micromatch\": \"^4.0.8\",\n    \"minimatch@3.1.2\": \"3.1.4\",\n    \"minimatch@9.0.5\": \"9.0.7\",\n    \"path-to-regexp\": \"8.4.0\",\n    \"picomatch@2.3.1\": \"2.3.2\",\n    \"picomatch@4.0.3\": \"4.0.4\",\n    \"rollup\": \"4.59.0\",\n    \"semver\": \"^7.7.1\"\n  },\n  \"overrides\": {\n    \"punycode\": \"^2.3.1\"\n  },\n  \"engines\": {\n    \"node\": \">=24.22.1\",\n    \"pnpm\": \">=10.34.5\"\n  },\n  \"packageManager\": \"pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e\"\n}\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/asgeirtj/system_prompts_leaks",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] asgeirtj/system_prompts_leaks (★72659)",
+      "content": "<div align=\"center\">\n\n# System Prompts Leaks\n\nThe conversation that took place before you sent your first message.\n\n[Claude](#anthropic--claude) · [Claude Code](#claude-code-system-prompts) · [ChatGPT](#openai--chatgpt) · [Codex](#codex-system-prompts) · [Gemini](#google--gemini) · [Antigravity](#antigravity-system-prompts) · [Grok](#xai--grok) · [Muse](#meta--muse) · [Perplexity](#perplexity) · [Cursor](#cursor) · [Mistral](#mistral) · [Kimi](#moonshot--kimi) · [GLM](#zai--glm) · [Notion AI](#notion-ai) · [Qwen](#qwen) · [MiniMax](#minimax) · [Copilot](#microsoft--copilot) · [DeepSeek](#deepseek) · [More](#other-products)\n\nFound the prompt you were looking for? **Leave a ⭐**\n\n[![Stars](https://img.shields.io/github/stars/asgeirtj/system_prompts_leaks?style=flat)](https://github.com/asgeirtj/system_prompts_leaks/stargazers) [![Forks](https://img.shields.io/github/forks/asgeirtj/system_prompts_leaks?style=flat)](https://github.com/asgeirtj/system_prompts_leaks/forks) [![Commits](https://img.shields.io/github/commit-activity/t/asgeirtj/system_prompts_leaks?style=flat&label=commits)](https://github.com/asgeirtj/system_prompts_leaks/commits/main) [![Last Commit](https://img.shields.io/github/last-commit/asgeirtj/system_prompts_leaks?style=flat)](https://github.com/asgeirtj/system_prompts_leaks/commits/main) [![X](https://img.shields.io/badge/@asgeirtj-black?logo=x&logoColor=white)](https://x.com/asgeirtj)\n\n<p>\n <a href=\"https://www.star-history.com/asgeirtj/system_prompts_leaks\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=trending&theme=dark\" /><source media=\"(prefers-color-scheme: light)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=trending\" /><img alt=\"GitHub Trending Repository of the Day\" src=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=trending\" /></picture></a>\n <a href=\"https://www.star-history.com/asgeirtj/system_prompts_leaks\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=rank&theme=dark\" /><source media=\"(prefers-color-scheme: light)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=rank\" /><img alt=\"Star History Rank\" src=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=rank\" /></picture></a>\n</p>\n\n</div>\n\nUsed as the definitive source in:\n\n- **The Washington Post**: [See the hidden rules behind AI. Then use them to rewrite this article.](https://archive.ph/pYtPk) (May 11, 2026)\n- **CEPS' AI World**: [System prompts and what they tell us about the chat before the chat](https://aiworld.eu/story/system-prompts-and-what-they-tell-us-about-the-chat-before-the-chat) (July 10, 2026)\n- **Simon Willison**: \"the most thorough leaked system prompt collection I know of\" in [ChatGPT search now uses the site:operator at scale](https://simonwillison.net/2026/Aug/20/chatgpt-search-now-uses-the-siteoperator-at-scale/) (August 20, 2026)\n- **23 academic papers**, among them IEEE S&P 2026, ICLR 2026, CHI 2026 and EMNLP 2025 (November 18, 2026)\n\n> Got a different result? [Open up a PR](https://github.com/asgeirtj/system_prompts_leaks/pulls) or [send me a message](mailto:asgeirtj@gmail.com).\n\n## Most recent additions/changes\n\n| What | Date | Link |\n|------|------|------|\n| **Claude Code /ship and /steward** | November 24, 2026 | [/ship](Anthropic/claude-code/skills/ship/SKILL.md) · [/steward](Anthropic/claude-code/skills/steward/SKILL.md) · [Wake-up pass](Anthropic/claude-code/skills/steward/pass.md) |\n| **Reasoning effort values** | November 23, 2026 | [Claude](Anthropic/reasoning-effort.md) · [GPT](OpenAI/reasoning-effort.md) · [Gemini](Google/reasoning-effort.md) |\n| **Claude API tools** | November 20, 2026 | [Claude API tool prompts and definitions](Anthropic/tools) |\n| **Claude for Outlook and Claude for Google Workspace** | N",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/cobusgreyling/loop-engineering",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] cobusgreyling/loop-engineering (★11839)",
+      "content": "# Loop Engineering\n\n<p align=\"center\">\n  <a href=\"https://cobusgreyling.github.io/loop-engineering/\"><img src=\"https://img.shields.io/badge/✨_Showcase-live-3ee8c5?style=for-the-badge&labelColor=111a28\" alt=\"Showcase\" /></a>\n  <a href=\"https://github.com/cobusgreyling/loop-engineering/stargazers\"><img src=\"https://img.shields.io/github/stars/cobusgreyling/loop-engineering?style=social\" alt=\"GitHub stars\"></a>\n  <a href=\"https://www.npmjs.com/package/@cobusgreyling/loop\"><img src=\"https://img.shields.io/npm/v/@cobusgreyling/loop?label=loop\" alt=\"loop npm\"></a>\n  <a href=\"https://raw.githubusercontent.com/cobusgreyling/loop-engineering/main/docs/last-run.json\"><img src=\"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/cobusgreyling/loop-engineering/main/docs/last-run.json\" alt=\"last triage\"></a>\n  <a href=\"LICENSE\"><img src=\"https://img.shields.io/badge/license-MIT-blue.svg\" alt=\"MIT\"></a>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://cobusgreyling.github.io/loop-engineering/\">\n    <img src=\"https://cdn.jsdelivr.net/gh/cobusgreyling/loop-engineering@main/assets/visuals/loop-engineering-logo.svg\" alt=\"Loop Engineering logo\" width=\"72\" />\n  </a>\n</p>\n\n> **Stop prompting. Design the loop. Get a score.**\n\n<p align=\"center\">\n  <img src=\"https://cdn.jsdelivr.net/gh/cobusgreyling/loop-engineering@main/assets/visuals/LE5.jpeg\" alt=\"Loop Engineering — design the system that prompts your agents\" width=\"100%\" />\n</p>\n\n<p align=\"center\"><strong>Start in 5 minutes</strong> ·\n  <a href=\"docs/QUICKSTART.md\">Quickstart</a> ·\n  <a href=\"docs/jobs.md\">What do you want to do?</a> ·\n  <a href=\"docs/refactor.md\">Refactor path</a> ·\n  <a href=\"README.zh-CN.md\">中文</a> ·\n  <a href=\"https://cobusgreyling.github.io/loop-engineering/#interactive\">Pattern picker</a>\n</p>\n\n```bash\nnpx @cobusgreyling/loop init . --pattern daily-triage --tool claude\nnpx @cobusgreyling/loop doctor .\n```\n\n`--tool` defaults to `claude` if you omit it. Swap for `grok`, `codex`, or `opencode`. Week one is **report-only**.\n\n<p align=\"center\">\n  <a href=\"docs/QUICKSTART.md\">\n    <img src=\"https://cdn.jsdelivr.net/gh/cobusgreyling/loop-engineering@main/assets/visuals/loop-audit-demo.gif\" alt=\"Loop Ready score climbing\" width=\"100%\" />\n  </a>\n</p>\n\nYou design a system that discovers work, hands it to agents, verifies results, and persists state — instead of typing the next prompt yourself.\n\n**New here?** [Quickstart](docs/QUICKSTART.md) · [Refactor a project](docs/refactor.md) · [Thin GitHub Action loop](starters/thin-loop/) (no `STATE.md` required)\n\n## What do you want to do?\n\nThis is a **pattern library for operating agents around a codebase**. It is not a “rewrite the module” button.\n\n| I want to… | Start here |\n|------------|------------|\n| Keep the repo healthy (issues, CI, deps) | [Quickstart](docs/QUICKSTART.md) → `daily-triage` |\n| Land and babysit PRs | [PR Babysitter](patterns/pr-babysitter.md) |\n| Run a loop in GitHub Actions with almost no files | [Thin loop](starters/thin-loop/) |\n| **Ship a feature or refactor** (todos → small PRs) | **[Refactor / change path](docs/refactor.md)** |\n\nFull jobs table: [docs/jobs.md](docs/jobs.md).\n\n## Patterns\n\n| Pattern | Cadence | Week 1 | Cost |\n|---------|---------|--------|------|\n| [Daily Triage](patterns/daily-triage.md) | 1d–2h | L1 report | Low |\n| [Thin loop](patterns/thin-loop.md) | event + 1d | L1 snapshot | Very low |\n| [PR Babysitter](patterns/pr-babysitter.md) | 5–15m | L1 watch | High |\n| [CI Sweeper](patterns/ci-sweeper.md) | 5–15m | L2 cautious | Very high |\n| [Dependency Sweeper](patterns/dependency-sweeper.md) | 6h–1d | L2 patch-only | Medium |\n| [Changelog Drafter](patterns/changelog-drafter.md) | 1d or tag | L1 draft | Low |\n| [Post-Merge Cleanup](patterns/post-merge-cleanup.md) | 1d–6h | L1 off-peak | Low |\n| [Issue Triage](patterns/issue-triage.md) | 2h–1d | L1 propose-only | Low |\n\nInteractive picker: [showcase](https://cobusgreyling.github.io/loop-engineering/#interactive). Index: [patterns/regis",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/weave-os/router",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] weave-os/router (★5621)",
+      "content": "<div align=\"center\">\n<img width=\"7559\" height=\"1200\" alt=\"Weave Router\" src=\"docs/router-banner.png\" />\n\n[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)\n[![Managed deployment](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Frouter.weaveos.com%2Fv1%2Fversion&query=%24.display&label=managed%20deployment&color=EC6341&cacheSeconds=1800)](https://github.com/weave-os/router/deployments)\n\n![Built with Weave Router](docs/badges/router-badge-dark.svg)\n</div>\n\n# Weave Router\n\nWeave Router is a proxy that selects a model for each API request. It works with\nAnthropic, OpenAI, and Gemini APIs, so you can use it with coding tools or your\nown application. You can use the hosted router or run it yourself with your own\nprovider keys. For the best experience, use the managed router hosted by Weave.\n\nThe router uses an HMM classifier policy to choose from enabled models.\nIt supports streaming, tool calls, and vision.\n\n## Get started\n\nFor the hosted router, run the installer and follow the setup prompts:\n\n```bash\nnpx @weave-os/router\n```\n\nYou'll need Node 18 or later. The hosted setup page can help you get a router\nkey; you can also create one in the [Weave dashboard](https://app.weaveos.com/)\nunder Settings → API keys. To choose a tool directly, use one of these commands:\n\n```bash\nnpx @weave-os/router --claude\nnpx @weave-os/router --codex\nnpx @weave-os/router --copilot\nnpx @weave-os/router --opencode\nnpx @weave-os/router --pi\n```\n\nThe installer configures your selected tool to use Weave. For Copilot, it adds\nWeave Router to the model picker; you can also start it with\n`copilot --model weave/auto`.\n\nFor example, to switch Codex back to its previous provider, run\n`npx @weave-os/router off --codex`. Use `on --codex` to switch back to Weave,\nor `--uninstall --codex` to remove the configuration. See the [installation guide](install/README.md) for\nwhat changes for each tool, project-level setup, and all available options.\n\nFor client-specific setup, connection checks, switching back, and uninstall, see the\n[Router quickstart](https://weaveos.com/router/quickstart), [Claude Code guide](https://weaveos.com/router/claude-code),\nand [Codex CLI guide](https://weaveos.com/router/codex).\n\n## Run it yourself\n\nYou'll need Docker, Go 1.26 or later, a provider API key, and a local checkout.\nFor example, with an OpenRouter key:\n\n```bash\ngit clone https://github.com/weave-os/router.git\ncd router\necho 'OPENROUTER_API_KEY=sk-or-v1-...' >> .env.local\necho 'ROUTER_ADMIN_PASSWORD=replace-with-a-strong-password' >> .env.local\nmake full-setup\n```\n\nThis starts the router and Postgres, creates a router key, and offers to set up\nClaude Code. The router listens at <http://localhost:8080> and the dashboard is\nat <http://localhost:8080/ui/>. The router key (`rk_...`) is printed during\nsetup; use it to authenticate clients. Your provider key is separate and stays in\n`.env.local`. Without an admin password, inference still works but dashboard\nadministration is disabled.\n\nTo connect another supported tool to the local router, add `--local` to its\ninstaller command, for example:\n\n```bash\nnpx @weave-os/router --codex --local\n```\n\nCursor routes its Agent and Ask chats through the router. Cursor calls the base\nURL from its own servers, not from your machine, so a `localhost` router is\nunreachable: use the hosted router or a publicly reachable self-hosted URL. In\nCursor, open Settings → Models, turn on *OpenAI API Key* with your `rk_...`\nrouter key, set *Override OpenAI Base URL* to `<base-url>/v1`, and add a custom\nmodel named `Weave Auto` (the router also accepts `weave-auto` and rejects other\n`weave-` names). Tab\ncompletion and Apply stay on Cursor's own models, and BYOK needs a paid Cursor\nseat.\n\nThe self-hosted router sends prompts to your configured provider. It also\nsupports OpenTelemetry for tracing. For configuration, deployment details, and\nother provider options, see the [configuration reference](docs/CONFIGURATION.md)",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/qybaihe/bla",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] qybaihe/bla (★6893)",
+      "content": "<div align=\"center\">\n\n**English** · [简体中文](docs/readme/README_zh.md) · [繁體中文](docs/readme/README_zh-TW.md) · [日本語](docs/readme/README_ja.md) · [한국어](docs/readme/README_ko.md) · [Türkçe](docs/readme/README_tr.md) · [Русский](docs/readme/README_ru.md) · [Tiếng Việt](docs/readme/README_vi.md) · [ไทย](docs/readme/README_th.md) · [Deutsch](docs/readme/README_de.md) · [Español](docs/readme/README_es.md) · [Français](docs/readme/README_fr.md) · [Українська](docs/readme/README_uk.md) · [Polski](docs/readme/README_pl.md) · [Português (Brasil)](docs/readme/README_pt-BR.md) · [العربية](docs/readme/README_ar.md) · [فارسی](docs/readme/README_fa.md) · [Bahasa Indonesia](docs/readme/README_id.md) · [Italiano](docs/readme/README_it.md) · [Ελληνικά](docs/readme/README_el.md) · [മലയാളം](docs/readme/README_ml.md) · [Roman Urdu](docs/readme/README_ur-Latn.md) · [Română](docs/readme/README_ro.md)\n\n<br />\n\n<img src=\"docs/assets/logo.png\" alt=\"BLA Shield\" width=\"88\" />\n\n# BLA: Blind LLM Agents\n\n### **Poison → Exhaust → Hallucinate. Make Reverse Engineering Bankrupt Again.**\n\n**The open-source Counter-REA Blue Defense MCP & CLI that protects software releases against AI reverse-engineering agents (`morluto/rea`, autonomous decompilers, and LLM recon pipelines) — verified across 16 showcase benchmark targets.**\n\n[![npm version](https://img.shields.io/badge/npm-bla--agents_v3.6.1-2563eb?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/bla-agents)\n[![GitHub Trending](https://img.shields.io/badge/GitHub_Trending-%235_Daily-7c3aed?style=for-the-badge&logo=github&logoColor=white)](https://trendshift.io/repositories/323569)\n[![MCP Server](https://img.shields.io/badge/MCP-31_Defense_Tools-0ea5e9?style=for-the-badge)](docs/cli-and-mcp.md)\n[![Formats](https://img.shields.io/badge/Formats-26_Artifacts-0284c7?style=for-the-badge)](#format-coverage)\n[![Counter-REA](https://img.shields.io/badge/Counter--REA-Empirically_Verified-1d4ed8?style=for-the-badge)](#empirical-results-vs-real-rea)\n[![MIT License](https://img.shields.io/badge/License-MIT-38bdf8?style=for-the-badge)](LICENSE)\n\n<p align=\"center\">\n  <a href=\"https://trendshift.io/repositories/323569\" target=\"_blank\" rel=\"noopener noreferrer\">\n    <img src=\"docs/assets/bla-github-trending-badge.png\" alt=\"GitHub Trending — #5 Repository Of The Day\" width=\"270\" height=\"54\"/>\n  </a>\n</p>\n\n**[🌐 Official Website](https://bla.tools/) · [📖 Defense Guides](https://bla.tools/guides/) · [📊 Live Benchmarks](https://bla.tools/showcase/) · [🎯 CrackMe Arena](https://bla.tools/crackme/) · [🏢 Enterprise](https://bla.tools/enterprise/) · [⚖️ Disclaimer](DISCLAIMER.md)**\n\n[Quick Start](#-30-second-quick-start) · [How It Works](#-how-bla-works-agent-driven-closed-loop) · [Empirical Results](#empirical-results-vs-real-rea) · [Format Coverage](#format-coverage) · [16-Target Benchmark](#benchmark-16-targets-internal-estimates) · [CrackMe Arena](#-red-vs-blue-crackme-arena) · [FAQ](#faq)\n\n</div>\n\n---\n\n> [!IMPORTANT]\n> **Defensive Use Only:** BLA is engineered strictly for software authors and security teams protecting **their own** intellectual property and release artifacts. See [DISCLAIMER.md](DISCLAIMER.md).\n> Always install from official sources: [qybaihe/bla](https://github.com/qybaihe/bla) or [`npm i bla-agents`](https://www.npmjs.com/package/bla-agents).\n\n<div align=\"center\">\n<img src=\"docs/assets/bla-vs-rea-showcase.svg\" alt=\"Side-by-side: REA on an unprotected artifact vs BLA-protected output\" width=\"1200\" />\n</div>\n\n<br />\n\n<table>\n<tr>\n<td width=\"33%\" valign=\"top\">\n\n### 🔴 Without BLA\nAI reverse-engineering agents (`REA` + coding agents) unpack `.asar` archives, recover SourceMaps, trace IPC bridges, inspect `.wasm` / `.sqlite` / `.safetensors`, and clone core business logic in **seconds for ~$0.20**.\n\n</td>\n<td width=\"33%\" valign=\"top\">\n\n### 🛡️ With BLA (`bla harden .`)\nREA's default pass stops on its own resource budgets (`primitive-candidates > 256`, `ASAR > 16 MiB`, `WASM > Wabt cap`, `SQLite ",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/ljagiello/ctf-skills",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] ljagiello/ctf-skills (★3795)",
+      "content": "# ctf-skills\n\n[Agent Skills](https://agentskills.io) for solving CTF challenges — web exploitation, binary pwn, crypto, reverse engineering, forensics, OSINT, and more. Works with any tool that supports the Agent Skills spec, including [Claude Code](https://docs.anthropic.com/en/docs/claude-code).\n\n## Installation\n\n```bash\nnpx skills add ljagiello/ctf-skills\n```\n\n## Environment Setup\n\nTwo setup strategies depending on your workflow:\n\n### Pre-install (recommended before competitions)\n\nUse the central installer entrypoint:\n\n```bash\nbash scripts/install_ctf_tools.sh all\n```\n\nRun a narrower mode when you only want one tool group:\n\n```bash\nbash scripts/install_ctf_tools.sh python\nbash scripts/install_ctf_tools.sh pat\nbash scripts/install_ctf_tools.sh apt\nbash scripts/install_ctf_tools.sh brew\nbash scripts/install_ctf_tools.sh gems\nbash scripts/install_ctf_tools.sh go\nbash scripts/install_ctf_tools.sh manual\n```\n\nPreview what would be installed (skips already-present packages):\n\n```bash\nbash scripts/install_ctf_tools.sh --dry-run all\n```\n\nVerify what's already installed:\n\n```bash\nbash scripts/install_ctf_tools.sh --verify\n```\n\nUse `--force` to reinstall everything regardless of what's already present. Install logs are saved to `~/.ctf-tools/`.\n\nThe full package lists now live in [scripts/install_ctf_tools.sh](scripts/install_ctf_tools.sh).\n\n> [!TIP]\n> The `pat` mode shallow-clones [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings) into `~/.ctf-tools/PayloadsAllTheThings` and links it at `ctf-web/payloads/PayloadsAllTheThings`. Bulk payloads stay out of git; technique files reference `ctf-web/pat-reference.md` with a few exemplar payloads inline.\n\n### On-demand (during challenges)\n\nEach skill's `SKILL.md` has a **Prerequisites** section listing only the tools needed for that category. Install as you go when the agent encounters a missing tool.\n\n## Skills\n\n| Skill | Files | Description |\n|-------|-------|-------------|\n| **ctf-ai-ml** | 3 | Model weight perturbation negation, adversarial examples (FGSM, PGD, C&W), foolbox L1BasicIterativeAttack Keras evasion, hand-rolled Keras FGSM via K.gradients, prompt injection, LLM jailbreaking, model extraction, membership inference, neural network collision, LoRA adapter exploitation, gradient descent inversion, data poisoning, backdoor detection, token smuggling, context window manipulation |\n| **ctf-web** | 23 | SQLi (blind boolean/time/error generators, second-order, WAF bypasses, EXIF metadata injection, keyword fragmentation bypass, MySQL column truncation, DNS record injection, ORDER BY CASE WHERE bypass, QR code input injection, double-keyword filter bypass), Burp Intruder parity via `python-requests.md` (sync, 30-worker `ThreadPoolExecutor`, 100-concurrency `httpx` async, generator streaming feeds, `async_fuzz.py` CLI fuzzer), PayloadsAllTheThings on-demand index (`pat-reference.md`), XSS (AngularJS sandbox escapes, DOM clobbering, CSP bypasses), SSTI (Jinja2, Twig, Go template FuncMap), SSRF (DNS rebinding, cloud metadata), XXE, file upload polyglots, deserialization (Java ysoserial, Python pickle, PHP), JWT (key confusion, dynamic length RSA parameters), OAuth/OIDC, prototype pollution |\n| **ctf-pwn** | 65 | Buffer overflow, ROP chains, ret2csu, ret2vdso, vsyscall ROP PIE bypass, bad char XOR bypass, 5 runnable `pwntools==4.15.0` template scripts in `ctf-pwn/scripts/` with `yield` payload generators (ret2libc, SROP, shellcraft asm, format string write-size suites, seccomp ORW), heap exploitation (unlink, House of Force, largebin attack guide, glibc 2.39 tcache key protection + calloc behavior, House of Apple 2 + setcontext SUID variant, House of Tangerine/Einherjar), kernel exploitation (io_uring `CVE-2024-0582`, CET Shadow Stack signal-frame bypass, KASLR, SMEP/SMAP, ret2usr, modprobe_path), format string, SROP with UTF-8 constraints, Linux userland attack playbook + static-signals reference, 43 pwnable.tw writeups (`ctf-pwn/pwnable-tw/`) |\n| **ctf-crypto** |",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/cutetailbud/ff-ruyijs",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] cutetailbud/ff-ruyijs (★982)",
+      "content": "<div align=\"center\">\n\n# 🦊 ruyiJS\n\n### Run any site's JavaScript from Python — with the real Firefox engine.\n\n**A new-generation, minimalist browser purpose-built for AI-driven automation.**<br>\nThe authentic Firefox JavaScript engine and networking stack, with no window and no renderer —<br>\nmade for web scraping, JS reverse engineering, data collection, and getting past bot checks.\n\n[![PyPI](https://img.shields.io/pypi/v/ruyijs?label=pypi&color=111111&logo=pypi&logoColor=white)](https://pypi.org/project/ruyijs/) [![Downloads](https://img.shields.io/pepy/dt/ruyijs?label=downloads&color=111111&logo=pypi&logoColor=white)](https://pepy.tech/projects/ruyijs) [![Python](https://img.shields.io/badge/Python-%E2%89%A53.10-111111?logo=python&logoColor=white)](https://pypi.org/project/ruyijs/) [![License](https://img.shields.io/badge/license-AGPL--3.0%20%2B%20commercial-111111)](LICENSE) [![Windows](https://img.shields.io/badge/Windows%20x64-0078D4?logo=windows&logoColor=white)](https://pypi.org/project/ruyijs/) [![macOS](https://img.shields.io/badge/macOS%20arm64-000000?logo=apple&logoColor=white)](https://pypi.org/project/ruyijs/) [![Linux](https://img.shields.io/badge/Linux%20x86__64-FCC624?logo=linux&logoColor=black)](https://pypi.org/project/ruyijs/) [![LinuxDO](https://img.shields.io/badge/LinuxDO-community-FFB003?logo=discourse&logoColor=white)](https://linux.do/t/topic/3078486)\n\n<sub>Sponsored by</sub>\n\n<a href=\"https://www.fastaitoken.com\"><img src=\"assets/sponsor-fastaitoken.png\" height=\"42\" alt=\"FastAIToken\"></a>&nbsp;&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"Claude\"><img src=\"assets/models/claude.svg\" width=\"42\" height=\"42\" alt=\"Claude\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"GPT\"><img src=\"assets/models/gpt.svg\" width=\"42\" height=\"42\" alt=\"GPT\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"Grok\"><img src=\"assets/models/grok.svg\" width=\"42\" height=\"42\" alt=\"Grok\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"DeepSeek\"><img src=\"assets/models/deepseek.svg\" width=\"42\" height=\"42\" alt=\"DeepSeek\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"GLM\"><img src=\"assets/models/glm.svg\" width=\"42\" height=\"42\" alt=\"GLM\"></a>\n\n<sub>Contributors</sub>\n\n<a href=\"https://github.com/Facetomyself\" title=\"Facetomyself · #4 macOS arm64 shell, #6 QUIC profiles, #7 macOS proxy, #9 macOS Necko adapter, #14-21 DOM and layout speed, #22-29 DOM, layout and style speed, #40 Worker replies on the logical clock, #41 id index and getElementsByTagNameNS\"><img src=\"assets/contributors/Facetomyself.png\" width=\"48\" height=\"48\" alt=\"Facetomyself\"></a>&nbsp;&nbsp;<a href=\"https://github.com/Starktomy\" title=\"Starktomy · #5 Linux runtime\"><img src=\"assets/contributors/Starktomy.png\" width=\"48\" height=\"48\" alt=\"Starktomy\"></a>&nbsp;&nbsp;<a href=\"https://github.com/isesword\" title=\"isesword · #8 macOS Core Text shaping and Firefox parity\"><img src=\"assets/contributors/isesword.png\" width=\"48\" height=\"48\" alt=\"isesword\"></a>&nbsp;&nbsp;<a href=\"https://github.com/sbbbsbbb\" title=\"sbbbsbbb · #10 macOS TLS and HTTP/2\"><img src=\"assets/contributors/sbbbsbbb.png\" width=\"48\" height=\"48\" alt=\"sbbbsbbb\"></a>&nbsp;&nbsp;<a href=\"https://github.com/ladydd\" title=\"ladydd · #33 incremental layout reuse, #36 cascade rule index and live collections, #37 node getters, #38 timer queue, #47 hit testing and live ranges, #49 live computed styles\"><img src=\"assets/contributors/ladydd.png\" width=\"48\" height=\"48\" alt=\"ladydd\"></a>\n\n**[Install](#-installation)** &nbsp;·&nbsp; **[Features](#-features)** &nbsp;·&nbsp; **[Verification systems](#-verification-systems-it-defeats)** &nbsp;·&nbsp; **[Examples](#-examples)** &nbsp;·&nbsp; **[FAQ](#-faq--troubleshooting)** &nbsp;·&nbsp; **[Contact](#-contact)** &nbsp;·&nbsp; **[LinuxDO](https://linux.do/t/topic/3078486)** &nbsp;·&nbsp; **English** · [简体中文](README.zh-CN.md)\n\n> **⚠️ Disclaimer:** This project is for researching next-generation AI browsers. Any form o",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://news.ycombinator.com/item?id=46902638",
+      "source_type": "user_review",
+      "title": "[Hacker News 用户讨论] GPT-5.3-Codex (605 条评论)",
+      "content": "- @minimaxir: I remember when AI labs coordinated so they didn't push major announcements on the same day to avoid cannibalizing each other. Now we have AI labs pushing major announcements within 30 minutes .\n- @granzymes: I think Anthropic rushed out the release before 10am this morning to avoid having to put in comparisons to GPT-5.3-codex! The new Opus 4.6 scores 65.4 on Terminal-Bench 2.0, up from 64.7 from GPT-5.2-codex. GPT-5.3-codex scores 77.3.\n- @fishpham: Model card: https:&#x2F;&#x2F;cdn.openai.com&#x2F;pdf&#x2F;23eca107-a9b1-4d2c-b156-7deb4fbc6...\n- @raincole: Almost like Anthropic and OpenAI are trying to front run each other\n- @kingstnap: That was fast! I really do wonder whats the chain here. Did Sam see the Opus announcement and DM someone a minute later?\n- @kingstnap: > GPT‑5.3-Codex was co-designed for, trained with, and served on NVIDIA GB200 NVL72 systems. We are grateful to NVIDIA for their partnership. This is hilarious lol\n- @shibeprime: I know we just got a reset and a 2× bump with the native app release, but shipping 5.3 with no reset feels mismatched. If I’d known this was coming, I wouldn’t have used up the quota on the previous model.\n- @trilogic: When 2 multi billion giants advertise same day, it is not competition but rather a sign of struggle and survival. With all the power of the \"best artificial intelligence\" at your disposition, and a lot of capital also all the brilliant minds, THIS IS WHAT YOU COULD COME UP WITH? Interesting",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://news.ycombinator.com/item?id=47796469",
+      "source_type": "user_review",
+      "title": "[Hacker News 用户讨论] Codex for almost everything (559 条评论)",
+      "content": "- @kelsey98765431: it it doesn't complain about everything being malware maybe i will come back to openai from my adventures with anthropic\n- @croemer: What does \"major update to codex\" mean? New model? Or just new desktop app? The announcement is vague.\n- @sidgtm: They felt the pressure of posting something after Claude 4.7\n- @hyperionultra: Tool for everything does nothing really good.\n- @bughunter3000: First use case I'm putting to work is testing web apps as a user. Although it seems like this could be a token burner. Saving and mostly replaying might be nice to have.\n- @uberduper: Do people really want codex to have control over their computer and apps? I'm still paranoid about keeping things securely sandboxed.\n- @daviding: There seems a fair enthusiasm in the UI of these to hide code from coders. Like the prompt interaction is the true source and the actual code is some sort of annoying intermediate runtime inconvenience to cover up. I get that productivity can be improved with a lot of this for non developers, just not sure using 'code' as the term is the right one or not.\n- @tvmalsv: My monthly subscription for Claude is up in a week, is there any compelling reason to switch to Codex (for coding&#x2F;bug fixing of low&#x2F;medium difficulty apps)? Or is it pretty much a wash at this point?",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://news.ycombinator.com/item?id=35803435",
+      "source_type": "user_review",
+      "title": "[Hacker News 用户讨论] Replit's new Code LLM: Open Source, 77% smaller than Codex, trained in 1 week (220 条评论)",
+      "content": "- @amasad: Some links: - Repo: https:&#x2F;&#x2F;github.com&#x2F;replit&#x2F;ReplitLM&#x2F;tree&#x2F;main&#x2F;replit-code-v1-... - HuggingFace: https:&#x2F;&#x2F;huggingface.co&#x2F;replit&#x2F;replit-code-v1-3b - Demo: https:&#x2F;&#x2F;huggingface.co&#x2F;spaces&#x2F;replit&#x2F;replit-code-v1-3b-demo - Early benchmark results: https:&#x2F;&#x2F;twitter.com&#x2F;amasad&#x2F;status&#x2F;1651019556423598081\n- @swyx: hi HN! back again with an exclusive deep dive with Replit’s head of AI. I attended their developer day last week ( https:&#x2F;&#x2F;twitter.com&#x2F;swyx&#x2F;status&#x2F;1650989632413401089 ) just expecting a regular fundraise announcement and was totally shocked when they annoucned their own LLM and also said they would open source it. so immediately asked them for a podcast interview and this \n- @tyingq: More tools in the field is great! I tried a few things, and it's reasonable, but it does have some quirks that seem to repeat, like: I tried a prompt of: # python function that returns a random integer between min and max And it produced: def random_int(min, max): return random.randint(min, max) # define the size of the grid n = 5 It doesn't add the needed import statement, and I'm unclear why it'\n- @fswd: I can barely keep up with this stuff, but quick question. Is there a way to simply change the URL setting of copilot to point to this model? Obviously it needs an endpoint, I could hack something up, but asking if somebody has already done this? Would be nice to cancel my copilot.\n- @tarruda: 3 billion parameters. Does that mean I will be able to run on a 8gb consumer GPU?\n- @waffletower: No Clojure. No Julia. No Haskell. No Racket. No Scheme. No Common Lisp. No OCaml. And, as much as I despise Microsoft, No C#. No F#. No Swift. No Objective-C. No Perl. No Datalog. A glaringly lacking choice of languages.\n- @circuit10: This probably makes a self-hosted and&#x2F;or local Copilot a lot more feasible\n- @GreedClarifies: This is amazing work and bravo on to the people working on redpajama. This is fantastic for the world, this means LLMs will not be controlled by a couple of companies with the associated rents. Yes, private LLMs will likely be a couple of years ahead of 'free' alternatives, but that's OK , we want to incentivize for profit research so long as the services are low priced in time (and in this case i",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://github.com/openai/codex/issues",
+      "source_type": "user_review",
+      "title": "[GitHub Issues 一线用户痛点] openai/codex",
+      "content": "- [closed, 1124 评论] unexpected status 404 Not Found: Unknown error, url: https://chatgpt.com/backend-api/codex/responses, cf-ray: ...: ### What version of the Codex App are you using (From “About Codex” dialog)?  26.611.61753  ### What subscription do you have?  Pro x20  ### What platform is your computer?  Darwin 25.3.0 arm64 arm  ### What issue are yo\n- [closed, 630 评论] Burning tokens very fast: ### What version of the IDE extension are you using?  26.311.21342  ### What subscription do you have?  Business  ### Which IDE are you using?  VS Code  ### What platform is your computer?  Microsoft Windows NT 10.0.2263\n- [closed, 440 评论] Told to reboot a server, it destroyed systemd, destroyed containers, ran random scripts, cost me $10,000+: ### What version of Codex CLI is running?  v0.166.0  ### What subscription do you have?  Business  ### Which model were you using?  gpt-6-sol medium  ### What platform is your computer?  Linux 6.17.0-1017-aws x86_64 x86_\n- [closed, 325 评论] Usage dropping too quickly: Feedback thread ID thread ID 019c8e57-2892-7be1-9304-fc8c29bce3af  I didn't copy my feedback text in it but it was detailed enough. Main idea is that usage limit dropped way too quickly, I think I was downgraded from 2X \n- [closed, 212 评论] Phone number verification doesn't work: ### What issue are you seeing?  I used Codex and decided to log in to my account on a different device. Now everything's broken, and when I log in via SSO, Codex asks me to enter my phone number. Why is this happening? I",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.g2.com/products/openai-codex/reviews",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Codex Reviews November 2026: Details, Pricing, & Features | G2",
+      "content": "Users consistently praise Codex for its speed and efficiency in coding tasks, noting that it significantly reduces development time and enhances productivity. Many appreciate its ability to understand project context, making it a valuable tool for debugging and refactoring.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.producthunt.com/products/codex-by-openai-1/reviews",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Codex by OpenAI Reviews (2026) - Product HuntCodex 3.0 by OpenAI: Codex can now build, test & debug on ...Page 3 | Codex Reviews November 2026: Details, Pricing ... - G2Codex of the Architect Reviews | Read Customer Service ...Codex Executor Reviews | Read Customer Service Reviews of ...Codex Reviews & Product Details | G2 AI",
+      "content": "Read reviews and experiences from users of Codex by OpenAI. Get comprehensive feedback about features, pros, cons, and alternatives. Apr 23, 2026 · What separates Codex 3.0 from a fancy autocomplete is the background repo automation — it's making decisions about what to test and refactor without being told. Having built FastAPI services myself, the autonomous PR review is the feature I'd trust most in production. Page 3 - Filter 22 reviews by the user's company size, role or industry to find out how Codex works for a business like yours (as of November 2026). Do you agree with Codex of the Architect's 4-star rating? Check out what 24 people have written so far, and share your own experience. CodeX Executor is a game-changing solution for avid Roblox enthusiasts seeking to maximize their gaming adventures. With a commitment to security, innovation, and unwavering support, CodeX Executor stands as a versatile Roblox exploit that empowers players to elevate their gaming experience. Learn about Codex on AI Blueprints.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.producthunt.com/products/codex-3-0-by-openai",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Codex 3.0 by OpenAI: Codex can now build, test & debug on ...",
+      "content": "Apr 23, 2026 · What separates Codex 3.0 from a fancy autocomplete is the background repo automation — it's making decisions about what to test and refactor without being told. Having built FastAPI services myself, the autonomous PR review is the feature I'd trust most in production.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.g2.com/products/openai-codex/reviews?page=3",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Page 3 | Codex Reviews November 2026: Details, Pricing ... - G2",
+      "content": "Page 3 - Filter 22 reviews by the user's company size, role or industry to find out how Codex works for a business like yours (as of November 2026).",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/Piracy/comments/szq2ne/codex_says_goodbye/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] CODEX says goodbye : r/Piracy - Reddit",
+      "content": "Extracted the text: CODEX was founded with one and only one goal in mind: \"to give the dominating PC games group at the time, RELOADED, some serious competition.\" A highly motivated and hard-working group of veterans and rookies alike banded together and created a new name to achieve that goal.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/codex/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Codicology and Manuscripts - Reddit",
+      "content": "I am trying to read this codex, it seems to be called Erbario or LJS 419? It's in mostly Italian with some Latin. I can read some Latin and a bit of Italian normally (so while it's not ideal, I could try to translate it myself), but I can't read the handwriting in this thing well enough to understand more than a few words here and there.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/codex/comments/1pkalev/first_impressions_on_gpt_52/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] First impressions on GPT 5.2 : r/codex - Reddit",
+      "content": "While I do realize this is way too early to post a comprehensive review, I just wanted to share some non-hyped first impression. I threw three different problems at 5.2 and Opus 4.5.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/PiratedGames/comments/167fqou/which_would_be_better/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Which would be better? : r/PiratedGames - Reddit",
+      "content": "CODEX discontinued last year in early 2022. Then RUNE started releasing near the end of 2022. Can only guess that when CODEX was no longer active that there was a few members who wanted to continue. And decided to rebrand as RUNE. But, as stated before, can only make an educated guess.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.zhihu.com/question/2057495861937153314",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] 谁在用Codex？实际体验真有那么好吗？ - 知乎",
+      "content": "codex重度用户，实际体验极其糟糕。 写代码没有变轻松，相反变的更痛苦了。 不是因为模型弱，恰恰相反，现在模型太强了。 。 gpt6之后，现在纯coding和algo design方面你再插嘴ai完全是在帮倒忙，编码过程从“交互式碎碎念”完全变成从约束到交付物的异步过程。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.v2ex.com/t/1171528",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] codex 的一些小感受 - V2EX",
+      "content": "使用了 codex 有大半个月了，分享几点感受 优点 代码完整性很好，如果在意图表达明确的情况下，实现的代码不会出现方向性、结构性差错，也基本没遇到出现逻辑性问题的代码",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.zhihu.com/question/1972596458084627013",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] GPT-5.1-Codex 和 GPT-5.1-Codex-mini 上线，使用感受如何?",
+      "content": "在SWE-bench Verified中，采用“中等”推理的GPT-5.1-Codex-Max表现优于GPT-5.1-Codex，且使用少30%的思考标记。 例如，GPT-5.1-Codex-Max 能够生成具有相似功能高质量前端设计，但成本远低于 GPT-5.1-Codex。 也就是说，不只是更聪明，还更便宜、更高效。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://zhuanlan.zhihu.com/p/2068016741008121952",
+      "source_type": "user_review",
+      "title": "[权威社区评价|zh] AI-Agent哪个好用？国内外各大Agent对比：Claude Code、Codex、Work B...",
+      "content": "Codex （OpenAI）： 目前最热门的Agent之一，很多用户被Claude封号后，都转向了Codex。 而且很多订阅用户额度经常不够用，Codex经常重置额度，让用户可以放开使用，非常拉好感。 且基本不封号，可以比较长期稳定的使用，另外也可以接入第三方 API，即便封号也不怕。",
+      "is_primary": false
+    }
+  ],
+  "prompt_contract": {
+    "categories": [
+      "engineering",
+      "data",
+      "knowledge",
+      "creative",
+      "automation"
+    ],
+    "common_dimensions": [
+      {
+        "dimension": "agent_orchestration",
+        "label": "Agent 编排",
+        "weight": 5
+      },
+      {
+        "dimension": "model_routing",
+        "label": "模型路由",
+        "weight": 5
+      },
+      {
+        "dimension": "tool_chain",
+        "label": "工具链",
+        "weight": 5
+      },
+      {
+        "dimension": "prompt_engineering",
+        "label": "提示词工程",
+        "weight": 4
+      },
+      {
+        "dimension": "context_engineering",
+        "label": "上下文工程",
+        "weight": 5
+      },
+      {
+        "dimension": "data_flow_state",
+        "label": "数据流与状态管理",
+        "weight": 4
+      },
+      {
+        "dimension": "security_sandbox",
+        "label": "安全沙箱",
+        "weight": 5
+      },
+      {
+        "dimension": "human_ai_collaboration",
+        "label": "人机协同",
+        "weight": 5
+      },
+      {
+        "dimension": "extensibility_ecosystem",
+        "label": "扩展生态",
+        "weight": 5
+      }
+    ],
+    "specialized_dimensions_by_category": {
+      "engineering": [
+        {
+          "dimension": "sandbox_model",
+          "label": "沙箱隔离模型"
+        },
+        {
+          "dimension": "code_understanding",
+          "label": "代码理解引擎"
+        },
+        {
+          "dimension": "diff_management",
+          "label": "Diff 与变更管理"
+        },
+        {
+          "dimension": "terminal_management",
+          "label": "终端与进程管理"
+        },
+        {
+          "dimension": "checkpoint_rollback",
+          "label": "检查点与回滚"
+        }
+      ],
+      "data": [
+        {
+          "dimension": "nl2sql_pipeline",
+          "label": "NL2SQL 转换管线"
+        },
+        {
+          "dimension": "data_source_adapter",
+          "label": "多源异构数据适配"
+        },
+        {
+          "dimension": "schema_discovery",
+          "label": "数据模式自动发现"
+        },
+        {
+          "dimension": "query_optimization",
+          "label": "查询优化与安全"
+        },
+        {
+          "dimension": "visualization_engine",
+          "label": "数据可视化引擎"
+        }
+      ],
+      "knowledge": [
+        {
+          "dimension": "rag_pipeline",
+          "label": "RAG 检索管线"
+        },
+        {
+          "dimension": "index_vector_store",
+          "label": "知识索引与向量存储"
+        },
+        {
+          "dimension": "citation_management",
+          "label": "引用链管理与溯源"
+        },
+        {
+          "dimension": "multi_doc_reasoning",
+          "label": "多文档综合推理"
+        },
+        {
+          "dimension": "knowledge_update",
+          "label": "知识动态更新机制"
+        }
+      ],
+      "creative": [
+        {
+          "dimension": "multimodal_pipeline",
+          "label": "多模态生成管线"
+        },
+        {
+          "dimension": "version_variant",
+          "label": "版本与变体管理"
+        },
+        {
+          "dimension": "realtime_preview",
+          "label": "实时渲染与预览"
+        },
+        {
+          "dimension": "style_consistency",
+          "label": "风格一致性控制"
+        },
+        {
+          "dimension": "template_reuse",
+          "label": "模板与资产复用"
+        }
+      ],
+      "automation": [
+        {
+          "dimension": "dag_state_machine",
+          "label": "DAG/状态机引擎"
+        },
+        {
+          "dimension": "multi_agent_protocol",
+          "label": "多 Agent 通信协议"
+        },
+        {
+          "dimension": "fault_tolerance",
+          "label": "容错与重试恢复"
+        },
+        {
+          "dimension": "external_integration",
+          "label": "外部系统与连接器集成"
+        },
+        {
+          "dimension": "trigger_scheduling",
+          "label": "事件触发与调度机制"
+        }
+      ]
+    },
+    "pattern_catalog": [
+      {
+        "name": "single_agent",
+        "display_name": "单 Agent",
+        "description": "单个 LLM 配合工具集，适用于任务边界清晰的场景"
+      },
+      {
+        "name": "multi_agent_hierarchical",
+        "display_name": "多 Agent 层级式",
+        "description": "Planner-Worker 模式，规划 Agent 分解任务，执行 Agent 完成子任务"
+      },
+      {
+        "name": "multi_agent_peer",
+        "display_name": "多 Agent 对等协作式",
+        "description": "多个专业领域 Agent 平级协作，通过共享上下文或消息传递交换信息、相互校验"
+      },
+      {
+        "name": "multi_agent_swarm",
+        "display_name": "多 Agent 蜂群式",
+        "description": "去中心化或轻量协调的 Agent 协作网络，支持基于任务和环境的动态转交 (Handoff) 与动态扩缩容"
+      },
+      {
+        "name": "agent_pipeline",
+        "display_name": "Agent 管线式",
+        "description": "任务按固定阶段线性或有向无环图 (DAG) 顺序流转，每个阶段由专有 Agent 负责"
+      },
+      {
+        "name": "agent_loop",
+        "display_name": "Agent 自治循环式",
+        "description": "基于目标驱动的 ReAct 或 Plan-Execute-Reflect 持续迭代循环，直至达到终止条件"
+      },
+      {
+        "name": "sliding_window_fifo",
+        "display_name": "滑动窗口截断",
+        "description": "基于固定 Token 预算或消息条数维护窗口，丢弃最久的历史记录，仅保留最新上下文"
+      },
+      {
+        "name": "hierarchical_recursive_summary",
+        "display_name": "分层递归摘要压缩",
+        "description": "当上下文达到容量阈值时，自动调用模型对早期交互进行结构化压缩与摘要提炼"
+      },
+      {
+        "name": "rag_dynamic_retrieval",
+        "display_name": "RAG 动态检索注入",
+        "description": "将海量历史记录、知识库或代码库切分向量化，根据当前上下文动态召回相关片段按需装载"
+      },
+      {
+        "name": "prefix_kv_cache_reuse",
+        "display_name": "静态前缀缓存优化",
+        "description": "规范化排列上下文，将固定的 System Prompt、工具定义与知识前缀集中前置，最大化复用 KV Cache"
+      },
+      {
+        "name": "structured_scratchpad_isolation",
+        "display_name": "结构化工作区与暂存隔离",
+        "description": "划分独立的命名空间分区（如目标、步骤计划、参考资料、临时便签），保持上下文整洁"
+      },
+      {
+        "name": "hybrid_tiered_memory",
+        "display_name": "分层多级混合记忆系统",
+        "description": "构建包含工作记忆、情节记忆与长期语义概念记忆的三级认知记忆网络"
+      },
+      {
+        "name": "single_model_static",
+        "display_name": "单模型静态绑定",
+        "description": "系统全量请求统一路由至单一固定模型，架构最简"
+      },
+      {
+        "name": "capability_tier_routing",
+        "display_name": "能力阶梯路由",
+        "description": "依据任务预估复杂度与推理要求，在轻量模型与旗舰模型之间按需动态分流"
+      },
+      {
+        "name": "intent_semantic_routing",
+        "display_name": "意图语义分类路由",
+        "description": "基于用户意图的语义特征与分类标签，将请求路由至领域微调或垂直专用模型"
+      },
+      {
+        "name": "cascade_fallback_routing",
+        "display_name": "级联降级与容灾路由",
+        "description": "优先调用低成本或本地模型，若输出校验失败、超时或限流，自动回退到备选大模型"
+      },
+      {
+        "name": "speculative_draft_routing",
+        "display_name": "投机草稿路由",
+        "description": "轻量模型快速生成初稿或补全建议，大模型进行并行校验或增量精修"
+      },
+      {
+        "name": "ensemble_mixture_routing",
+        "display_name": "混合集成共识路由",
+        "description": "并行分发给多个不同厂商的基座模型，再由聚合模型进行整合、评判与共识融合"
+      },
+      {
+        "name": "function_calling_schema",
+        "display_name": "原生函数调用",
+        "description": "通过标准 JSON Schema 描述工具元数据，由 LLM 原生输出符合 Schema 的结构化调用参数"
+      },
+      {
+        "name": "react_tool_interleaving",
+        "display_name": "ReAct 交互式工具循环",
+        "description": "交替进行思考 (Thought)、行动 (Action) 与观察 (Observation)，根据前序工具返回值动态推导后续调用"
+      },
+      {
+        "name": "mcp_protocol_standard",
+        "display_name": "MCP 标准化协议集成",
+        "description": "基于开放标准协议 (Model Context Protocol) 统一接入本地与远程工具及数据源"
+      },
+      {
+        "name": "code_interpreter_sandbox",
+        "display_name": "代码解释器与沙箱即工具",
+        "description": "AI 将多步骤复杂操作编写为程序脚本，在受限隔离沙箱中批量执行并获取执行结果"
+      },
+      {
+        "name": "dag_orchestrated_pipeline",
+        "display_name": "DAG 有向图编排工具流",
+        "description": "通过有向无环图 (DAG) 显式组织工具执行依赖，支持拓扑调度、并发加速与断点续跑"
+      },
+      {
+        "name": "human_in_the_loop_guard",
+        "display_name": "人机介入安全防护工具",
+        "description": "对高危或不可逆操作（写库、删改文件、系统配置、支付）引入人机协同审批断点"
+      }
+    ],
+    "guard_rules": {
+      "core_requires_primary_verbatim_quote": true,
+      "moderate_requires_any_verbatim_quote": true,
+      "unverified_max_confidence": 2
+    },
+    "expected_draft_schema": {
+      "app_name": "string",
+      "category": "engineering|data|knowledge|creative|automation",
+      "architecture_summary": "string",
+      "key_insights": [
+        "string"
+      ],
+      "common_dimensions": [
+        {
+          "dimension": "agent_orchestration",
+          "summary": "string",
+          "details": "string",
+          "key_decisions": [
+            "string"
+          ],
+          "takeaways": [
+            "string"
+          ],
+          "verbatim_quotes": [
+            "exact substring copied from collected_items"
+          ],
+          "evidence_sources": [
+            "url or title"
+          ],
+          "confidence": 4
+        }
+      ],
+      "specialized_dimensions": "same shape using 5 keys from specialized_dimensions_by_category[category]",
+      "matched_patterns": [
+        {
+          "pattern_name": "string",
+          "description": "string",
+          "evidence": [
+            "string"
+          ],
+          "confidence": 4
+        }
+      ],
+      "user_reviews": {
+        "review_sources": [
+          "url"
+        ],
+        "praises": [
+          "string"
+        ],
+        "pain_points": [
+          "string"
+        ],
+        "trust_and_ux_friction": [
+          "string"
+        ],
+        "sample_quotes": [
+          "string"
+        ]
+      },
+      "pm_guidance": {
+        "suitable_product_forms": [
+          "string"
+        ],
+        "autonomy_level": "L2 (...)",
+        "interaction_design": "string",
+        "cost_latency_tradeoffs": "string",
+        "mvp_must_haves": [
+          "string"
+        ],
+        "mvp_nice_to_haves": [
+          "string"
+        ],
+        "anti_patterns_to_avoid": [
+          "string"
+        ]
+      }
+    }
+  }
+}

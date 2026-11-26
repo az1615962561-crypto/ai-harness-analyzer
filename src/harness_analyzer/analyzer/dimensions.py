@@ -140,6 +140,7 @@ class CommonDimensionExtractor:
                 confidence=max(1, min(5, int(result.get("confidence", 3)))),
                 evidence_sources=result.get("evidence_sources", []) or [],
                 verbatim_quotes=result.get("verbatim_quotes", []) or [],
+                mermaid_diagram=result.get("mermaid_diagram", "") or "",
             )
         except Exception as e:
             logger.warning("Common dimension '%s' extraction failed: %s", dim_value, e)

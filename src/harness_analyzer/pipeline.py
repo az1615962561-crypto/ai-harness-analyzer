@@ -95,6 +95,7 @@ class DimensionDraftItem(BaseModel):
     verbatim_quotes: list[str] = Field(default_factory=list)
     evidence_sources: list[str] = Field(default_factory=list)
     confidence: int = Field(default=3, ge=1, le=5)
+    mermaid_diagram: str = ""
 
 
 class AgentDraftInput(BaseModel):
@@ -183,6 +184,7 @@ def build_prompt_contract(category: str = "engineering") -> dict[str, Any]:
                     "verbatim_quotes": ["exact substring copied from collected_items"],
                     "evidence_sources": ["url or title"],
                     "confidence": 4,
+                    "mermaid_diagram": "optional mermaid flowchart/sequence snippet (auto-generated if omitted)",
                 }
             ],
             "specialized_dimensions": "same shape using 5 keys from specialized_dimensions_by_category[category]",
@@ -338,6 +340,7 @@ def finalize_from_draft(bundle: CollectedBundle, draft: AgentDraftInput) -> Harn
             verbatim_quotes=d.verbatim_quotes,
             evidence_sources=d.evidence_sources,
             confidence=d.confidence,
+            mermaid_diagram=d.mermaid_diagram,
         )
         for d in draft.common_dimensions
     ]
@@ -352,6 +355,7 @@ def finalize_from_draft(bundle: CollectedBundle, draft: AgentDraftInput) -> Harn
             verbatim_quotes=d.verbatim_quotes,
             evidence_sources=d.evidence_sources,
             confidence=d.confidence,
+            mermaid_diagram=d.mermaid_diagram,
         )
         for d in draft.specialized_dimensions
     ]

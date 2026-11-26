@@ -243,6 +243,7 @@ class DimensionAnalysis(BaseModel):
     coupling_level: CouplingLevel = CouplingLevel.MODERATE
     guard_status: GuardStatus = GuardStatus.STRICT_VERIFIED
     guard_reason: str = ""
+    mermaid_diagram: str = ""
 
 
 class SpecializedDimensionAnalysis(BaseModel):
@@ -260,3 +261,4 @@ class SpecializedDimensionAnalysis(BaseModel):
     coupling_level: CouplingLevel = CouplingLevel.CORE
     guard_status: GuardStatus = GuardStatus.STRICT_VERIFIED
     guard_reason: str = ""
+    mermaid_diagram: str = ""

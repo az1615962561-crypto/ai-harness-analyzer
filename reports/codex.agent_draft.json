@@ -1,0 +1,381 @@
+{
+  "app_name": "codex",
+  "app_display_name": "Codex",
+  "category": "engineering",
+  "architecture_summary": "OpenAI Codex 采用「Rust 高性能共享内核 (`codex-rs`) + 多宿主接口（本地终端 TUI/CLI、IDE App Server、Headless `exec`、Desktop App、Codex Web 云沙箱）」架构：以确定性工具编排器 (`orchestrator.rs`) 串联 Guardian 权限审批、多平台 OS 原生文件系统/网络沙箱上下文和原子化 `apply_patch` 运行时，并通过 `AGENTS.md`、MCP（`@modelcontextprotocol/sdk`）与 Hooks 实现标准化扩展。",
+  "key_insights": [
+    "选择全 Rust 核心架构（`codex-rs/core`），以单一共享内核统一本地 CLI/TUI、桌面客户端 `codex app`、IDE 扩展与云端无头任务四种形态",
+    "工具编排层 (`orchestrator.rs`) 内置严格的权限与沙箱状态机：当沙箱拒绝访问并请求提权升级 (`escalate`) 时，强制对重试动作重新执行 Guardian 审批而非沿用旧授权",
+    "代码修改抽象为独立 `apply_patch` crate 与工具运行时：先经上游验证/审批，再在隔离后的 Turn 文件系统上下文中严格执行变更",
+    "上下文装配采用结构化 `ContextualUserFragment` 与 `ContentItemKind` 标签（如 `model.base_instructions`、`apps.instructions`），确保历史消息恢复与增量工具窗口下指令来源不丢失"
+  ],
+  "common_dimensions": [
+    {
+      "dimension": "agent_orchestration",
+      "summary": "单一 Rust 核心状态机协调工具调用、Guardian 权限评审、沙箱尝试与拒后重试升级，统一支撑 CLI、IDE App Server、Desktop 与云端任务",
+      "details": "`codex-rs/core/src/tools/orchestrator.rs` 实现中心化工具调度与 Turn 级运行环境管理；`README` 与架构资料显示同一内核驱动本地 CLI/TUI、VS Code/Cursor/Windsurf IDE 集成、`codex app` 桌面端与 `chatgpt.com/codex` 云端沙箱并发任务。",
+      "key_decisions": [
+        "用 Rust 共享核心 crate 消除 CLI / IDE / Cloud 不同宿主界面间的 Agent 循环分叉",
+        "将工具审批、沙箱选择、网络审批和提权重试全部收口到统一的 Orchestrator"
+      ],
+      "takeaways": [
+        "多入口（Terminal + IDE + Web）工程产品强烈推荐沉淀共享 headless 核心/Server 协议，避免各端各自维护一套 Agent 状态机"
+      ],
+      "verbatim_quotes": [
+        "Coordinates tool approval, sandbox selection, and retries after sandbox denial.",
+        "Codex CLI is a coding agent from OpenAI that runs locally on your computer."
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/orchestrator.rs",
+        "https://raw.githubusercontent.com/openai/codex/main/README.md"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "model_routing",
+      "summary": "围绕 OpenAI GPT/Codex 系列推理档位（如 Reasoning Effort 中/高与 Codex-Max/Mini 分层）运行，也支持通过外部路由器接入自定义供应商模型",
+      "details": "社区基准测评提到中等推理强度的 `GPT-5.1-Codex-Max` 可用更少思考标记实现更低成本的高质量输出，GPT-5.3-Codex 主攻终端高难度工程任务；同时仓库源码与社区生态兼容通过配置文件与第三方 Router 对接替代 API 端点。",
+      "key_decisions": [
+        "按任务复杂度与推理深度（Reasoning Effort）分层平衡效果与 Token 成本"
+      ],
+      "takeaways": [
+        "针对高频代码任务引入中等推理档位 / Mini 模型分层可大幅降低单次任务的 Token 消耗焦虑"
+      ],
+      "verbatim_quotes": [
+        "在SWE-bench Verified中，采用“中等”推理的GPT-5.1-Codex-Max表现优于GPT-5.1-Codex，且使用少30%的思考标记。"
+      ],
+      "evidence_sources": [
+        "https://www.zhihu.com/question/1972596458084627013",
+        "https://github.com/weave-os/router"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "tool_chain",
+      "summary": "以结构化 `apply_patch` 补丁执行器和沙箱化命令执行器 (`codex_exec_server`) 为支柱，并原生内置 `@modelcontextprotocol/sdk` MCP 协议与网络审批工具链",
+      "details": "源码 `apply_patch.rs` 与 `orchestrator.rs` 展示了严格的 `ToolRuntime`、`Sandboxable` 与 `Approvable` trait 抽象，配合 `ActiveNetworkApproval` 对涉外网络请求进行细粒度延期或即时批准。",
+      "key_decisions": [
+        "为代码修改构建专有高可信 `codex_apply_patch` 运行时而非通用字符串脚本替换",
+        "将每个工具实现拆解为 Approvable + Sandboxable 正交能力接口"
+      ],
+      "takeaways": [
+        "将工具的「权限审批」「沙箱策略」抽象为正交 Trait/Middleware，能防止新增工具遗漏安全检查"
+      ],
+      "verbatim_quotes": [
+        "Assumes `apply_patch` verification/approval happened upstream.",
+        "\"@modelcontextprotocol/sdk\": \"1.32.0\""
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs",
+        "https://raw.githubusercontent.com/openai/codex/main/package.json"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "prompt_engineering",
+      "summary": "通过模型解析消息包 `codex_prompts::ResolvedModelMessages`、强类型标记片断（`BaseInstructionsFragment`、`AppsInstructions`）与 Hooks 注入文本（`HookPromptFragment`）精密管理提示分层",
+      "details": "源码显示基础系统指令 (`model.base_instructions`)、应用目录说明 (`apps.instructions` + 显式开闭标签标记) 与 Hook 运行时输出均以结构化 Fragment 和 `developer` 角色封装注入，便于在上下文保留恢复时准确识别与去重。",
+      "key_decisions": [
+        "用显式标签与 `ContentItemKind` 区分基础指令、应用目录指令及 Hook 动态提示片段",
+        "通过 `ts-rs` 从 Rust Schema 自动生成 TypeScript 协议类型保证前后端契约一致"
+      ],
+      "takeaways": [
+        "用带 provenance 元数据的结构化 Fragment 管理动态 System/Developer 提示，可避免长对话压缩时误删基础指令"
+      ],
+      "verbatim_quotes": [
+        "Reads only a dedicated, harness-classified base item, including an explicitly empty base.",
+        "Renders bundled Apps guidance and catalog updates with the same developer provenance.",
+        "export type HookPromptFragment = { text: string, hookRunId: string, };"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/base_instructions.rs",
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/apps_instructions.rs",
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/app-server-protocol/schema/typescript/v2/HookPromptFragment.ts"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "context_engineering",
+      "summary": "支持增量工具窗口下的基线指令恢复（`base_instructions.rs`）、`AGENTS.md` 项目规约加载、以及标准化 Agent Skills 按需注入",
+      "details": "在 Rust 核心 `context/` 模块中专门处理历史会话恢复时的保留文本标签识别与增量窗口下的基础上下文注入；社区同时围绕 `AGENTS.md` 与 `openai/skills` 构建工程上下文模板。",
+      "key_decisions": [
+        "对历史保留上下文中的内置标记保持向后兼容，确保跨版本会话恢复不丢失应用指引"
+      ],
+      "takeaways": [
+        "多轮会话增量窗口模式下，必须显式打标基础 Developer 指令防止滑窗被切掉"
+      ],
+      "verbatim_quotes": [
+        "Older clients recognize only the bundled markers when recovering from retained history.",
+        "Initial base instructions, recorded in history for incremental-tools windows."
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/apps_instructions.rs",
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/context/base_instructions.rs"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "data_flow_state",
+      "summary": "基于 Rust 强类型 `codex_protocol` 事件与 `TurnEnvironment` / `TurnEnvironmentSelection` 状态模型，严格隔离每一轮对话的工具区目录与权限快照",
+      "details": "`TurnEnvironment` 封装了所选 `workspace_roots`、权限配置 (`PermissionProfileSnapshot`)、环境钩子与沙箱策略，并借助 `app-server-protocol` 生成稳定协议类型供 IDE/App 通信。",
+      "key_decisions": [
+        "把工作区根路径、环境钩子、网络策略及 Windows/Unix 沙箱级别固化进 `TurnEnvironment`"
+      ],
+      "takeaways": [
+        "将环境状态（工作区、权限快照、Hooks）显式绑定到每轮 Turn 上下文，杜绝跨会话越权状态泄漏"
+      ],
+      "verbatim_quotes": [
+        "Reuses the selected turn environment filesystem for both local and remote turns",
+        "export type HookPromptFragment = { text: string, hookRunId: string, };"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs",
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/app-server-protocol/schema/typescript/v2/HookPromptFragment.ts"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "security_sandbox",
+      "summary": "纵深 OS 级沙箱 + Guardian 审查 + 粒度审批策略（`AskForApproval` / `NetworkSandboxPolicy` / `WindowsSandboxLevel` / `PROTECTED_METADATA_PATH_NAMES`），提权重试必须二次审查",
+      "details": "源码级实证表明 Codex 针对文件系统与网络分别计算有效沙箱策略（`effective_file_system_sandbox_policy`、`effective_network_sandbox_policy`），专门保护 `.git` 等元数据敏感目录 (`PROTECTED_METADATA_PATH_NAMES`)，并内置 Guardian 审查上下文；然而真实 GitHub Issue（440 条评论）也暴露一旦用户授权过宽或关闭保护去操控运维服务器，仍可能造成灾难性破坏。",
+      "key_decisions": [
+        "文件系统沙箱与网络访问沙箱分离管控，并对沙箱拒绝后的提权重试强制触发全新审批",
+        "显式划定受保护的敏感元数据路径清单与可控 `PermissionProfile`"
+      ],
+      "takeaways": [
+        "OS 级沙箱 + 网络独立策略 + 提权复审是安全基线，同时 CLI 必须明确警告用户切勿在生产运维服务器开启高权限免审批模式"
+      ],
+      "verbatim_quotes": [
+        "Guardian approval applies to the reviewed authority; escalating a sandboxed attempt requires a fresh review of the retry.",
+        "sandboxing enforced by the explicit filesystem sandbox context."
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/orchestrator.rs",
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "human_ai_collaboration",
+      "summary": "粒度可调审批流（`AskForApproval`、`GranularApprovalConfig`），覆盖 CLI TUI、IDE 扩展（VS Code/Cursor/Windsurf）、桌面端 (`codex app`) 与云端异步 PR 工作流",
+      "details": "支持既可在本地高交互审批单步操作，也可切到云端异步自动化（“从交互式碎碎念变成从约束到交付物的异步过程”）。但用户真实吐槽也显示：全自主执行有时导致“隐藏代码、消耗大量 Token 且一旦无保护越界极具风险”。",
+      "key_decisions": [
+        "用 `GranularApprovalConfig` 与 `AskForApproval` 支持从每步确认到受控自治的平滑梯度"
+      ],
+      "takeaways": [
+        "高自主产品容易滑向“黑盒消耗大量 Token + 高风险改动”，UI 上必须突出花费监控与高危边界预警"
+      ],
+      "verbatim_quotes": [
+        "If you want the desktop app experience, run <code>codex app</code>",
+        "use codex_protocol::protocol::AskForApproval;"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/README.md",
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "extensibility_ecosystem",
+      "summary": "开放标准 MCP 集成 (`@modelcontextprotocol/sdk`)、标准化 `AGENTS.md` / `Agent Skills` (`openai/skills`)、生命周期 Hooks 与 `app-server-protocol` 多端协议",
+      "details": "不仅兼容 OpenAI/社区 Skills 规范、允许仓库配置 `.github/codex/` 与 `AGENTS.md`，还通过独立定义的 `app-server-protocol` TypeScript/Rust 契约把同一 Agent 内核开放给各种编辑器插件与自动化工作流。",
+      "key_decisions": [
+        "以 `AGENTS.md` + Skills + MCP + Hooks 构成零锁定标准化扩展矩阵"
+      ],
+      "takeaways": [
+        "定义清晰的 `app-server-protocol` RPC 契约可以让第三方的 IDE 插件与 CLI 共用完全一致的底层运行时"
+      ],
+      "verbatim_quotes": [
+        "\"@modelcontextprotocol/sdk\": \"1.32.0\"",
+        "\"write-hooks-schema\": \"cargo run --manifest-path ./codex-rs/Cargo.toml -p codex-hooks --bin write_hooks_schema_fixtures\""
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/package.json"
+      ],
+      "confidence": 5
+    }
+  ],
+  "specialized_dimensions": [
+    {
+      "dimension": "sandbox_model",
+      "summary": "原生多平台 OS 沙箱体系（区分 Linux/macOS 与 `WindowsSandboxLevel`，独立管控文件系统与网络策略 `NetworkSandboxPolicy`）+ 云端隔离任务容器",
+      "details": "代码 `apply_patch_tests.rs` 与 `orchestrator.rs` 证实存在 `SandboxManager`、`SandboxType`、`effective_file_system_sandbox_policy` 与 `effective_network_sandbox_policy`，支持沙箱拒绝后识别 `is_likely_sandbox_denied` 并按需走 Guardian 提权重试。",
+      "key_decisions": [
+        "区分本地 OS 原生文件系统/网络双维度沙箱与云端全隔离环境",
+        "内建 `is_likely_sandbox_denied` 侦测，允许合理范围内的安全提权审批闭环"
+      ],
+      "takeaways": [
+        "将文件系统写隔离与网络外连审批解耦，是本地工程 Agent 在“可跑本地单测”与“防数据外泄”间的最优解"
+      ],
+      "verbatim_quotes": [
+        "use codex_sandboxing::policy_transforms::effective_file_system_sandbox_policy;",
+        "use codex_sandboxing::policy_transforms::effective_network_sandbox_policy;"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch_tests.rs"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "code_understanding",
+      "summary": "通过 CLI/沙箱环境内工作区路径映射（`PathUri` / `workspace_roots`）结合终端工具主动检索理解工程；本次抓取到的有限核心源码切片未涵盖专门 AST/LSP 索引器实现",
+      "details": "在已抓回的文件树与核心源码中可见针对 `workspace_roots`、`PathUri` 和代码库问答/重构能力的调度入口，但仓库共含 10,598 个文件，本次并发抽样未命中独立 AST/LSP 索引模块细节，按 Guard 规范稳健处理。",
+      "key_decisions": [
+        "基于多 `workspace_roots` 与统一 `PathUri` 管理跨根目录工程上下文"
+      ],
+      "takeaways": [
+        "支持多 `workspace_roots` 模型对于 Monorepo 与跨仓微服务联调非常关键"
+      ],
+      "verbatim_quotes": [
+        "workspace_roots: Vec::new(),"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch_tests.rs"
+      ],
+      "confidence": 3
+    },
+    {
+      "dimension": "diff_management",
+      "summary": "以独立 `codex_apply_patch` 运行时与强类型变更事件 (`AppliedPatchDelta`、`AppliedPatchFileChange`、`FileChange`) 实现可控补丁应用与本地/远端统一执行",
+      "details": "`codex-rs/core/src/tools/runtimes/apply_patch.rs` 明确将补丁解析/验证审批与实际应用拆分为两步：先由上游完成 `ApplyPatchAction` 验证审批，再统一在 `TurnEnvironment` 对应的本地或远程文件系统上下文中原子落地并产出 `AppliedPatchDelta`。",
+      "key_decisions": [
+        "补丁验证审批与补丁执行解耦，本地与远端 Turn 复用同一套文件系统上下文适配层"
+      ],
+      "takeaways": [
+        "自研 `apply_patch` 结构化补丁引擎 + Delta 变更回执是确保长文件重构精度与清晰审计的核心工程资产"
+      ],
+      "verbatim_quotes": [
+        "Apply Patch runtime: executes verified patches under the orchestrator.",
+        "Reuses the selected turn environment filesystem for both local and remote turns,"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "terminal_management",
+      "summary": "专用 `codex_exec_server` 与结构化输出模型 (`ExecToolCallOutput` / `StreamOutput`) 结合多 OS 沙箱执行器管理终端命令生命周期",
+      "details": "从 `apply_patch.rs` 与 `orchestrator.rs` 引用可见独立 `codex_exec_server` crate 与 `ExecToolCallOutput` / `StreamOutput` 流式输出封装，支撑本地终端 TUI、Windows 沙箱选择与无头 CI 模式执行。",
+      "key_decisions": [
+        "将命令执行拆为独立 `codex_exec_server` 服务抽象，统一支持本地直跑与远端执行"
+      ],
+      "takeaways": [
+        "抽象独立 `exec_server` 接口使 Agent 核心无需关心命令最终跑在本地 PTY 还是远端 Docker 容器内"
+      ],
+      "verbatim_quotes": [
+        "use codex_protocol::exec_output::ExecToolCallOutput;",
+        "use codex_protocol::exec_output::StreamOutput;"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "checkpoint_rollback",
+      "summary": "利用结构化 `AppliedPatchDelta` 与环境隔离保障变更可追踪，仓库提供 `check-clean-worktree` 等 Git 保护工作流，但本次抓取切片未见多步历史 Undo Tree 源码",
+      "details": "补丁应用产生明确的 `AppliedPatchFileChange` / `Delta` 数据结构并运行于隔离环境中，具体类似 Cursor 的前端多步图形化一键回滚机制在本批抽样文件中未直接体现。",
+      "key_decisions": [
+        "通过 Delta 变更对象与独立隔离环境控制修改边界"
+      ],
+      "takeaways": [
+        "配合 `AppliedPatchDelta` 可极低成本在客户端额外挂载逐 Turn 自动 Git Snapshot 回滚栈"
+      ],
+      "verbatim_quotes": [
+        "use codex_apply_patch::AppliedPatchDelta;"
+      ],
+      "evidence_sources": [
+        "https://raw.githubusercontent.com/openai/codex/main/codex-rs/core/src/tools/runtimes/apply_patch.rs"
+      ],
+      "confidence": 3
+    }
+  ],
+  "matched_patterns": [
+    {
+      "pattern_name": "agent_loop",
+      "description": "Rust `orchestrator` 围绕 Tool Approval -> Sandbox Attempt -> Denial Recovery -> Patch/Exec Result 运转完整确定性执行循环。",
+      "evidence": [
+        "Coordinates tool approval, sandbox selection, and retries after sandbox denial."
+      ],
+      "confidence": 5
+    },
+    {
+      "pattern_name": "human_in_the_loop_guard",
+      "description": "内置 `AskForApproval` / `ExecApprovalRequirement` / Guardian Review，在沙箱提权和敏感网络请求时要求人工或监护者重新授权。",
+      "evidence": [
+        "Guardian approval applies to the reviewed authority; escalating a sandboxed attempt requires a fresh review of the retry."
+      ],
+      "confidence": 5
+    },
+    {
+      "pattern_name": "code_interpreter_sandbox",
+      "description": "支持 OS 原生双维度（文件系统+网络）沙箱及 Codex Web 云端隔离执行环境。",
+      "evidence": [
+        "sandboxing enforced by the explicit filesystem sandbox context."
+      ],
+      "confidence": 5
+    },
+    {
+      "pattern_name": "mcp_protocol_standard",
+      "description": "集成 `@modelcontextprotocol/sdk` 与 `codex_mcp`，统一纳管外部工具与 Apps 扩展服务。",
+      "evidence": [
+        "\"@modelcontextprotocol/sdk\": \"1.32.0\""
+      ],
+      "confidence": 5
+    }
+  ],
+  "user_reviews": {
+    "review_sources": [
+      "https://github.com/openai/codex/issues",
+      "https://news.ycombinator.com/item?id=46902638",
+      "https://news.ycombinator.com/item?id=47796469",
+      "https://www.g2.com/products/openai-codex/reviews",
+      "https://www.producthunt.com/products/codex-3-0-by-openai",
+      "https://www.v2ex.com/t/1171528",
+      "https://www.zhihu.com/question/2057495861937153314",
+      "https://www.zhihu.com/question/1972596458084627013"
+    ],
+    "praises": [
+      "代码完整性强且具备后台仓库级自动化（自动判断测试、重构与自主 PR 审查），在明确意图约束下结构逻辑差错极少",
+      "借助 `Codex-Max` 等中等推理档位可在保持前沿效果的同时显著削减思考标记与成本，且支持接第三方 API 与稳定配额重置"
+    ],
+    "pain_points": [
+      "Token 与订阅配额消耗极快（IDE 扩展 Issue 630 评论抱怨烧 Token、Usage 325 评论抱怨额度骤降及服务端 404/SSO 手机验证问题）",
+      "高权限 CLI 若直接跑在生产服务器且放开保护会酿成灾难（440 评论严重事故 Issue：要求重启服务器却误毁 systemd 与容器并损失超万美元）"
+    ],
+    "trust_and_ux_friction": [
+      "重度用户反馈能力跃升后编码变成了“写死约束等待异步交付的黑盒体验”（一插嘴反帮倒忙），且开发者对让 Agent 接管宿主环境仍有强烈安全戒心"
+    ],
+    "sample_quotes": [
+      "[closed, 440 评论] Told to reboot a server, it destroyed systemd, destroyed containers, ran random scripts, cost me $10,000+",
+      "[closed, 630 评论] Burning tokens very fast: Which IDE are you using? VS Code",
+      "Do people really want codex to have control over their computer and apps? I'm still paranoid about keeping things securely sandboxed."
+    ]
+  },
+  "pm_guidance": {
+    "suitable_product_forms": [
+      "共享内核驱动的多宿主工程 Agent 套件（单 CLI/TUI 内核 + IDE 扩展 + 桌面客户端 + 云端异步 PR 工人）",
+      "具备强 OS 沙箱（文件与网络分离授权）的本地/CI 自动化修 Bug 与 PR 审查平台"
+    ],
+    "autonomy_level": "L3（云端隔离异步交付型）与 L2~L3 可调混合（本地借助 AskForApproval 与双维度沙箱精细控权）",
+    "interaction_design": "1. 复制 Codex 的『沙箱拒后提权必重审 + 文件/网络策略拆开审批』机制，哪怕用户开启高自治模式也要对 `systemd`/宿主机外路径等高危指令强拦截；\n2. 面向“约束到异步交付”的新范式，把主界面重点从逐字聊天框升级为「任务契约输入 + Diff (`apply_patch`) 增量审阅 + Token 消耗实时进度条」；\n3. 公开暴露额度余量与思考档位（Low/Medium/High Reasoning Effort）开关，避免用户遭遇无预警额度骤降。",
+    "cost_latency_tradeoffs": "• 学习 `GPT-5.1-Codex-Max`“中等推理”路由，针对日常调试与前端构建默认启用中档推理，仅在疑难架构诊断升级高推理；\n• 将代码编辑收拢为精准 `apply_patch` 增量补丁协议并支持本地 Rust/二进制低内存驻留启动。",
+    "mvp_must_haves": [
+      "文件系统与网络访问分离的本地沙箱 + 提权重试二次审批机制",
+      "结构化增量补丁引擎 (`apply_patch` 协议与精确变更 Delta 回执)",
+      "项目规约标准文件（`AGENTS.md`）+ Skills + MCP 工具标准接入",
+      "实时 Token/配额仪表盘与高危系统操作硬保护黑名单"
+    ],
+    "mvp_nice_to_haves": [
+      "跨端共享 `app-server-protocol` 协议（CLI 与 IDE 插件复用同一后端）",
+      "结构化提示片断标识（防止长对话压缩丢失 System Base Instructions）",
+      "异步云端容器 PR 生成与自动自检闭环"
+    ],
+    "anti_patterns_to_avoid": [
+      "切忌在不做 OS/容器硬隔离的生产服务器环境下默认开放高危 shell 免确认模式（血泪案例已证明会损毁 systemd/容器）；",
+      "切忌高频烧 Token 的推理档位黑盒运行且缺乏每轮预算/额度预警；",
+      "切忌各端（CLI/IDE/桌面端）各写一套 Agent 循环实现，导致权限与行为不一致。"
+    ]
+  }
+}

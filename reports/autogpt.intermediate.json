@@ -1,7 +1,7 @@
 {
   "app_name": "autogpt",
   "category": "automation",
-  "generated_at": "2026-11-26T10:56:10.873982",
+  "generated_at": "2026-11-26T11:58:11.472062",
   "core_verified_facts": [
     "[DAG/状态机引擎] 有向无环图 (DAG) 任务编排与状态流转 (置信度 5★ | core/strict_verified)",
     "[容错与重试恢复] 异常捕获 -> 状态回滚 -> 替代路径重试 (置信度 4★ | core/strict_verified)",

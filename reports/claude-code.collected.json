@@ -1,0 +1,765 @@
+{
+  "schema_version": "1.0",
+  "collected_at": "2026-11-26T11:48:40.927606",
+  "app_name": "claude-code",
+  "app_display_name": "Claude Code",
+  "category": "engineering",
+  "is_adhoc": false,
+  "description": "Anthropic CLI 编程 Agent，终端原生的 AI 编程工具，具备自主执行代码、定位修复 Bug 与 Git 版本管理能力",
+  "website": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-code",
+  "github_url": null,
+  "question_lang": "zh",
+  "bilingual_names": {
+    "local": "Claude Code",
+    "en": "Claude Code"
+  },
+  "raw_sources": [
+    "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts",
+    "https://news.creeta.com/en/claude-code-agent-architecture/",
+    "https://github.com/Piebald-AI/claude-code-system-prompts/blob/main/system-prompts/agent-prompt-explore.md",
+    "https://gist.github.com/jischein/8cf9a052fe61ca503b1e410a465fac2c",
+    "https://github.com/morluto/rea",
+    "https://blog.csdn.net/2501_92593481/article/details/161089769",
+    "https://blog.csdn.net/weixin_29046035/article/details/166798078",
+    "https://code.claude.com/docs/zh-CN/prompt-library",
+    "https://zhuanlan.zhihu.com/p/1930336996246683842",
+    "https://zhuanlan.zhihu.com/p/2022605516262614921",
+    "https://docs.anthropic.com/en/docs/agents-and-tools/claude-code",
+    "https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools",
+    "https://github.com/asgeirtj/system_prompts_leaks",
+    "https://github.com/gsd-build/get-shit-done",
+    "https://github.com/cutetailbud/ff-ruyijs",
+    "https://github.com/AIshihzong/awesome-reverse-engineer-anything",
+    "https://github.com/1llu50ry/Decompile",
+    "https://news.ycombinator.com/item?id=48734373",
+    "https://news.ycombinator.com/item?id=43163011",
+    "https://news.ycombinator.com/item?id=47584540",
+    "https://www.reddit.com/r/ClaudeAI/comments/1cw7h43/how_i_code_10x_faster_with_claude/",
+    "https://www.reddit.com/r/ClaudeAI/comments/1bs3xp1/claude_is_a_magnitude_above_gpt4_for_coding_and/",
+    "https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/",
+    "https://www.reddit.com/r/ClaudeAI/comments/1p0n7pg/this_claude_code_skill_creates_claude_code_skills/",
+    "https://code.claude.com/",
+    "https://academy.claude.com/courses/claude-code-101/what-is-claude-code",
+    "https://academy.claude.com/courses/claude-code-101/how-claude-code-works",
+    "https://aiweekly.co/learning-ai/generative-ai/claude-ai-guide"
+  ],
+  "search_coverage": {
+    "question_language": "zh",
+    "bilingual_names": {
+      "local": "Claude Code",
+      "en": "Claude Code"
+    },
+    "items": [
+      {
+        "query": "how the Claude Code works AI architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code AI engineering blog system architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code system prompt tools agent harness",
+        "language": "en",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 2,
+        "chars_collected": 9000
+      },
+      {
+        "query": "Claude Code AI agent github reverse engineering",
+        "language": "en",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code的架构是什么",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code AI 底层原理 技术架构 拆解",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code 提示词 工具调用 Agent 工作流",
+        "language": "zh",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 2,
+        "chars_collected": 7406
+      },
+      {
+        "query": "Claude Code 开源 源码 逆向",
+        "language": "zh",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"Claude Code\" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"Claude Code\" (\"pros and cons\" OR \"frustrating\" OR \"review\" OR \"issues\") site:reddit.com",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1298
+      },
+      {
+        "query": "\"Claude Code\" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com OR site:juejin.cn)",
+        "language": "zh",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code AI explained",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1048
+      },
+      {
+        "query": "Claude Code AI 原理",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      }
+    ],
+    "zh_hits": 8,
+    "en_hits": 16,
+    "covered_angles": [
+      "architecture_qa",
+      "implementation_tech",
+      "source_reverse",
+      "user_reviews"
+    ],
+    "missing_angles": [],
+    "coverage_score": 1.0,
+    "refill_triggered": true,
+    "blocked_sources": []
+  },
+  "collected_items": [
+    {
+      "source_url": "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts",
+      "source_type": "search_snippet",
+      "title": "[en/implementation_tech] Modifying system prompts - Claude Code Docs",
+      "content": "System prompts define Claude’s behavior, capabilities, and response style. Start from the claude_code preset for CLI or IDE-like coding tools where a human watches and steers the work. Write your own prompt for agents with a different surface, identity, or permission model.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://news.creeta.com/en/claude-code-agent-architecture/",
+      "source_type": "search_snippet",
+      "title": "[en/implementation_tech] Claude Code System Prompt Harness Architecture Explained",
+      "content": "Jul 29, 2026 · A Claude-style coding agent is better understood as a three-layer system: the harness owns the environment, the execution loop mediates model-tool interaction, and the prompt supplies compact instructions.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://github.com/Piebald-AI/claude-code-system-prompts/blob/main/system-prompts/agent-prompt-explore.md",
+      "source_type": "search_snippet",
+      "title": "[en/implementation_tech] claude-code-system-prompts/system-prompts/agent-prompt ...",
+      "content": "Complete the user's search request efficiently and report your findings clearly. All parts of Claude Code's system prompt, builtin tool descriptions, subagent prompts (Plan/Explore/Task), and utility prompts.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://gist.github.com/jischein/8cf9a052fe61ca503b1e410a465fac2c",
+      "source_type": "search_snippet",
+      "title": "[en/implementation_tech] Claude Code Agent Harness: Architecture Walkthrough · GitHub",
+      "content": "Apr 11, 2026 · Claude Code Agent Harness: Architecture Walkthrough A deep dive into how the Claude Code CLI agent harness works — from boot to tool execution to sub-agent spawning.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://github.com/morluto/rea",
+      "source_type": "search_snippet",
+      "title": "[en/source_reverse] GitHub - morluto/rea: Reverse engineer anything with agents ...",
+      "content": "Jul 12, 2026 · Setup supports Claude Code, Codex, Cursor, Gemini CLI, Grok Build and other agents. See installation and setup for provider configuration, manual MCP registration, Claude Code/Codex plugins, and the Cursor Marketplace plugin.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/2501_92593481/article/details/161089769",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] Claude Code 工具提示词全拆解：AI Agent、Prompt Engineering、工具...",
+      "content": "May 14, 2026 · 很多人做 AI Agent 时，最容易盯着模型参数、系统提示词、工具数量，却忽略了一个非常关键的细节：每一个工具自己的提示词。 它看起来只是一个 description 字段，实际上却在悄悄决定模型什么时候用工具、怎样用工具、不能做什么、遇到风险怎么收敛。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/weixin_29046035/article/details/166798078",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] Claude高效使用指南：从提示词工程到Agent工作流5阶段升级路径-CSDN博...",
+      "content": "Sep 28, 2026 · 如果你正在用 Claude，或者准备系统学习 LLM 大模型的应用，可以把这篇文章当一张路线图来用。 先给结论：这 5 个阶段分别是基础对话、提示词工程、上下文管理、API 开发和 Agent 工作流。 每个阶段解决一类问题，也对应不同的技能要求。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://code.claude.com/docs/zh-CN/prompt-library",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] 提示词库 - Claude Code Docs",
+      "content": "这是一个提示词库，可以复制到 Claude Code 中使用。 使用它来探索你还没有尝试过的工作方式，或者当你不确定从哪里开始时。 这些提示词来自各种 Anthropic 指南，包括 常见工作流 、 最佳实践 和 Anthropic 团队如何使用 Claude Code。 它们是起点而不是脚本。",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://zhuanlan.zhihu.com/p/1930336996246683842",
+      "source_type": "search_snippet",
+      "title": "[zh/implementation_tech] Claude Code Agent分析八：提示词工程-指导AI的艺术",
+      "content": "1、The Art of Tool Instructions Claude Code的工具提示词堪称教学设计典范：每套提示模板均遵循精心设计的模式，完美平衡以下三大要素：清晰性 - 无歧义的操作指引安全性 - 风险可控的执行边界灵活性 - 自适应上…",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://zhuanlan.zhihu.com/p/2022605516262614921",
+      "source_type": "search_snippet",
+      "title": "[zh/source_reverse] claude code源码优秀解读整理 - 知乎",
+      "content": "Jun 21, 2026 · 老外拆解claude code源码，这篇非常不错！ 4. Harness Engineering: 基于 Claude Code 的完全指南 基于 Claude Code 512,664 行 TypeScript 源码的系统性逆向分析，深入拆解 AI Agent Harness 的每一个设计决策与实现细节。 https:// wanlanglin.github.io/-a wesome-cc-harness/zh/",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts",
+      "source_type": "web_page",
+      "title": "[网页正文|en] Modifying system prompts - Claude Code Docs",
+      "content": "Modifying system prompts - Claude Code Docs\nDocumentation Index\nFetch the complete documentation index at: /docs/llms.txt\nUse this file to discover all available pages before exploring further.\nSkip to main content\nAssistant\nResponses are generated using AI and may contain mistakes.\nSystem prompts define Claude’s behavior, capabilities, and response style. Start from the\nclaude_code\npreset for CLI or IDE-like coding tools where a human watches and steers the work. Write your own prompt for agents with a different surface, identity, or permission model.\nHow system prompts work\nA system prompt is the initial instruction set that shapes how Claude behaves throughout a conversation. The Agent SDK has three starting points for it:\nMinimal default: when you don’t set\nsystemPrompt\nin TypeScript or\nsystem_prompt\nin Python, the SDK uses a minimal prompt that covers tool calling but omits the rest of the\nclaude_code\npreset’s content, including its security and safety instructions. This differs from\nclaude -p\n, which uses the Claude Code system prompt by default. If you’re migrating from the CLI and want matching behavior, set the\nclaude_code\npreset.\nclaude_code\npreset: the system prompt that the Claude Code CLI uses, with tool usage instructions and security and safety instructions. Set\nsystemPrompt: { type: \"preset\", preset: \"claude_code\" }\nin TypeScript or\nsystem_prompt={\"type\": \"preset\", \"preset\": \"claude_code\"}\nin Python, optionally with\nappend\nto add your own instructions on the end.\nCustom string: a prompt you write yourself. The SDK sends only what you provide.\nDecide on a starting point\nThe deciding factor is how closely your agent resembles Claude Code: a coding agent operating in a repository, with a human watching streaming output and steering the work. The further your product is from that, the more you’ll want to write your own prompt.\nYou’re buildingUseWhat you get\nA CLI or IDE-like coding tool where a human watches and steers, and Claude Code’s defaults are what you want\nclaude_code\npresetThe Claude Code prompt, including tool guidance and safety rules\nThe same kind of tool, plus product-specific rules like coding standards, output format, or domain context\nclaude_code\npreset with\nappend\nEverything above, with your instructions added after the preset. Nothing is removed, so this is the lowest-risk customization\nAn agent with a different surface, identity, or permission model, or a non-coding agentCustom prompt stringOnly what you write. You take responsibility for replacing the tool guidance and safety instructions your agent still needs\nA thin tool-calling loop with no agent persona, where you supply all behavior in the user promptNo\nsystemPrompt\noptionThe minimal default: tool-calling support and nothing else\n“Different from Claude Code” usually means one of the following:\nDifferent surface: the output isn’t read in a terminal by the person who triggered it. Chat UIs, structured-output consumers, and non-coding automation each need a prompt that matches how their output is rendered and reviewed. Unattended coding automation, like a CI job that fixes lint errors or reviews diffs, still fits the preset because the work itself is what the preset is written for.\nDifferent identity: the agent shouldn’t present itself as Claude Code. A support bot, a data-analysis assistant, or any domain-specific agent needs its own name, scope, and persona.\nDifferent permission model: the agent runs autonomously without a human approving each step, or operates on a narrow set of resources. Claude Code’s prompt assumes a human is in the loop with access to a full toolset.\nNon-coding tasks: most of Claude Code’s prompt is coding guidance. For research, content, or operations agents, that guidance competes with the instructions you actually need.\nThe comparison table shows what each customization method preserves.\nCustomize agent behavior\nappend\nand a custom prompt string each change the system prompt directly, and an output style changes the instructions Claude Code gives Claude for every response. CLAUDE.md takes a different path: the SDK reads it and injects its content into the conversation as project context, so it shapes behavior alongside whichever system prompt you choose. Skills, hooks, and permissions also shape behavior outside the system prompt and are covered on their own pages.\nCLAUDE.md files for project-level instructions\nCLAUDE.md files give Claude persistent project context and instructions. The SDK injects their co",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://news.creeta.com/en/claude-code-agent-architecture/",
+      "source_type": "web_page",
+      "title": "[网页正文|en] Claude Code System Prompt Harness Architecture Explained",
+      "content": "Claude Code System Prompt Harness Architecture Explained\nClaude / Anthropic\nBuild & Learn\nDaily How-To\nThe prompt is the smallest part of a coding agent\nClaude Code agent architecture, harness control, execution loops, and minimal system prompt design explained.\nSungjae Lee\nJul 29, 2026\nShare\nA coding agent starts with a prompt, but it succeeds or fails in the runtime around that prompt. The useful mental model is smaller and more mechanical: prompt, loop, harness.\nWhy is the prompt the smallest part?\nA Claude-style coding agent is better understood as a three-layer system: the harness owns the environment, the execution loop mediates model-tool interaction, and the prompt supplies compact instructions. Anthropic’s tool-use contract says Claude emits structured\ntool_use\nrequests, then the application executes the tool and returns\ntool_result\nblocks . That means the prompt can ask for careful behavior, but the harness is what can enforce permissions, sandboxing, context assembly, hooks, logging, and stop conditions.\nQuick Answer: The prompt is the smallest part because a coding agent’s reliability comes from its harness and loop: typed tool calls, returned observations, permissions, sandboxes, hooks, and lifecycle controls. Anthropic’s 2026 releases emphasized 1M-token context windows and 128k output caps as runtime surfaces, not prompt text .\nThe boundary matters because prompts are advisory while tool policy is executable. A prompt can say “inspect before editing,” but a harness can restrict writes, require approval for shell commands, load project memory, expose MCP servers, trigger hooks before or after tool use, and stop the agent when a verifier passes or a turn budget is exhausted. The seed video is useful as a prompt for this investigation, but the durable evidence is in the public agent and tool-use documentation .\n\"The client application executes the tool,\" — Anthropic tool-use documentation (source: Anthropic)\nRecent platform changes point in the same direction. Anthropic’s June 30, 2026 Sonnet 5 release listed a 1M-token context window, 128k maximum output tokens, adaptive thinking on by default, and introductory pricing of $2 per million input tokens and $10 per million output tokens through August 31, 2026 . Its July 24, 2026 Opus 5 release listed a 1M-token context window, 128k maximum output tokens, thinking on by default, and $5/$25 per million input/output pricing . Those are harness and lifecycle controls: context, output caps, sandboxes, events, and managed sessions.\nclass CodingAgent:\ndef __init__(self, prompt):\nself.prompt = prompt\nself.tools = [\"read\", \"edit\", \"run tests\"]\nself.loop = [\"observe\", \"plan\", \"act\", \"verify\"]\ndef solve(self, task):\nreturn (\nf\"Task: {task}\\n\"\nf\"Prompt: {self.prompt!r}\\n\"\nf\"Agent: tools={self.tools}, loop={self.loop}\\n\"\n\"Point: the prompt starts the work; tools, feedback, and verification do most of it.\"\n)\nprint(CodingAgent(\"fix the bug\").solve(\"make the program correct\"))\nWhat must the harness own before the loop starts?\nThe harness must own everything the model should not guess: workspace files, current git state, the user request, model instructions, tool schemas, permission mode, project memory, and external connections. In practice, Claude Code, OpenAI Codex, SWE-agent, and mini-SWE-agent all put environment preparation outside the model response, then let the model operate inside that prepared frame.\nFor a coding agent, the runnable prerequisites are concrete. Before the first model call, the harness should know which repository is active, whether the worktree is dirty, what files or logs are relevant, which instructions apply, which tools are allowed, and whether edits, shell commands, network calls, or MCP servers require approval. Claude Code documents this split through terminal access, project context, CLAUDE.md memory, MCP, hooks, permissions, skills, and subagents .\nSystemHarness responsibility before the loopWhy it matters\nClaude CodeLoads project files, memory, tools, MCP, hooks, and permission rules .The model acts with bounded project context instead of relying on prompt text alone.\nOpenAI CodexPrepares user input, instructions, tools, and prior items before unrolling the agent loop .The loop is a product runtime, not just a chat completion.\nSWE-agentInitializes an environment, keeps a shell session, compresses history, and executes actions through SWEEnv .Tool output becomes structured feedback for the next step.\nmini-SWE-agentShows the lower bound: s",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/2501_92593481/article/details/161089769",
+      "source_type": "web_page",
+      "title": "[网页正文|zh] Claude Code 工具提示词全拆解：AI Agent、Prompt Engineering、工具调用、上下文工程、自动化编程的底层逻辑_你自循环调用工具的逻辑与提示词是什么?-CSDN博客",
+      "content": "Claude Code 工具提示词全拆解：AI Agent、Prompt Engineering、工具调用、上下文工程、自动化编程的底层逻辑_你自循环调用工具的逻辑与提示词是什么?-CSDN博客\nClaude Code 工具提示词全拆解：AI Agent、Prompt Engineering、工具调用、上下文工程、自动化编程的底层逻辑\n闵孚龙\n墨衍会员\n·\nAI 创作全网分发\n墨衍智能分发\n本文由作者通过墨衍一键同步至各平台\n1分发平台\n600+累计阅读\n602平均单平台\n已同步平台\nCSDN\n微信公众号\n微博\n知乎\n掘金\n百家号\n博客园\n抖音\n小红书\n你的文章也可以这样分发\n墨衍会员 ¥399起/年，写一次发全网\n我也要 →\n码龄1年\n关注\n原创\n最新推荐文章于 2026-09-21 19:58:05 发布\n602 阅读\nAI 写同款·\nGEO 优化\n›\nClaude Code Agent四种运行方式：从Prompt交互到Loop工程实战\nAI Agent作为人工智能技术的重要分支，通过将语言模型的推理能力与实际环境执行相结合，实现了从思考到行动的完整闭环。其核心原理基于感知-决策-执行的循环机制，让AI能够理解任务意图并调用相应工具完成实际操作。在技术价值层面，AI Agent解决了语言模型只能推理不能执行的局限性，显著提升了开发效率。Prompt Engineering确保单次交互的准确性，而Loop Engineering则构建了复杂任务的多轮执行架构。在实际应用场景中，从简单的代码生成到复杂的项目初始化，AI Agent都能通过工具调\n阅读详情\n开篇导读\n很多人做 AI Agent 时，最容易盯着模型参数、系统提示词、工具数量，却忽略了一个非常关键的细节：每一个工具自己的提示词。它看起来只是一个 description 字段，实际上却在悄悄决定模型什么时候用工具、怎样用工具、不能做什么、遇到风险怎么收敛。\n这套设计可以理解为“微型驾驭器”：系统提示词像总纲，决定整体角色和大方向；工具提示词像每个岗位的操作规程，决定具体动作是否安全、准确、可控。真正好用的 Agent，不只是把工具塞进模型，而是给每个工具都写清楚行为边界。\n内容结构\n• 1. 工具提示词的本质：微型行为控制器\n• 2. 六类核心工具的提示词设计：Bash、Edit、Read、Grep、Agent、Skill\n• 3. 工程落地方法：安全、预算、缓存、委派、运行时兜底\n• 4. 七条通用原则：从功能说明升级为行为契约\n一、先抓住本质：工具提示词不是介绍词，而是行为控制器\n很多人做 AI Agent 时，最容易盯着模型参数、系统提示词、工具数量，却忽略了一个非常关键的细节：每一个工具自己的提示词。它看起来只是一个 description 字段，实际上却在悄悄决定模型什么时候用工具、怎样用工具、不能做什么、遇到风险怎么收敛。\n这套设计可以理解为“微型驾驭器”：系统提示词像总纲，决定整体角色和大方向；工具提示词像每个岗位的操作规程，决定具体动作是否安全、准确、可控。真正好用的 Agent，不只是把工具塞进模型，而是给每个工具都写清楚行为边界。\n下面按 Bash、Edit、Read、Grep、Agent、Skill 六类核心工具展开，重点讲清楚它们背后的提示词工程方法。全篇尽量不用复杂术语，用工程视角说透：为什么这样设计、解决什么问题、普通团队怎么复用。\n二、双层驾驭架构：系统提示词管战略，工具提示词管动作\n如果只靠系统提示词，模型只能获得一套全局规范，比如“要安全”“要谨慎”“要优先使用专用工具”。但到了实际执行时，模型面对的是一个个具体工具：读文件、改文件、搜索内容、执行命令、委派子任务、加载技能。每个动作的风险都不一样，所以不能只靠一个大而全的总提示词。\n更稳的做法，是把规则拆到工具层。搜索工具负责告诉模型怎样搜；编辑工具负责告诉模型修改前必须读；命令工具负责告诉模型哪些命令危险；技能工具负责告诉模型什么时候先加载技能。这样一来，模型每次看到某个工具时，就同步看到这个工具的使用规矩。\n这种设计的价值在于“就近约束”。模型不需要从一大段全局规则里回忆某个工具的细节，而是在调用工具前直接看到最相关的行为协议。\n三、BashTool：最强万能工具，必须先被“降权使用”\nBash 是最危险也最有用的工具。它可以运行命令、调用脚本、读写文件、搜索内容、操作 Git，甚至可以绕过很多专用工具的结构化约束。所以成熟的设计不会鼓励模型“什么都用 Bash”，而是反过来把 Bash 的流量导向更专用的工具。\n这就是“万能工具降级”的核心思想：通用入口不是不能用，而是不能滥用。凡是能用专用工具完成的动作，就尽量交给专用工具。比如找文件交给 Glob，搜内容交给 Grep，读文件交给 Read，改文件交给 Edit，写文件交给 Write，普通沟通直接输出文本。\n为什么要这样做？因为专用工具通常有更好的结构化输入、更清晰的权限检查、更容易审计的结果呈现。Bash 命令本质上是一串文本，模型一旦生成复杂命令，系统很难像审查结构化工具那样精准控制。\n四、BashTool 的安全核心：不是会执行命令，而是知道哪些命令不能碰\n一个能跑命令的 Agent，真正的难点不在于“跑得起来”，而在于“不会把用户环境搞坏”。因此 BashTool 里最重要的一类规则，是围绕 Git、安全命令、后台任务、超时、路径、并发方式展开的操作协议。\nGit 操作尤其敏感。比如修改全局配置、强制推送、硬重置、跳过 hooks、误用 git add .、在用户没要求时主动提交，这些都可能导致数据丢失、泄露敏感文件、破坏团队分支历史。工具提示词必须把这些高风险动作明确压住。\n这里有一个非常值得借鉴的写法：不要只说“禁止”，还要说明原因。模型理解原因后，更容易在相似场景下做出稳妥决策。例如“不强推主分支”不是口号，而是为了保护团队共享历史；“不要跳过 hooks”是为了避免绕过质量检查和签名验证。\n五、命令执行也要有节奏：并发、串行、失败容忍要分清\nBashTool 的另一个价值点，是把多命令执行拆成清晰决策：独立任务可以并行；有依赖的任务要串行；前一步失败就不该继续的，用严格链路；前一步失败也能继续的，才允许松散串行。\n这听起来像基础常识，但对模型非常重要。模型在没有约束时，容易把多个命令堆在一起，既不方便观察，也不方便失败恢复。好的工具提示词会把这些执行策略写清楚，让模型在生成命令之前先判断依赖关系。\n另外，针对 sleep 的抑制也很关键。很多自动化脚本习惯用等待和轮询兜底，但 Agent 场景中，大量 sleep 会拖慢体验、浪费轮次，还可能掩盖真正错误。更好的策略是：能立即执行就立即执行，长任务走后台，失败先诊断根因，不要盲目 sleep 循环。\n六、FileEditTool：编辑前必须先读取，这是反幻觉的底线\n文件编辑是 AI 编码里最容易出事故的动作之一。模型如果没看过当前文件，就直接生成修改内容，本质上是在凭印象做手术：它可能记错文件结构、猜错缩进、替换错相似片段，甚至把不存在的内容当成真实内容。\n因此 FileEditTool 的核心规则非常直接：编辑之前必须先读取。这个规则不是礼貌提醒，而是提示词和运行时共同执行的硬约束。提示词提前告诉模型“没读过会失败”，运行时负责真正检查。\n这套双层保护很适合企业级工具设计。提示词层减少无效调用，运行时层兜底安全。只靠提示词容易被模型偶尔忽略；只靠运行时虽然安全，但会浪费一次失败调用。两层一起上，体验和安全都更稳。\n七、old_string 的关键：不是越长越安全，而是刚好唯一\n编辑工具通常需要模型提供待替换的旧文本。很多人以为旧文本越长越安全，其实不一定。太短可能匹配多个位置，导致工具无法判断；太长会浪费上下文，还容易因为多一个空格、少一个换行而匹配失败。\n更合理的策略是“最小唯一”：用足够少、但能明确定位目标的相邻内容来匹配。比如两到四行相邻内容，通常既能保证唯一性，又不会带来太高 token 成本。\n还有一个细节非常重要：Read 工具返回内容时可能带行号前缀，Edit 工具的提示词要明确告诉模型，真正参与匹配的是行号之后的文件内容，不能把行号符号、箭头、制表符前缀混进替换文本。这个规则本质上是工具之间的接口契约。\n八、FileReadTool：读取不是越多越好，而是要按预算读取\n很多 Agent 效果差，不是因为模型不聪明，而是因为上下文被无关内容塞满了。FileReadTool 的设计正好体现了“资源感知”：默认读一定范围，必要时再精准读取；小文件可以完整理解，大文件要分页、分段、分位置处理。\n默认读取约 2000 行，是一个工程折中。它足够覆盖大部分单文件场景，又不会一下吃掉太多上下文。模型如果已经知道目标位置，就应该用更精准的 offset/limit 读取，减少无关内容进入上下文。\n除了普通文本，读取工具还要声明自己能处理哪些多模态内容，比如图片、PDF、Notebook。更关键的是，这些能力必须和运行时能力对齐：能处理才声明，不能处理就不要写进工具提示词。否则模型会反复尝试不可用能力，浪费时间和上下文。\n九、GrepTool：搜索任务要走专用通道，不能绕回 Bash\nGrepTool 的提示词很短，但力度很强：搜索内容时始终使用 Grep，不要让模型通过 Bash 去调用 grep 或 rg。这并不是为了形式统一，而是为了保证权限、忽略规则、结果上限都能被系统接管。\n专用搜索工具往往会附带读权限检查、版本控制目录排除、忽略模式处理、结果数量控制。如果模型直接用 Bash 跑命令，就可能绕过这些保护层。\n这就形成了一个双向闭环：BashTool 里告诉模型“搜索不要用 Bash”；GrepTool 里告诉模型“搜索应该用 Grep”。单边提示容易漏，双向约束才更稳。\n十、GrepTool 的上下文保护：默认少返回，必要时再展开\n搜索工具最容易制造“结果洪水”。一个常见词可能命中几百上千行，如果全部塞进上下文，模型后续推理质量反而会下降。GrepTool 通过输出模式和 head_limit 建立了结果预算。\n默认只返回匹配文件路径，是一种非常聪明的策略：先帮模型缩小范围，再决定是否展开具体内容。只有当需要查看匹配行时，才切到 content 模式；当需要判断分布时，才看 count 模式。\nhead_limit 则是最后一道阀门。默认限制结果数量，避免一次搜索污染上下文；同时保留“显式解除限制”的方式，给复杂场景留出口。这就是“安全默认值 + 逃生舱口”的典型设计。\n十一、AgentTool：委派不是偷懒，而是上下文隔离与专业化协作\n当任务变复杂时，主 Agent 不可能把所有搜索结果、日志、文件内容都塞进自己的主上下文。AgentTool 的",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://blog.csdn.net/weixin_29046035/article/details/166798078",
+      "source_type": "web_page",
+      "title": "[网页正文|zh] Claude高效使用指南：从提示词工程到Agent工作流5阶段升级路径-CSDN博客",
+      "content": "Claude高效使用指南：从提示词工程到Agent工作流5阶段升级路径-CSDN博客\nClaude高效使用指南：从提示词工程到Agent工作流5阶段升级路径\n许清风\n墨衍会员\n·\nAI 创作全网分发\n墨衍智能分发\n本文由作者通过墨衍一键同步至各平台\n1分发平台\n200+累计阅读\n270平均单平台\n已同步平台\nCSDN\n微信公众号\n微博\n知乎\n掘金\n百家号\n博客园\n抖音\n小红书\n你的文章也可以这样分发\n墨衍会员 ¥399起/年，写一次发全网\n我也要 →\n码龄10年\n关注\nVIP免费\n原创\n2026-09-28 14:23:26\n270 阅读\nAI 写同款·\nGEO 优化\n›\n这次直接聊聊 Claude 的使用方法。这个主题不新鲜，但“能用”和“用得好”之间差别很大。很多人的实际情况是：注册一个账号，聊几轮问答，然后就没有然后了。真正把它当成生产力工具的人，会走一条比较清晰的能力上升路径：从聊天问答，到结构化提示词，到长上下文管理，再到 API 接入，最后进入 Agent 工作流。这篇文章要梳理的就是这套路径，核心是 5 个使用阶段，整理自 5000+ 小时的实战积累。如果你正在用 Claude，或者准备系统学习 LLM 大模型的应用，可以把这篇文章当一张路线图来用。\n先给结论：这 5 个阶段分别是基础对话、提示词工程、上下文管理、API 开发和 Agent 工作流。每个阶段解决一类问题，也对应不同的技能要求。文章会按阶段拆开讲，每段都给出可落地的操作方式、验证方法和常见坑。阶段越高，能处理的任务越复杂，但对工程能力的要求也越高。最后一阶段会重点讲 Claude Code，因为它已经从“聊天窗口里的模型”变成了“能直接操作本地工程的编程助手”，这也是最近讨论最多、踩坑也最多的方向。\n为了让你快速判断这篇文章值不值得读，先把 Claude 核心能力的信息密度放在最前面：它支持 Web 对话、桌面端、移动端，也提供官方 API 和 Claude Code 命令行工具；既适合个人知识工作，也适合放进自动化和批量任务流水线；上下文能力可以支撑整本代码仓库级别的内容输入；关键限制在于模型能力按账号权限和区域政策有所差异，接口调用会按 Token 计费，涉及敏感数据时要先确认合规边界。下面把这套经验拆成可执行的步骤，你照着跑一遍，基本上能完成从新手到高手的升级。\n1. 核心能力速览\n先给一张速览表，方便你快速判断 Claude 适不适合你的场景。\n能力项\n说明\n项目类型\nLLM 大模型对话、内容生成、推理分析、编程辅助、Agent 工作流\n主要入口\nClaude Web、桌面端、移动端、官方 API、Claude Code CLI\n核心功能\n对话问答、长文档总结、代码生成与重构、结构化输出、批量任务、自动化编码\n上下文能力\n支持长上下文输入，实际可用长度取决于具体模型和账号配置\n推荐环境\n普通电脑即可使用 Web 端；API 和 Claude Code 依赖网络稳定性与账号权限\n资源占用\n云端推理，本地基本不占显存；只有 Claude Code 会占用少量内存和 CPU\n启动方式\nWeb 直接登录；Claude Code 用命令行启动；API 通过 Key 调用\n是否支持 API\n支持，适合把对话、总结、分类等能力封装进自己的程序\n是否支持批量任务\n支持，可以脚本化、队列化、循环调用\n适合读者\n内容创作者、编程开发者、数据分析师、自动化流程搭建者\n从表格能看出，Claude 的使用门槛并不高，真正决定上限的是你能不能把任务结构化。很多人问“要用什么显卡、多少显存”，这条其实和本地开源模型不一样，Claude 是云端推理，你不需要为显存操心，更需要注意的反而是一次请求里塞进去多少上下文、有没有触发限流、返回结果能不能被程序自动解析。\n2. 适用场景与使用边界\n2.1 适合做什么\nClaude 最适合的场景，是那些“输入模糊、输出需要结构”的知识型任务。比如给一段冗长会议纪要，让它输出待办清单；给一份需求文档，让它生成测试用例；给一段老代码，让它解释逻辑并给出重构建议。这些任务共同点是：人类做起来重复度偏高，但规则判断又不完全固定，恰好是大模型的舒适区。\n另一个高价值场景是编程辅助。尤其当你把它接入编辑器或命令行，它可以读取项目文件、批量修改代码、执行 Git 操作、跑测试命令。这类 Agent 式用法已经超出“聊天问答”的范畴，处理的是真实工程任务。\n2.2 不适合做什么\n它不适合做强实时性任务，不要指望它做毫秒级响应；也不适合处理需要严格事实核验的数字和事件，尤其在时效性强的场景下，你必须自己复核。此外，涉及企业内部敏感数据时，要确认数据出境合规和授权边界；涉及他人肖像、声音、版权素材时，必须拿到明确授权；涉及用户个人信息的批处理，要遵守最小必要原则。安全边界不是题外话，而是你把这套工具落地到生产环境前必须提前做好的功课。\n3. 阶段一：基础对话与信息检索\n第一个阶段没什么门槛，但要注意，这里最容易养成坏习惯。\n3.1 目标与操作\n阶段一的目标是：把 Claude 当作一个知识工作辅助，完成问答、解释、改写、翻译、头脑风暴。建议在每个任务前，先给一句“角色+任务+约束”。比如：\n“你是一名资深 Python 工程师，请帮我解释下面这段代码的异常处理逻辑，并指出可能遗漏的边界情况。”\n最低0.47元/天 解锁文章\n·\n收录于\n当前文章被以下社区和专栏收录：\n标签\n#Claude\n#提示词工程\n#上下文管理\n上一篇：\nAI Agent核心原理与生产级落地实践指南\n下一篇：\nPyTorch 2.4实操手册：CNN/RNN/GAN/LSTM四模块跑通即用\n目录\n展开全部\n收起\n2\n0\n8\n复制链接\n分享到 QQ\n分享到新浪微博\n扫一扫\n举报\n许清风\n码龄10年\n56粉丝\n1万+原创\n+ 关注\nAI 开发者联合活动\nAMD AI 技术MI300X · ROCmRyzen AI · EPYC\n了解活动 →\n探索 AI 新生态解锁开发新可能\n加入 AMD开发者\n丰厚好礼等你来拿！\n查看活动 →\n立即注册参与抽奖→\n评论\n成就一亿技术人!\n拼手气红包6.0元\n还能输入1000个字符\n| 博主筛选后可见\n插入表情\n代码片\nHTML/XML\nobjective-c\nRuby\nPHP\nC\nC++\nJavaScript\nPython\nJava\nCSS\nSQL\n其它\n条评论被折叠 查看\n被折叠的 条评论\n为什么被折叠?\n到【灌水乐园】发言\n查看更多评论\n添加红包\n祝福语\n请填写红包祝福语或标题\n红包数量\n个\n红包个数最小为10个\n红包总金额\n元\n红包金额最低5元\n余额支付\n当前余额3.43元\n前往充值 >\n需支付：10.00元\n取消\n确定\n实付元\n使用余额支付\n点击重新获取\n扫码支付\n钱包余额\n0\n抵扣说明：\n1.余额是钱包充值的虚拟货币，按照1:1的比例进行支付金额的抵扣。 2.余额无法直接购买下载，可以购买VIP、付费专栏及课程。\n余额充值",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-code",
+      "source_type": "documentation",
+      "title": "Documentation | Claude Platform",
+      "content": "Title: Not Found - Claude Platform Docs\n\nURL Source: https://docs.anthropic.com/en/docs/agents-and-tools/claude-code\n\nFinal URL: https://platform.claude.com/docs/en/agents-and-tools/claude-code\n\nMarkdown Content:\n[Claude Platform Docs](https://platform.claude.com/docs/en/home)\n*   [Messages](https://platform.claude.com/docs/en/intro)\n*   [Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview)\n*   [Admin](https://platform.claude.com/docs/en/manage-claude/admin-api)\n*   \nResources\n\n    *   [Best practices](https://platform.claude.com/docs/en/about-claude/use-case-guides/overview)\n    *   [Models & pricing](https://platform.claude.com/docs/en/models/overview)\n    *   [SDKs, CLI, and libraries](https://platform.claude.com/docs/en/cli-sdks-libraries/overview)\n    *   [Claude API skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill)\n    *   [Release notes](https://platform.claude.com/docs/en/release-notes/overview)\n\n[API reference](https://platform.claude.com/docs/en/api/overview)\n\nEnglish\n\n[Console](https://platform.claude.com/)[Log in](https://platform.claude.com/login?returnTo=%2Fdocs%2Fen%2Fagents-and-tools%2Fclaude-code)\n\n\n\n# Page not found![Image 1](https://platform.claude.com/images/clawd/magnifier.svg)\n\nThe requested page could not be found. These pages are close:\n\n*   [Code execution tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool)Run Python and Bash code in a sandboxed container to analyze data, generate files, and iterate on solutions.\n*   [Tool use with Claude](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)Connect Claude to external tools and APIs. See where tools run, when Claude calls them, and which tool fits your task.\n*   [Claude Managed Agents overview](https://platform.claude.com/docs/en/managed-agents/overview)Pre-built, configurable agent harness that runs in managed infrastructure. Best for long-running tasks and asynchronous work.\n\nGo back[Log in](https://platform.claude.com/login?returnTo=%2Fdocs%2Fen%2Fagents-and-tools%2Fclaude-code)\nMore content may be available after you log in.\n\n[Claude Platform Docs](https://platform.claude.com/docs/en/home)\n\n[](https://x.com/claudeai)[](https://www.threads.com/@claudeai)[](https://www.linkedin.com/showcase/claude)[](https://www.youtube.com/@anthropic-ai)[](https://instagram.com/claudeai)\n\n\n\n### Solutions\n\n*   [AI agents](https://claude.com/solutions/agents)\n*   [Code modernization](https://claude.com/solutions/code-modernization)\n*   [Coding](https://claude.com/solutions/coding)\n*   [Customer support](https://claude.com/solutions/customer-support)\n*   [Financial services](https://claude.com/solutions/financial-services)\n*   [Government](https://claude.com/solutions/government)\n*   [Higher education](https://claude.com/solutions/education)\n*   [K-12 teachers](https://claude.com/solutions/teachers)\n*   [Life sciences](https://claude.com/solutions/life-sciences)\n\n### Partners\n\n*   [Claude on AWS](https://claude.com/partners/amazon-bedrock)\n*   [Claude on Google Cloud](https://claude.com/partners/google-cloud-vertex-ai)\n\n### Learn\n\n*   [Blog](https://claude.com/blog)\n*   [Courses](https://claude.com/resources/courses)\n*   [Use cases](https://claude.com/resources/use-cases)\n*   [Connectors](https://claude.com/partners/mcp)\n*   [Customer stories](https://claude.com/customers)\n*   [Engineering at Anthropic](https://www.anthropic.com/engineering)\n*   [Events](https://www.anthropic.com/events)\n*   [Powered by Claude](https://claude.com/partners/powered-by-claude)\n*   [Service partners](https://claude.com/partners/services)\n*   [Startups program](https://claude.com/programs/startups)\n\n### Company\n\n*   [Anthropic](https://www.anthropic.com/company)\n*   [Careers](https://www.anthropic.com/careers)\n*   [Economic Futures](https://www.anthropic.com/economic-futures)\n*   [Research](https://www.anthropic.com/research)\n*   [News](https://www.anthropic.com/news)\n*   [Responsible Scaling Policy](https://www.anthropic.com/news/announcing-our-updated-responsible-scaling-policy)\n*   [Security and compliance](https://trust.anthropic.com/)\n*   [Transparency](https://www.anthropic.com/transparency)\n\n### Learn\n\n*   [Blog](https://claude.com/blog)\n*   [Courses](https://claude.com/resources/courses)\n*   [Use cases](https://claude.com/resources/use-cases)\n*   [Connectors](https://claude.com/partners/mcp)\n*   [Customer stories](https://claude.com/customers)\n*   [Engineering at Anthropic](https://www.anthropic.com/engineering)\n*   [Events](https://www.anthropic.com/events)\n*   [Powered by Claude](https://claude.com/partners/powered-by-claude)\n*   [Service partners](https://claude.com/partners/services)\n*   [Startups program](https://claude.com/programs/startups)\n\n### Help and security\n\n*   [Availability](https://www.anthropic.com/supported-countries)\n*   [Status](https://status.claude.com/)\n*   [Support](https://support.claude.com/)\n*   [Discord](https",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] x1xhlol/system-prompts-and-models-of-ai-tools (★144873)",
+      "content": "<a href=\"https://discord.gg/NwzrWErdMU\" target=\"_blank\">\n  <img src=\"https://img.shields.io/discord/1402660735833604126?label=LeaksLab%20Discord&logo=discord&style=for-the-badge\" alt=\"LeaksLab Discord\" />\n</a>\n\n\n<a href=\"https://trendshift.io/repositories/14084\" target=\"_blank\"><img src=\"https://trendshift.io/api/badge/repositories/14084\" alt=\"x1xhlol%2Fsystem-prompts-and-models-of-ai-tools | Trendshift\" style=\"width: 250px; height: 55px;\" width=\"250\" height=\"55\"/></a>\n\n\n[![Build Status](https://app.cloudback.it/badge/x1xhlol/system-prompts-and-models-of-ai-tools)](https://cloudback.it)\n[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/x1xhlol/system-prompts-and-models-of-ai-tools)\n\n---\n\n## Security Notice for AI Startups\n\n> **Warning:** If you're an AI startup, make sure your data is secure. Exposed prompts or AI models can easily become a target for hackers.\n\n> **Important:** Interested in securing your AI systems?  \n> Check out **[ZeroLeaks](https://zeroleaks.ai/)**, a service designed to help startups **identify and secure** prompt injection and system prompt extraction risks.\n\n---\n\n## Support the Project\n\nIf you find this collection valuable and appreciate the effort involved in obtaining and sharing these insights, please consider supporting the project.\n\nYou can show your support via:\n\n- **Cryptocurrency:**  \n  - **BTC:** `bc1q7zldmzjwspnaa48udvelwe6k3fef7xrrhg5625`  \n  - **LTC:** `LRWgqwEYDwqau1WeiTs6Mjg85NJ7m3fsdQ`  \n  - **ETH:** `0x3f844B2cc3c4b7242964373fB0A41C4fdffB192A`\n- **Patreon:** https://patreon.com/lucknite\n- **Ko-fi:** https://ko-fi.com/lucknite\n\nThank you for your support!\n\n---\n\n# Sponsors\n\nSponsor the most comprehensive repository of AI system prompts and reach thousands of developers.\n\n[Get Started](mailto:lucasvalbuena@pm.me)\n\n---\n\n## Roadmap & Feedback\n\n> Open an issue.\n\n> **Latest Update:** 12/07/2026\n\n---\n\n## Connect With Me\n\n- **X:** [Lucknite](https://x.com/Lucknite)\n- **Discord**: `x1xhlol`\n- **Email**: `lucasvalbuena@pm.me`\n\n**Drop a star if you find this useful!**\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/asgeirtj/system_prompts_leaks",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] asgeirtj/system_prompts_leaks (★72659)",
+      "content": "<div align=\"center\">\n\n# System Prompts Leaks\n\nThe conversation that took place before you sent your first message.\n\n[Claude](#anthropic--claude) · [Claude Code](#claude-code-system-prompts) · [ChatGPT](#openai--chatgpt) · [Codex](#codex-system-prompts) · [Gemini](#google--gemini) · [Antigravity](#antigravity-system-prompts) · [Grok](#xai--grok) · [Muse](#meta--muse) · [Perplexity](#perplexity) · [Cursor](#cursor) · [Mistral](#mistral) · [Kimi](#moonshot--kimi) · [GLM](#zai--glm) · [Notion AI](#notion-ai) · [Qwen](#qwen) · [MiniMax](#minimax) · [Copilot](#microsoft--copilot) · [DeepSeek](#deepseek) · [More](#other-products)\n\nFound the prompt you were looking for? **Leave a ⭐**\n\n[![Stars](https://img.shields.io/github/stars/asgeirtj/system_prompts_leaks?style=flat)](https://github.com/asgeirtj/system_prompts_leaks/stargazers) [![Forks](https://img.shields.io/github/forks/asgeirtj/system_prompts_leaks?style=flat)](https://github.com/asgeirtj/system_prompts_leaks/forks) [![Commits](https://img.shields.io/github/commit-activity/t/asgeirtj/system_prompts_leaks?style=flat&label=commits)](https://github.com/asgeirtj/system_prompts_leaks/commits/main) [![Last Commit](https://img.shields.io/github/last-commit/asgeirtj/system_prompts_leaks?style=flat)](https://github.com/asgeirtj/system_prompts_leaks/commits/main) [![X](https://img.shields.io/badge/@asgeirtj-black?logo=x&logoColor=white)](https://x.com/asgeirtj)\n\n<p>\n <a href=\"https://www.star-history.com/asgeirtj/system_prompts_leaks\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=trending&theme=dark\" /><source media=\"(prefers-color-scheme: light)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=trending\" /><img alt=\"GitHub Trending Repository of the Day\" src=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=trending\" /></picture></a>\n <a href=\"https://www.star-history.com/asgeirtj/system_prompts_leaks\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=rank&theme=dark\" /><source media=\"(prefers-color-scheme: light)\" srcset=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=rank\" /><img alt=\"Star History Rank\" src=\"https://api.star-history.com/badge?repo=asgeirtj/system_prompts_leaks&type=rank\" /></picture></a>\n</p>\n\n</div>\n\nUsed as the definitive source in:\n\n- **The Washington Post**: [See the hidden rules behind AI. Then use them to rewrite this article.](https://archive.ph/pYtPk) (May 11, 2026)\n- **CEPS' AI World**: [System prompts and what they tell us about the chat before the chat](https://aiworld.eu/story/system-prompts-and-what-they-tell-us-about-the-chat-before-the-chat) (July 10, 2026)\n- **Simon Willison**: \"the most thorough leaked system prompt collection I know of\" in [ChatGPT search now uses the site:operator at scale](https://simonwillison.net/2026/Aug/20/chatgpt-search-now-uses-the-siteoperator-at-scale/) (August 20, 2026)\n- **23 academic papers**, among them IEEE S&P 2026, ICLR 2026, CHI 2026 and EMNLP 2025 (November 18, 2026)\n\n> Got a different result? [Open up a PR](https://github.com/asgeirtj/system_prompts_leaks/pulls) or [send me a message](mailto:asgeirtj@gmail.com).\n\n## Most recent additions/changes\n\n| What | Date | Link |\n|------|------|------|\n| **Claude Code /ship and /steward** | November 24, 2026 | [/ship](Anthropic/claude-code/skills/ship/SKILL.md) · [/steward](Anthropic/claude-code/skills/steward/SKILL.md) · [Wake-up pass](Anthropic/claude-code/skills/steward/pass.md) |\n| **Reasoning effort values** | November 23, 2026 | [Claude](Anthropic/reasoning-effort.md) · [GPT](OpenAI/reasoning-effort.md) · [Gemini](Google/reasoning-effort.md) |\n| **Claude API tools** | November 20, 2026 | [Claude API tool prompts and definitions](Anthropic/tools) |\n| **Claude for Outlook and Claude for Google Workspace** | N",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/gsd-build/get-shit-done",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] gsd-build/get-shit-done (★64117)",
+      "content": "<!-- GSD 2 - Archived repository redirect -->\n\n# GSD Has Moved\n\nThis repository is no longer the active home for GSD development.\n\nThe project now continues as **GSD Core** in the Open GSD repository:\n\nhttps://github.com/open-gsd/gsd-core\n\nUse the new repository for current source code, issues, releases, and contribution\nwork.\n",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/cutetailbud/ff-ruyijs",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] cutetailbud/ff-ruyijs (★982)",
+      "content": "<div align=\"center\">\n\n# 🦊 ruyiJS\n\n### Run any site's JavaScript from Python — with the real Firefox engine.\n\n**A new-generation, minimalist browser purpose-built for AI-driven automation.**<br>\nThe authentic Firefox JavaScript engine and networking stack, with no window and no renderer —<br>\nmade for web scraping, JS reverse engineering, data collection, and getting past bot checks.\n\n[![PyPI](https://img.shields.io/pypi/v/ruyijs?label=pypi&color=111111&logo=pypi&logoColor=white)](https://pypi.org/project/ruyijs/) [![Downloads](https://img.shields.io/pepy/dt/ruyijs?label=downloads&color=111111&logo=pypi&logoColor=white)](https://pepy.tech/projects/ruyijs) [![Python](https://img.shields.io/badge/Python-%E2%89%A53.10-111111?logo=python&logoColor=white)](https://pypi.org/project/ruyijs/) [![License](https://img.shields.io/badge/license-AGPL--3.0%20%2B%20commercial-111111)](LICENSE) [![Windows](https://img.shields.io/badge/Windows%20x64-0078D4?logo=windows&logoColor=white)](https://pypi.org/project/ruyijs/) [![macOS](https://img.shields.io/badge/macOS%20arm64-000000?logo=apple&logoColor=white)](https://pypi.org/project/ruyijs/) [![Linux](https://img.shields.io/badge/Linux%20x86__64-FCC624?logo=linux&logoColor=black)](https://pypi.org/project/ruyijs/) [![LinuxDO](https://img.shields.io/badge/LinuxDO-community-FFB003?logo=discourse&logoColor=white)](https://linux.do/t/topic/3078486)\n\n<sub>Sponsored by</sub>\n\n<a href=\"https://www.fastaitoken.com\"><img src=\"assets/sponsor-fastaitoken.png\" height=\"42\" alt=\"FastAIToken\"></a>&nbsp;&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"Claude\"><img src=\"assets/models/claude.svg\" width=\"42\" height=\"42\" alt=\"Claude\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"GPT\"><img src=\"assets/models/gpt.svg\" width=\"42\" height=\"42\" alt=\"GPT\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"Grok\"><img src=\"assets/models/grok.svg\" width=\"42\" height=\"42\" alt=\"Grok\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"DeepSeek\"><img src=\"assets/models/deepseek.svg\" width=\"42\" height=\"42\" alt=\"DeepSeek\"></a>&nbsp;&nbsp;<a href=\"https://www.fastaitoken.com\" title=\"GLM\"><img src=\"assets/models/glm.svg\" width=\"42\" height=\"42\" alt=\"GLM\"></a>\n\n<sub>Contributors</sub>\n\n<a href=\"https://github.com/Facetomyself\" title=\"Facetomyself · #4 macOS arm64 shell, #6 QUIC profiles, #7 macOS proxy, #9 macOS Necko adapter, #14-21 DOM and layout speed, #22-29 DOM, layout and style speed, #40 Worker replies on the logical clock, #41 id index and getElementsByTagNameNS\"><img src=\"assets/contributors/Facetomyself.png\" width=\"48\" height=\"48\" alt=\"Facetomyself\"></a>&nbsp;&nbsp;<a href=\"https://github.com/Starktomy\" title=\"Starktomy · #5 Linux runtime\"><img src=\"assets/contributors/Starktomy.png\" width=\"48\" height=\"48\" alt=\"Starktomy\"></a>&nbsp;&nbsp;<a href=\"https://github.com/isesword\" title=\"isesword · #8 macOS Core Text shaping and Firefox parity\"><img src=\"assets/contributors/isesword.png\" width=\"48\" height=\"48\" alt=\"isesword\"></a>&nbsp;&nbsp;<a href=\"https://github.com/sbbbsbbb\" title=\"sbbbsbbb · #10 macOS TLS and HTTP/2\"><img src=\"assets/contributors/sbbbsbbb.png\" width=\"48\" height=\"48\" alt=\"sbbbsbbb\"></a>&nbsp;&nbsp;<a href=\"https://github.com/ladydd\" title=\"ladydd · #33 incremental layout reuse, #36 cascade rule index and live collections, #37 node getters, #38 timer queue, #47 hit testing and live ranges, #49 live computed styles\"><img src=\"assets/contributors/ladydd.png\" width=\"48\" height=\"48\" alt=\"ladydd\"></a>\n\n**[Install](#-installation)** &nbsp;·&nbsp; **[Features](#-features)** &nbsp;·&nbsp; **[Verification systems](#-verification-systems-it-defeats)** &nbsp;·&nbsp; **[Examples](#-examples)** &nbsp;·&nbsp; **[FAQ](#-faq--troubleshooting)** &nbsp;·&nbsp; **[Contact](#-contact)** &nbsp;·&nbsp; **[LinuxDO](https://linux.do/t/topic/3078486)** &nbsp;·&nbsp; **English** · [简体中文](README.zh-CN.md)\n\n> **⚠️ Disclaimer:** This project is for researching next-generation AI browsers. Any form o",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/AIshihzong/awesome-reverse-engineer-anything",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] AIshihzong/awesome-reverse-engineer-anything (★919)",
+      "content": "# Awesome REA: Reverse Engineer Anything with AI [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)\n\n**English** · [简体中文](README.zh-CN.md)\n\n<p align=\"center\">\n  <img src=\"assets/readme/hero.svg\" width=\"100%\" alt=\"Awesome REA: what AI agents reverse-engineered and rebuilt, and which ones really used REA. Example rows: DX-Ball tagged REA, Universal Modder tagged AI-RE, PhotoCraft tagged Rebuild, Apple TV remote on Linux tagged Claim?\">\n</p>\n\n<p align=\"center\">\n  <a href=\"https://github.com/AIshihzong/awesome-reverse-engineer-anything/releases\"><img src=\"https://img.shields.io/github/v/release/AIshihzong/awesome-reverse-engineer-anything?label=weekly%20digest&color=3fb950\" alt=\"Latest weekly digest\"></a>\n  <a href=\"https://github.com/AIshihzong/awesome-reverse-engineer-anything\"><img src=\"https://img.shields.io/github/stars/AIshihzong/awesome-reverse-engineer-anything?style=flat&color=f0b429\" alt=\"GitHub stars\"></a>\n  <a href=\"LICENSE\"><img src=\"https://img.shields.io/badge/license-CC0--1.0-lightgrey\" alt=\"License: CC0-1.0\"></a>\n</p>\n\n**What AI agents reverse-engineered and rebuilt, and which ones really used REA.**\n\n> Unofficial. Not affiliated with morluto/rea.\n\n**The short answer:** of the six [most-shared cases](#most-shared), only one, DX-Ball, says in its own repo that it used REA. Two more say so only in the author's post, and the other three used other tools or are unverified. [See every check](docs/is-it-rea.md).\n\n**[What is REA? FAQ](docs/what-is-rea.md)** · **[Find a project by the app it replaces](docs/by-app.md)** · **[Did it really use REA?](docs/is-it-rea.md)** · **[Does REA help? The evidence](#does-rea-help-the-evidence)** · **[New this week](docs/new-this-week.md)** · **[Submit a case](https://github.com/AIshihzong/awesome-reverse-engineer-anything/issues/new?template=case.yml)**\n\n> ⭐ **[Star this repo](https://github.com/AIshihzong/awesome-reverse-engineer-anything)** to save it and keep it in your GitHub feed (no need to fork unless you are sending a pull request), or **Watch → Custom → Releases** to get one [weekly digest](https://github.com/AIshihzong/awesome-reverse-engineer-anything/releases) a week of what AI agents took apart.\n\n\"REA\" started as [morluto/rea](https://github.com/morluto/rea) (Reverse Engineer Anything, 417k+ stars as of 2026-11-01), an open-source MCP server and CLI (npm `rea-agents`) that lets coding agents inspect native binaries, Electron apps, .NET assemblies, APKs, firmware and websites without their source code, explain how a feature works with evidence, and rebuild it. REA itself does not decompile; it orchestrates Hopper, Ghidra, IDA and JADX for the agent.\n\n\"REA\" now also names the whole wave of AI agents reverse-engineering and rebuilding closed software, whether they use REA, or Claude Code and Codex with Ghidra or IDA MCP. This list covers that wave and says what each case actually used.\n\n**Tags**\n\n- `REA`: the project README, the author's post or the official showcase says morluto/rea was used.\n- `AI-RE`: AI reverse engineering with other tools, or with no tool named.\n- `Rebuild`: clean-room rewrite with no reverse-engineering evidence.\n- `Claim?`: not yet verified.\n\nHow each tag is checked: [How this list stays accurate](#how-this-list-stays-accurate).\n\n> Figures and links in this list were checked on 2026-10-21, with REA's star count refreshed on 2026-11-01, and the entries added since refreshed on 2026-11-23. REA and the projects around it move weekly, so read the date next to a number before relying on it.\n\n> ⚠️ Reverse engineering is governed by local law, software licenses and terms of service. This list covers only public information, for learning, research, interoperability and preservation. Make sure you are allowed to analyse the target. See [Legal and controversy](#legal-and-controversy).\n\n## Use it today\n\nOpen-source projects you can run now, listed by the app they replace or work with. The [full index](docs/by-app.md) has 38 rows with license and statu",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://github.com/1llu50ry/Decompile",
+      "source_type": "github_re_search",
+      "title": "[GitHub 逆向/提示词仓库] 1llu50ry/Decompile (★616)",
+      "content": "<div align=\"center\">\n\n# 🎮 decompile\n\n### One MCP for reverse engineering across binaries, applications, and runtime behavior.\n\n**230+ MCP tools · 60+ RE/debug backends · 9 host-side plugins · 6,000+ skills · 170+ agents · 160+ subagents · 190+ plugins · 3,000+ prompts · multi-agent mesh · native x86-64 + ARM64 emulators**\n\n[![version](https://img.shields.io/badge/version-0.0.1-blue)](CHANGELOG.md) [![tests](https://img.shields.io/badge/tests-133%2F133-success)](tests/) [![tools](https://img.shields.io/badge/MCP%20tools-230%2B-blue)](src/) [![backends](https://img.shields.io/badge/RE%20backends-60%2B-blueviolet)](src/retools.ts) [![skills](https://img.shields.io/badge/skills-6%2C000%2B-orange)](db/skills.db) [![docker](https://img.shields.io/badge/docker-multi--arch-informational)](Dockerfile) [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![audit](https://img.shields.io/badge/npm%20audit-0-brightgreen)](package.json)\n\n> **v5.0.0 released.** 19 GiB → 3.3 GiB working tree (83% smaller via gzipped source archives), + four feature waves: host plugin build systems, Frida bridge + dynamic analysis, ARM64 emulator + decompile cache + chunking, bindiff / ROP / game-engine metadata / MCP sampling / SVG visualization. See [CHANGELOG](CHANGELOG.md).\n\n[Quickstart](#30-second-quickstart) · [Architecture](docs/architecture.md) · [Comparison](#comparison) · [Agent Mesh](docs/agent-mesh.md) · [MCP Hub](docs/mcp-hub.md) · [Ethics](#ethics--responsible-use)\n\n[English](README.md) · [Русский](README-ru.md) · [简体中文](README-zh.md)\n\n</div>\n\n---\n\n## Why this exists\n\nReverse engineering a modern application involves five static tools (Ghidra, IDA, Binary Ninja, radare2, Hopper), three debuggers (x64dbg, WinDbg, GDB/LLDB), a hex-editor, a memory scanner, an instrumentation framework, and a stack of format parsers (PE, ELF, Mach-O, DEX, Minidump, WASM, .NET, ASAR, GGUF, BEAM, Go). Switching between them costs hours. Teaching a model to drive even one of them well costs more.\n\n**This server:**\n\n1. **Aggregates 60+ RE / debug MCP backends** behind one connection — `smart_decompile` picks IDA when running, falls back to Ghidra, then Binary Ninja, then radare2.\n2. **Ships 230+ native MCP tools** so most answers don't need an external backend at all — PE / ELF / Mach-O / DEX / WASM / Minidump / ZIP / .NET / IL2CPP / ASAR / GGUF / BEAM / Go buildinfo parsers, AoB signature scan, Shannon entropy, crypto-constant identification, PDB70 → Microsoft symbol server URL, PyInstaller TOC, HAR summary, SQLite inspect, ELF notes, Apple IPS.\n3. **Lets agents collaborate** through a shared mesh — DM, channels, task handoff, adversarial voting, shared KV knowledge-base, named locks for coordination. Zero-dep JSON persistence.\n4. **Curates 6,000+ skills, 170+ agents, 160+ subagents, 190+ plugins, 3,000+ prompts** — hand-written deep references plus imported open-source techniques, full-text searchable.\n5. **Ships a one-shot CLI** (`decompile setup`, `decompile analyze <path>`, `decompile capabilities`, `decompile doctor`) that registers the MCP with Claude Code / Cursor / Codex / Windsurf / Gemini and returns structured findings with evidence and unknowns.\n\nIf you're on security-research, binary-analysis, defensive-engineering, or SDK work — this collapses a day of tool-shuffling into one MCP connection.\n\n## 30-second quickstart\n\n[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/1llu50ry/decompile?quickstart=1)\n\n### Install — one command, everything\n\nNeeds **Node.js 24+** for the MCP server ([how to get it](https://github.com/1llu50ry/Decompile/wiki/Installation#1-prepare-your-computer)). Pick **one**:\n\n```bash\n# Linux / macOS / FreeBSD / Termux\ncurl -fsSL https://raw.githubusercontent.com/1llu50ry/Decompile/main/install.sh | sh\n```\n\n```powershell\n# Windows (PowerShell)\nirm https://raw.githubusercontent.com/1llu50ry/Decompile/main/install.ps1 | iex\n```\n\n```bash\n# npx (any OS, nothing kept but the RE tools)",
+      "is_primary": true
+    },
+    {
+      "source_url": "https://news.ycombinator.com/item?id=48734373",
+      "source_type": "user_review",
+      "title": "[Hacker News 用户讨论] Claude Code is steganographically marking requests (750 条评论)",
+      "content": "- @LPisGood: This is very interesting. Combating resellers and distillation seems like a very difficult problem indeed. Interesting to me is that these techniques mentioned in the article are just like anti-observation techniques used by some of the more sophisticated malware out there, however defeating them is pretty trivial.\n- @MattDamonSpace: “So the feature mostly punishes the exact people who are easier to fingerprint: normal developers doing weird but legitimate things” What’s the punishment here exactly?\n- @theplumber: The more I learn about Anthropic the more they disgust me. Finger crossed for all the companies from their “ban list”\n- @100ms: What's the point of even trying to obfuscate this with such a simple method? Could at least have hidden the targeted features by storing their hashes or embedding a bloom filter or similar\n- @grayhatter: Here's the sha of the prompt I submitted... no I don't know why there are no saved prompts with that sha. What do you mean you don't know where the bug is coming from? No, I absolutely didn't make it up, how could you accuse me of that? Does anyone know when this regex isn't working? I double checked it 27 times, I even asked the LLM. They all say this regex should be finding these dates. Weird, s\n- @sigmoid10: If they only collect the data for analysis I guess this is fine (they already get way more sensitive data from users anyways, so if privacy is your concern you've made the mistake many steps ago). The much more interesting question is if they directly act on this data in their API. For example by rate-limiting, compute-limiting or rerouting to weaker models. That might even be legally questionable\n- @love0972: Is that really how it is? How will this affect our future?\n- @throwawayffffas: Claude code does feel very malwarey to be honest. They have been like that from the start.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://news.ycombinator.com/item?id=43163011",
+      "source_type": "user_review",
+      "title": "[Hacker News 用户讨论] Claude 3.7 Sonnet and Claude Code (963 条评论)",
+      "content": "- @bnc319: Pretty amazing how DeepSeek started the visual reasoning trend, xAI featured it in their latest release, and now Anthropic does the same.\n- @t55: Anthropic doubling down on code makes sense, that has been their strong suit compared to all other models Curious how their Devin competitor will pan out given Devin's challenges\n- @Flux159: It's interesting that Anthropic is making their own coding agent with Claude Code - is this a sign of them looking to move up the stack and more into verticals that model wrapper startups are in?\n- @estsauver: The docs for Claude code don't seem to be up yet but are linked here: http:&#x2F;&#x2F;docs.anthropic.com&#x2F;s&#x2F;claude-code I'm not sure if it's a broken link in the blog post or just hasn't been published yet.\n- @tablet: The progress in AI area is insane. I can't keep up with all the news. And I have work to do...\n- @TIPSIO: \"Make me a website about books. Make it look like a designer and agency made it. Use Tailwind.\" https:&#x2F;&#x2F;play.tailwindcss.com&#x2F;tp54wfmIlN Getting way better at UI.\n- @lysace: It's fascinating how close these companies are to each other. Some company comes up with something clever&#x2F;ground-breaking and everyone else has implemented it a few weeks later. Hard not to think of Kurzweil's Law of Accelerating Returns.\n- @ctoth: I've been using O3-mini with reasoning effort set to high in Aider and loving the pricing. This looks as though it'll be about three times as expensive. Curious to see which falls out as most useful for what over the next month!",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://news.ycombinator.com/item?id=47584540",
+      "source_type": "user_review",
+      "title": "[Hacker News 用户讨论] Claude Code's source code has been leaked via a map file in their NPM registry (1022 条评论)",
+      "content": "- @mapcars: Are there any interesting&#x2F;uniq features present in it that are not in the alternatives? My understanding is that its just a client for the powerful llm\n- @LeoDaVibeci: Isn't it open source? Or is there an open source front-end and a closed backend?\n- @treexs: The big loss for Anthropic here is how it reveals their product roadmap via feature flags. A big one is their unreleased \"assistant mode\" with code name kairos. Just point your agent at this codebase and ask it to find things and you'll find a whole treasure trove of info. Edit: some other interesting unreleased&#x2F;hidden features - The Buddy System: Tamagotchi-style companion creature system wi\n- @q3k: The code looks, at a glance, as bad as you expect.\n- @bob1029: Is this significant? Copilot on OAI reveals everything meaningful about its functionality if you use a custom model config via the API. All you need to do is inspect the logs to see the prompts they're using. So far no one seems to care about this \"loophole\". Presumably, because the only thing that matters is for you to consume as many tokens per unit time as possible. The source code of the slot \n- @vbezhenar: LoL! https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=30337690 Not exactly this, but close.\n- @avaer: Would be interesting to run this through Malus [1] or literally just Claude Code and get open source Claude Code out of it. I jest, but in a world where these models have been trained on gigatons of open source I don't even see the moral problem. IANAL, don't actually do this. https:&#x2F;&#x2F;malus.sh&#x2F;\n- @karimf: Is there anything special here vs. OpenCode or Codex? There were&#x2F;are a lot of discussions on how the harness can affect the output.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/ClaudeAI/comments/1cw7h43/how_i_code_10x_faster_with_claude/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] How I code 10x faster with Claude : r/ClaudeAI - Reddit",
+      "content": "This is a subreddit dedicated to discussing Claude, an AI assistant created by Anthropic to be helpful, harmless, and honest. Anthropic does not operate or control this community. This is a place for people to talk about Claude's capabilities, limitations, emerging personality and potential impacts on society as an artificial intelligence. All thoughtful, respectful opinions about Claude are ...",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/ClaudeAI/comments/1bs3xp1/claude_is_a_magnitude_above_gpt4_for_coding_and/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Claude is a magnitude above GPT4 for coding and other tasks ...",
+      "content": "This is a subreddit dedicated to discussing Claude, an AI assistant created by Anthropic to be helpful, harmless, and honest. Anthropic does not operate or control this community. This is a place for people to talk about Claude's capabilities, limitations, emerging personality and potential impacts on society as an artificial intelligence. All thoughtful, respectful opinions about Claude are ...",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] Anyone else using Claude Code across multiple PCs? I'm ...",
+      "content": "I’ve been using Claude Code across a couple of different machines for a personal project. To keep the sessions in sync, I’ve been having Claude update claude.md file at the end of each session. It includes a summary of what we worked on, current status, TODOs, and anything else relevant.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://www.reddit.com/r/ClaudeAI/comments/1p0n7pg/this_claude_code_skill_creates_claude_code_skills/",
+      "source_type": "user_review",
+      "title": "[权威社区评价|en] This Claude Code Skill Creates Claude Code Skills For You",
+      "content": "This Claude Code Skill Creates Claude Code Skills For You A walkthrough of my \"create-agent-skill\" skill—a meta-skill that helps you build Claude Code skills by teaching Claude how to build effective skills itself.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://code.claude.com/",
+      "source_type": "search_snippet",
+      "title": "[盲区补搜|en/architecture_qa] Claude Code by Anthropic | AI coding agent and assistant",
+      "content": "Claude Code maps and explains large codebases in a few seconds. It uses agentic search to understand project structure and dependencies without you having to manually select context files.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://academy.claude.com/courses/claude-code-101/what-is-claude-code",
+      "source_type": "search_snippet",
+      "title": "[盲区补搜|en/architecture_qa] What is Claude Code? · Claude Code 101 · Claude Academy",
+      "content": "Claude Code is an agentic coding tool that understands your codebase, edits your files, runs commands, and integrates with your existing developer tools to help you get things done faster. It's available in your terminal, Visual Studio Code, the Claude Desktop app, on the web, and in JetBrains IDEs.",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://academy.claude.com/courses/claude-code-101/how-claude-code-works",
+      "source_type": "search_snippet",
+      "title": "[盲区补搜|en/architecture_qa] How Claude Code works · Claude Code 101 · Claude Academy",
+      "content": "Watch on YouTube The Agentic Loop Claude Code is best explained through the agentic loop: You enter a prompt into Claude Code. Claude gathers the context it needs by interacting with the model, which returns text or a tool call that Claude Code can execute. It takes action — for example, editing a file or running a command. It verifies the results and determines whether they achieve what ...",
+      "is_primary": false
+    },
+    {
+      "source_url": "https://aiweekly.co/learning-ai/generative-ai/claude-ai-guide",
+      "source_type": "search_snippet",
+      "title": "[盲区补搜|en/architecture_qa] Claude AI Explained: How It Works (2026) - AI Weekly",
+      "content": "Mar 26, 2026 · Learn about Claude AI by Anthropic: how it works, key features like safety and long context, model versions, and why it's becoming a top choice for AI.",
+      "is_primary": false
+    }
+  ],
+  "prompt_contract": {
+    "categories": [
+      "engineering",
+      "data",
+      "knowledge",
+      "creative",
+      "automation"
+    ],
+    "common_dimensions": [
+      {
+        "dimension": "agent_orchestration",
+        "label": "Agent 编排",
+        "weight": 5
+      },
+      {
+        "dimension": "model_routing",
+        "label": "模型路由",
+        "weight": 5
+      },
+      {
+        "dimension": "tool_chain",
+        "label": "工具链",
+        "weight": 5
+      },
+      {
+        "dimension": "prompt_engineering",
+        "label": "提示词工程",
+        "weight": 4
+      },
+      {
+        "dimension": "context_engineering",
+        "label": "上下文工程",
+        "weight": 5
+      },
+      {
+        "dimension": "data_flow_state",
+        "label": "数据流与状态管理",
+        "weight": 4
+      },
+      {
+        "dimension": "security_sandbox",
+        "label": "安全沙箱",
+        "weight": 5
+      },
+      {
+        "dimension": "human_ai_collaboration",
+        "label": "人机协同",
+        "weight": 5
+      },
+      {
+        "dimension": "extensibility_ecosystem",
+        "label": "扩展生态",
+        "weight": 5
+      }
+    ],
+    "specialized_dimensions_by_category": {
+      "engineering": [
+        {
+          "dimension": "sandbox_model",
+          "label": "沙箱隔离模型"
+        },
+        {
+          "dimension": "code_understanding",
+          "label": "代码理解引擎"
+        },
+        {
+          "dimension": "diff_management",
+          "label": "Diff 与变更管理"
+        },
+        {
+          "dimension": "terminal_management",
+          "label": "终端与进程管理"
+        },
+        {
+          "dimension": "checkpoint_rollback",
+          "label": "检查点与回滚"
+        }
+      ],
+      "data": [
+        {
+          "dimension": "nl2sql_pipeline",
+          "label": "NL2SQL 转换管线"
+        },
+        {
+          "dimension": "data_source_adapter",
+          "label": "多源异构数据适配"
+        },
+        {
+          "dimension": "schema_discovery",
+          "label": "数据模式自动发现"
+        },
+        {
+          "dimension": "query_optimization",
+          "label": "查询优化与安全"
+        },
+        {
+          "dimension": "visualization_engine",
+          "label": "数据可视化引擎"
+        }
+      ],
+      "knowledge": [
+        {
+          "dimension": "rag_pipeline",
+          "label": "RAG 检索管线"
+        },
+        {
+          "dimension": "index_vector_store",
+          "label": "知识索引与向量存储"
+        },
+        {
+          "dimension": "citation_management",
+          "label": "引用链管理与溯源"
+        },
+        {
+          "dimension": "multi_doc_reasoning",
+          "label": "多文档综合推理"
+        },
+        {
+          "dimension": "knowledge_update",
+          "label": "知识动态更新机制"
+        }
+      ],
+      "creative": [
+        {
+          "dimension": "multimodal_pipeline",
+          "label": "多模态生成管线"
+        },
+        {
+          "dimension": "version_variant",
+          "label": "版本与变体管理"
+        },
+        {
+          "dimension": "realtime_preview",
+          "label": "实时渲染与预览"
+        },
+        {
+          "dimension": "style_consistency",
+          "label": "风格一致性控制"
+        },
+        {
+          "dimension": "template_reuse",
+          "label": "模板与资产复用"
+        }
+      ],
+      "automation": [
+        {
+          "dimension": "dag_state_machine",
+          "label": "DAG/状态机引擎"
+        },
+        {
+          "dimension": "multi_agent_protocol",
+          "label": "多 Agent 通信协议"
+        },
+        {
+          "dimension": "fault_tolerance",
+          "label": "容错与重试恢复"
+        },
+        {
+          "dimension": "external_integration",
+          "label": "外部系统与连接器集成"
+        },
+        {
+          "dimension": "trigger_scheduling",
+          "label": "事件触发与调度机制"
+        }
+      ]
+    },
+    "pattern_catalog": [
+      {
+        "name": "single_agent",
+        "display_name": "单 Agent",
+        "description": "单个 LLM 配合工具集，适用于任务边界清晰的场景"
+      },
+      {
+        "name": "multi_agent_hierarchical",
+        "display_name": "多 Agent 层级式",
+        "description": "Planner-Worker 模式，规划 Agent 分解任务，执行 Agent 完成子任务"
+      },
+      {
+        "name": "multi_agent_peer",
+        "display_name": "多 Agent 对等协作式",
+        "description": "多个专业领域 Agent 平级协作，通过共享上下文或消息传递交换信息、相互校验"
+      },
+      {
+        "name": "multi_agent_swarm",
+        "display_name": "多 Agent 蜂群式",
+        "description": "去中心化或轻量协调的 Agent 协作网络，支持基于任务和环境的动态转交 (Handoff) 与动态扩缩容"
+      },
+      {
+        "name": "agent_pipeline",
+        "display_name": "Agent 管线式",
+        "description": "任务按固定阶段线性或有向无环图 (DAG) 顺序流转，每个阶段由专有 Agent 负责"
+      },
+      {
+        "name": "agent_loop",
+        "display_name": "Agent 自治循环式",
+        "description": "基于目标驱动的 ReAct 或 Plan-Execute-Reflect 持续迭代循环，直至达到终止条件"
+      },
+      {
+        "name": "sliding_window_fifo",
+        "display_name": "滑动窗口截断",
+        "description": "基于固定 Token 预算或消息条数维护窗口，丢弃最久的历史记录，仅保留最新上下文"
+      },
+      {
+        "name": "hierarchical_recursive_summary",
+        "display_name": "分层递归摘要压缩",
+        "description": "当上下文达到容量阈值时，自动调用模型对早期交互进行结构化压缩与摘要提炼"
+      },
+      {
+        "name": "rag_dynamic_retrieval",
+        "display_name": "RAG 动态检索注入",
+        "description": "将海量历史记录、知识库或代码库切分向量化，根据当前上下文动态召回相关片段按需装载"
+      },
+      {
+        "name": "prefix_kv_cache_reuse",
+        "display_name": "静态前缀缓存优化",
+        "description": "规范化排列上下文，将固定的 System Prompt、工具定义与知识前缀集中前置，最大化复用 KV Cache"
+      },
+      {
+        "name": "structured_scratchpad_isolation",
+        "display_name": "结构化工作区与暂存隔离",
+        "description": "划分独立的命名空间分区（如目标、步骤计划、参考资料、临时便签），保持上下文整洁"
+      },
+      {
+        "name": "hybrid_tiered_memory",
+        "display_name": "分层多级混合记忆系统",
+        "description": "构建包含工作记忆、情节记忆与长期语义概念记忆的三级认知记忆网络"
+      },
+      {
+        "name": "single_model_static",
+        "display_name": "单模型静态绑定",
+        "description": "系统全量请求统一路由至单一固定模型，架构最简"
+      },
+      {
+        "name": "capability_tier_routing",
+        "display_name": "能力阶梯路由",
+        "description": "依据任务预估复杂度与推理要求，在轻量模型与旗舰模型之间按需动态分流"
+      },
+      {
+        "name": "intent_semantic_routing",
+        "display_name": "意图语义分类路由",
+        "description": "基于用户意图的语义特征与分类标签，将请求路由至领域微调或垂直专用模型"
+      },
+      {
+        "name": "cascade_fallback_routing",
+        "display_name": "级联降级与容灾路由",
+        "description": "优先调用低成本或本地模型，若输出校验失败、超时或限流，自动回退到备选大模型"
+      },
+      {
+        "name": "speculative_draft_routing",
+        "display_name": "投机草稿路由",
+        "description": "轻量模型快速生成初稿或补全建议，大模型进行并行校验或增量精修"
+      },
+      {
+        "name": "ensemble_mixture_routing",
+        "display_name": "混合集成共识路由",
+        "description": "并行分发给多个不同厂商的基座模型，再由聚合模型进行整合、评判与共识融合"
+      },
+      {
+        "name": "function_calling_schema",
+        "display_name": "原生函数调用",
+        "description": "通过标准 JSON Schema 描述工具元数据，由 LLM 原生输出符合 Schema 的结构化调用参数"
+      },
+      {
+        "name": "react_tool_interleaving",
+        "display_name": "ReAct 交互式工具循环",
+        "description": "交替进行思考 (Thought)、行动 (Action) 与观察 (Observation)，根据前序工具返回值动态推导后续调用"
+      },
+      {
+        "name": "mcp_protocol_standard",
+        "display_name": "MCP 标准化协议集成",
+        "description": "基于开放标准协议 (Model Context Protocol) 统一接入本地与远程工具及数据源"
+      },
+      {
+        "name": "code_interpreter_sandbox",
+        "display_name": "代码解释器与沙箱即工具",
+        "description": "AI 将多步骤复杂操作编写为程序脚本，在受限隔离沙箱中批量执行并获取执行结果"
+      },
+      {
+        "name": "dag_orchestrated_pipeline",
+        "display_name": "DAG 有向图编排工具流",
+        "description": "通过有向无环图 (DAG) 显式组织工具执行依赖，支持拓扑调度、并发加速与断点续跑"
+      },
+      {
+        "name": "human_in_the_loop_guard",
+        "display_name": "人机介入安全防护工具",
+        "description": "对高危或不可逆操作（写库、删改文件、系统配置、支付）引入人机协同审批断点"
+      }
+    ],
+    "guard_rules": {
+      "core_requires_primary_verbatim_quote": true,
+      "moderate_requires_any_verbatim_quote": true,
+      "unverified_max_confidence": 2
+    },
+    "expected_draft_schema": {
+      "app_name": "string",
+      "category": "engineering|data|knowledge|creative|automation",
+      "architecture_summary": "string",
+      "key_insights": [
+        "string"
+      ],
+      "common_dimensions": [
+        {
+          "dimension": "agent_orchestration",
+          "summary": "string",
+          "details": "string",
+          "key_decisions": [
+            "string"
+          ],
+          "takeaways": [
+            "string"
+          ],
+          "verbatim_quotes": [
+            "exact substring copied from collected_items"
+          ],
+          "evidence_sources": [
+            "url or title"
+          ],
+          "confidence": 4
+        }
+      ],
+      "specialized_dimensions": "same shape using 5 keys from specialized_dimensions_by_category[category]",
+      "matched_patterns": [
+        {
+          "pattern_name": "string",
+          "description": "string",
+          "evidence": [
+            "string"
+          ],
+          "confidence": 4
+        }
+      ],
+      "user_reviews": {
+        "review_sources": [
+          "url"
+        ],
+        "praises": [
+          "string"
+        ],
+        "pain_points": [
+          "string"
+        ],
+        "trust_and_ux_friction": [
+          "string"
+        ],
+        "sample_quotes": [
+          "string"
+        ]
+      },
+      "pm_guidance": {
+        "suitable_product_forms": [
+          "string"
+        ],
+        "autonomy_level": "L2 (...)",
+        "interaction_design": "string",
+        "cost_latency_tradeoffs": "string",
+        "mvp_must_haves": [
+          "string"
+        ],
+        "mvp_nice_to_haves": [
+          "string"
+        ],
+        "anti_patterns_to_avoid": [
+          "string"
+        ]
+      }
+    }
+  }
+}

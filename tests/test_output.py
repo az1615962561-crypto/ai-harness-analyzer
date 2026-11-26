@@ -54,6 +54,12 @@ def test_markdown_report_generator():
     assert "### Agent 编排" in md
     assert "Dual-agent flow" in md
     assert "flowchart TD" in md
+    assert "PM 决策链路与风控边界参考图 (Mermaid)" in md
+    assert "方案支撑数据例证" in md
+    assert "机制参考图 (Mermaid)" in md
+    assert "📊 数据例证 (Data Evidence)" in md
+    assert "信源通道分布参考图 (Mermaid)" in md
+    assert md.count("```mermaid") >= 5
 
 
 def test_comparison_report_generator():

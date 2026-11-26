@@ -1,0 +1,674 @@
+# Claude Code — Harness 架构深度分析报告
+
+## 概览指标
+
+| 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| engineering | 2026-11-26 11:58:03 | 32 | 10/14 | 21 | ★★★★☆ |
+
+## 架构总览拓扑 (System Topology)
+
+```mermaid
+flowchart TD
+    User(["开发者 / 用户"]) --> IDE["Claude Code 客户端 / IDE / CLI"]
+    IDE --> ContextMgr["代码上下文索引 (LSP / AST / Agentic Search)"]
+    ContextMgr --> Orchestrator["Agent 编排与模型路由"]
+    Orchestrator --> LLM["大语言模型 (Reasoning / Code LLM)"]
+    LLM --> ToolCall{"工具调用决策"}
+    ToolCall -- 代码补全/重构 --> DiffEngine["文件编辑与 Diff / Patch 引擎"]
+    ToolCall -- 终端命令/测试 --> Sandbox["隔离代码执行沙箱"]
+    DiffEngine --> IDE
+    Sandbox --> Orchestrator
+    Orchestrator --> Mem["长短期记忆 / 规则沉淀 (AGENTS.md / Skills)"]
+```
+
+## 核心架构摘要
+
+Claude Code 采用「最小 Prompt + 强控制 Harness + 确定性 Agentic Loop」三层终端原生编码架构：系统与工具提示词以 `claude_code` preset 和六大核心工具描述实现“就近行为契约”，外围 Harness 运行时负责权限策略拦截、沙箱隔离、Before/After 工具 Hooks、MCP 扩展与持久化工程记忆 (`CLAUDE.md`)，并同时通过 Agent SDK 开放编程嵌入与 CLI/IDE 多端挂载。
+
+## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
+
+> **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
+
+### 0. PM 决策链路与风控边界参考图 (Mermaid)
+
+```mermaid
+flowchart LR
+    Facts["已实证技术锚点 (10 项)"] --> Decide["Claude Code 产品定位与自主度: L2~L3（默认受可执行权限策略约束的协同引导式：人类观看流式过程…"]
+    Friction["社区真实痛点与警示 (1 项风险)"] --> Decide
+    Decide --> P0["V1 P0 必做 (4 项): 专用低风险工具集合（Read/Edit/Grep）与可执行…"]
+    Decide --> P1["V2 P1 增强 (3 项): 进阶路由与生态"]
+    Decide -. 避坑红线 .-> Avoid["严禁 (3 项): 切忌完全依靠 System Prompt 嘱咐安全，而不在…"]
+```
+
+**📊 方案支撑数据例证**：实证技术锚点 `10` 项 ｜ 社区评论来源 `5` 处 ｜ 待避坑未实证警示 `1` 项 ｜ 建议 MVP P0 `4` 项 / P1 `3` 项
+
+### 1. 适配产品形态定位
+- **终端原生 CLI Agent + IDE/桌面实时审查伴侣（Terminal + VS Code/JetBrains 多入口协同）**
+- **可编程嵌入式 Agent SDK（提供默认安全与工具 preset 供企业二次封装）**
+
+### 2. 产品自主度评级与人机信任机制
+- **建议自主度评级**：`L2~L3（默认受可执行权限策略约束的协同引导式：人类观看流式过程并在高风险动作前授权审批）`
+- **用户审查与信任设计**：
+  1. 坚持“Prompt 辅助 + 代码策略兜底”，对写文件与 Shell 执行建立清晰权限分级菜单与审批确认；
+2. 将大型代码库索引改为 Agentic Search + 项目级记忆文件（类似 CLAUDE.md）降低配置心智负担；
+3. 暴露 Before/After Tool Hooks 生命周期位点，方便开发者接入团队 lint、测试和审计流水线。
+
+### 3. 响应体验与成本控制权衡 (Trade-offs)
+• 借助只读探索子代理过滤无关文件，避免把整个仓库硬塞进昂贵旗舰模型主会话上下文；
+• 提供明确的 Turn 预算与配额感知提示，并提前规划账号降级/多供应商容灾策略防止单一额度触顶停摆。
+
+### 4. 公司自建同类产品 MVP 功能清单 (PRD 参考)
+
+**P0 必须项 (不做产品无法上线)**：
+- [x] 专用低风险工具集合（Read/Edit/Grep）与可执行 Shell 审批权限门控
+- [x] Agentic Search + 项目根记忆文件（如 AGENTS.md / CLAUDE.md）持久化机制
+- [x] 可继承复用的核心 Preset + MCP 外部工具标准挂载
+- [x] 明确的 Turn 轮次上限与自动编辑前 Git 快照兜底（补足闭源版弱点）
+
+**P1 增强项 (第二期迭代推荐)**：
+- [ ] 只读 Explore / Plan 子代理分工
+- [ ] Before/After Tool Hooks 事件钩子系统
+- [ ] Markdown 文件化 Skills 分享与自动生成工作流
+
+🚨 **产品经理避坑红线 (Do NOT do in V1)**：
+- ❌ 切忌完全依靠 System Prompt 嘱咐安全，而不在执行层写死权限校验与目录边界；
+- ❌ 切忌发布客户端包时意外保留完整 source map 泄露内部未公开特性开关与业务逻辑；
+- ❌ 切忌在额度计费、降速路由或风控机制上黑盒处理，极大损害开发者长期信任。
+
+## 📦 中间产物与权威用户真实评论 (Intermediate Artifact & User Reviews)
+
+> **转化依据说明**：本节汇总经分维度 Guard 校验后的技术事实、双语检索覆盖度与权威社区真实用户反馈，是上方『产品经理方案指导』的直接转化底座。
+
+### 实证验证漏斗参考图 (Mermaid)
+
+```mermaid
+flowchart LR
+    Collect["五路采集 (32 条信源 | 中8/英16 | 覆盖率 100%)"] --> Guard{"分维度 Guard 原文校验"}
+    Guard -- "一级/多重实证 (10)" --> Core["✅ P0 强实证锚点"]
+    Guard -- "单条/二手实证 (3)" --> Mod["⚠️ 受限补充论据 (≤3★)"]
+    Guard -- "缺原文实证 (1)" --> Warn["🚧 推断封顶警示 (≤2★)"]
+```
+
+- **📊 分维度 Guard 量化统计**：✅ 严格实证 `10` 项 (`71%`) ｜ ⚠️ 部分实证 `3` 项 ｜ 🚧 推断封顶 `1` 项
+- **核心实证锚点数**：`11` 项（已作为 P0 产品方案主依据）
+- **未实证警示数**：`1` 项（已拦截防照搬）
+
+### 双语多维度检索覆盖度评估
+
+- **综合覆盖度**：`100%` ｜ **提问语言命中**：`8` 条 ｜ **英语命中**：`16` 条 ｜ 🔄 *已触发盲区自动补搜*
+
+| 语言 | 检索角度 | 检索词 | 命中数 | 深抓正文 | 采集字符 |
+| :--- | :--- | :--- | :---: | :---: | :---: |
+| en | architecture_qa | `how the Claude Code works AI architecture` | 0 | 0 | 0 |
+| en | architecture_qa | `Claude Code AI engineering blog system architecture` | 0 | 0 | 0 |
+| en | implementation_tech | `Claude Code system prompt tools agent harness` | 4 | 2 | 9000 |
+| en | source_reverse | `Claude Code AI agent github reverse engineering` | 4 | 0 | 0 |
+| zh | architecture_qa | `Claude Code的架构是什么` | 0 | 0 | 0 |
+| zh | architecture_qa | `Claude Code AI 底层原理 技术架构 拆解` | 0 | 0 | 0 |
+| zh | implementation_tech | `Claude Code 提示词 工具调用 Agent 工作流` | 4 | 2 | 7406 |
+| zh | source_reverse | `Claude Code 开源 源码 逆向` | 4 | 0 | 0 |
+| en | user_reviews | `"Claude Code" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review` | 0 | 0 | 0 |
+| en | user_reviews | `"Claude Code" ("pros and cons" OR "frustrating" OR "review" OR "issues") site:reddit.com` | 4 | 0 | 1298 |
+| zh | user_reviews | `"Claude Code" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com OR site:juejin.cn)` | 0 | 0 | 0 |
+| en | architecture_qa | `Claude Code AI explained` | 4 | 0 | 1048 |
+| zh | architecture_qa | `Claude Code AI 原理` | 0 | 0 | 0 |
+
+### 权威社区真实用户评论拆解
+
+**👍 真实用户高频好评 (核心爽点)**：
+- 代码理解和复杂重构能力强，通过 Agentic Search 与 Skills 生态能稳定加速工程交付
+- 工具体系与扩展性（`CLAUDE.md`、`SKILL.md` 元技能生成器）极易沉淀个人与团队标准化工作流
+
+**👎 真实用户高频吐槽 (痛点与短板)**：
+- NPM source map 源码泄露事件暴露闭源包透明度争议与部分功能特性耦合问题（1022 条 HN 讨论）
+- 高难度长任务单次 API/订阅额度消耗成本相对高，且部分开发者担心封号列表、请求隐写指纹和限速降级问题（750 条 HN 讨论）
+
+**⚡ 人机协作与信任摩擦点**：
+- 账号限流/封控焦虑及闭源客户端对请求指纹处理的不透明感，促使部分开发者呼吁开源可控 Harness 或准备备选兼容接口
+
+**💬 代表性一线用户原话**：
+> "To keep the sessions in sync, I’ve been having Claude update claude.md file at the end of each session. It includes a summary of what we worked on, current status, TODOs, and anything else relevant."
+> "The much more interesting question is if they directly act on this data in their API. For example by rate-limiting, compute-limiting or rerouting to weaker models."
+
+**评论采集来源**：https://news.ycombinator.com/item?id=48734373 / https://news.ycombinator.com/item?id=43163011 / https://news.ycombinator.com/item?id=47584540 / https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/ / https://www.reddit.com/r/ClaudeAI/comments/1p0n7pg/this_claude_code_skill_creates_claude_code_skills/
+
+## 🔬 中间层：Harness 架构维度深度拆解 (Dimension Analysis)
+
+> **分析手法说明**：本节运用 9 大共性工程维度与 5 大品类专属穿透维度，对底层调度、上下文、沙箱与工具链进行技术解剖，每个维度均附带独立 **Mermaid 机制参考图** 与 **量化数据例证**。
+
+### 1. 基础共性维度拆解
+
+**共性维度评分与权重全景图 (Mermaid)**：
+```mermaid
+xychart-beta
+    title "Claude Code 共性维度评分与权重对比"
+    x-axis ["Agent 编排", "模型路由", "工具链", "提示词工程", "上下文工程", "数据流与状态管理", "安全沙箱", "人机协同", "扩展生态"]
+    y-axis "评分 (1-5★)" 0 --> 5
+    bar [4, 3, 5, 5, 4, 4, 5, 4, 4]
+    line [5, 5, 5, 4, 5, 4, 5, 5, 5]
+```
+
+| 维度 | 品类权重 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Agent 编排 | 5/5 | ★★★★☆ | `strict_verified` | 2 | 2 |
+| 模型路由 | 5/5 | ★★★☆☆ | `partial_verified` | 1 | 1 |
+| 工具链 | 5/5 | ★★★★★ | `strict_verified` | 2 | 2 |
+| 提示词工程 | 4/5 | ★★★★★ | `strict_verified` | 2 | 1 |
+| 上下文工程 | 5/5 | ★★★★☆ | `strict_verified` | 2 | 2 |
+| 数据流与状态管理 | 4/5 | ★★★★☆ | `strict_verified` | 2 | 1 |
+| 安全沙箱 | 5/5 | ★★★★★ | `strict_verified` | 2 | 2 |
+| 人机协同 | 5/5 | ★★★★☆ | `strict_verified` | 2 | 2 |
+| 扩展生态 | 5/5 | ★★★★☆ | `strict_verified` | 2 | 2 |
+
+### Agent 编排
+
+**置信度**：★★★★☆ | **品类权重**：`5/5` | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+单主循环加专业子代理委派（Plan / Explore / Task Subagents）的确定性 Agentic Loop，支持终端 CLI、IDE 与 Agent SDK 复用
+
+交互采用 Gather Context -> Model (`tool_use`) -> Execute Tool (`tool_result`) -> Verify Results 的闭环；遇到复杂搜索或规划任务可派生专门子代理（Explore/Plan），同时提供 TypeScript/Python Agent SDK 复用相同预设循环。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+sequenceDiagram
+    participant U as "Claude Code 用户"
+    participant O as "Orchestrator / Loop"
+    participant M as "LLM"
+    participant T as "Tools / Subagent"
+    U->>O: 输入工程目标
+    loop 推理-执行闭环
+        O->>M: 上下文与工具 Schema
+        M-->>O: 结构化 Tool Call
+        O->>T: 权限校验并执行
+        T-->>O: 返回 Observation
+    end
+    O-->>U: 产出最终变更或结果
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
+**原文佐证片段 (Verified Quotes)**：
+> "It takes action — for example, editing a file or running a command. It verifies the results and determines whether they achieve what"
+> "Claude Code is better understood as a three-layer system: the harness owns the environment, the execution loop mediates model-tool interaction, and the prompt supplies compact instructions."
+- **实证来源**：https://academy.claude.com/courses/claude-code-101/how-claude-code-works ； https://news.creeta.com/en/claude-code-agent-architecture/
+
+**关键设计决策 (Engineering Decisions)**：
+- 基于 `tool_use` / `tool_result` 强类型消息协议构建单步可控执行循环
+- 将代码搜索与规划拆为专门子代理提示（Plan / Explore / Task）避免污染主上下文
+
+**架构借鉴点 (Takeaways)**：
+1. 先把主 Agentic Loop 与子代理探索边界做清晰，比一开始堆砌复杂自由多 Agent 通信网更稳定
+
+### 模型路由
+
+**置信度**：★★★☆☆ | **品类权重**：`5/5` | **联系程度**：🔴 核心强关联 | **Guard 状态**：⚠️ 部分实证受限
+
+> ℹ️ *核心维度仅有单条二手/评论引证，尚缺源码或官方文档实锤（置信度封顶 3 星）。*
+
+垂直绑定 Anthropic Claude 系列旗舰/轻量模型并依托云端 1M 上下文窗口，用户侧主要关注账号档位、配额速率与模型版本切换
+
+作为官方第一方终端工具，模型路由深度聚焦 Anthropic 自研 Claude 家族（包括不同 Sonnet/Opus 推理与输出档位）；社区讨论重点集中在与竞争对手的模型推理配额对比以及请求指纹/速率策略。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Req["Claude Code 任务请求"] --> Router{"模型/推理档位路由"}
+    Router -- 高频/实时探索 --> Fast["轻量高速模型 / Low Effort"]
+    Router -- 复杂架构/疑难修复 --> Strong["旗舰推理模型 / High Effort"]
+    Router -. 限流/跨厂商兜底 .-> Ext["Proxy / ACP / BYOK"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Anthropic’s 2026 releases emphasized 1M-token context windows and 128k output caps as runtime surfaces, not prompt text ."
+- **实证来源**：https://news.creeta.com/en/claude-code-agent-architecture/
+
+**关键设计决策 (Engineering Decisions)**：
+- 深度围绕 Anthropic 自家模型指令遵循与长上下文特性调优 Harness 协议
+
+**架构借鉴点 (Takeaways)**：
+1. 第一方封闭模型+第一方 Harness 可以通过联合训练模型偏好工具调用契约获得更低格式错误率
+
+### 工具链
+
+**置信度**：★★★★★ | **品类权重**：`5/5` | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+分层专用核心工具（Read / Edit / Grep / Bash / Agent / Skill）与 MCP 外部工具服务器标准接入，通过工具级提示约束强制 Bash 降权使用
+
+Harness 面向软件工程精炼少量高信号专用工具，并在每个工具 Schema/Description 内嵌入操作安全规程（例如编辑前必读、优先用专用 Read/Grep 而非盲目调 Bash shell），外挂能力通过 MCP 对接。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    LLM["LLM Tool Request"] --> Gate{"Schema + 风险策略校验"}
+    Gate -- 内置核心工具 --> Builtin["Read / Edit / Patch / Exec"]
+    Gate -- 开放标准协议 --> MCP["MCP Servers (stdio / SSE / SHTTP)"]
+    Builtin --> Obs["结构化 Observation 回传"]
+    MCP --> Obs
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Connect Claude to external tools and APIs. See where tools run, when Claude calls them, and which tool fits your task."
+> "A prompt can say “inspect before editing,” but a harness can restrict writes, require approval for shell commands, load project memory, expose MCP servers, trigger hooks before or after tool use, and stop the agent when a verifier passes or a turn budget is exhausted."
+- **实证来源**：https://platform.claude.com/docs/en/agents-and-tools/claude-code ； https://news.creeta.com/en/claude-code-agent-architecture/
+
+**关键设计决策 (Engineering Decisions)**：
+- 用专用 File/Search 工具取代万能 Bash 处理常规读写检索
+- 将操作守则嵌入工具自身 description 实现“就近约束”
+
+**架构借鉴点 (Takeaways)**：
+1. 减少不必要 Bash 泛化调用、把规则写进 Tool Description，可大幅降低误操作率与上下文噪音
+
+### 提示词工程
+
+**置信度**：★★★★★ | **品类权重**：`4/5` | **联系程度**：🟡 中度关联 | **Guard 状态**：✅ 严格实证通过
+
+系统提示采用可复用的 `claude_code` preset（支持 `append` 扩展）与可共享 Skill 元模板机制，形成『系统总纲 + 工具微规程 + 项目记忆』三层体系
+
+Claude Agent SDK 明确拆分 Minimal default 与包含完整工具及安全指令的 `claude_code` preset；社区亦普遍通过自定义 Agent Skills（包括生成 Skill 的 meta-skill）扩展团队规范。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Sys["系统 Preset / 总纲"] --> Stack["Prompt 运行时装配层"]
+    ToolDesc["工具微规程 (Description)"] --> Stack
+    ProjMem["仓库规则 (AGENTS.md / CLAUDE.md / Skills)"] --> Stack
+    Stack --> Call["发送至 Claude Code 模型"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `2` 项
+**原文佐证片段 (Verified Quotes)**：
+> "preset: the system prompt that the Claude Code CLI uses, with tool usage instructions and security and safety instructions."
+> "Start from the claude_code preset for CLI or IDE-like coding tools where a human watches and steers the work."
+- **实证来源**：https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts
+
+**关键设计决策 (Engineering Decisions)**：
+- 将完整 CLI 提示抽象为可编程继承的 `claude_code` preset，允许下游开发者仅做增量 `append`
+- 将系统提示与安全边界指令显式分离，不依赖单一脆弱文本提示
+
+**架构借鉴点 (Takeaways)**：
+1. 把产品内部锤炼成熟的 System Prompt 封装为 SDK Preset 并开放扩展点，利于沉淀生态
+
+### 上下文工程
+
+**置信度**：★★★★☆ | **品类权重**：`5/5` | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+采用 Agentic Search 自主检索大型代码库，配合 `CLAUDE.md` 跨会话持久化项目状态与 TODO，大幅降低手工挑选上下文的负担
+
+不需要用户手动勾选所有相关文件，Agent 自行通过搜索定位项目结构与依赖；实践中最常见的跨机器状态同步范式是在每次会话结束后更新项目根目录的 `CLAUDE.md`。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Repo["工作区 / 知识源"] --> Retrieve["按需检索 (Search / AST / RAG)"]
+    Hist["历史消息流"] --> Compress["超限压缩 / 标签保留"]
+    Retrieve --> Window["模型上下文窗口"]
+    Compress --> Window
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Claude Code maps and explains large codebases in a few seconds. It uses agentic search to understand project structure and dependencies without you having to manually select context files."
+> "To keep the sessions in sync, I’ve been having Claude update claude.md file at the end of each session. It includes a summary of what we worked on, current status, TODOs, and anything else relevant."
+- **实证来源**：https://code.claude.com/ ； https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/
+
+**关键设计决策 (Engineering Decisions)**：
+- 免手动索引式 Agentic Search 替代人工 `@file` 全量投喂
+- 利用项目内 `CLAUDE.md` 存储长期规则、进度摘要与待办上下文
+
+**架构借鉴点 (Takeaways)**：
+1. 在大型代码库场景，让 Agent 自主通过 Grep/Glob 渐进式探索上下文往往比盲目切块向量检索更准确
+
+### 数据流与状态管理
+
+**置信度**：★★★★☆ | **品类权重**：`4/5` | **联系程度**：🟡 中度关联 | **Guard 状态**：✅ 严格实证通过
+
+基于 `tool_use` / `tool_result` 对话事件流驱动执行状态机，跨会话/跨终端通过项目文件（`CLAUDE.md`）与 SDK 会话配置衔接
+
+每次模型返回结构化 `tool_use` 块，客户端 Harness 校验权限并在前后触发 Hooks，执行完毕后封装 `tool_result` 返回模型继续推进直至满足验证条件或耗尽轮次预算。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+stateDiagram-v2
+    [*] --> Idle: 新建或恢复会话
+    Idle --> Inferring: 组装上下文调用 LLM
+    Inferring --> ToolExecuting: 输出工具调用事件
+    Inferring --> WaitingApproval: 触发敏感审批
+    WaitingApproval --> ToolExecuting: 人工批准
+    ToolExecuting --> Inferring: 写入状态并回传 Observation
+    Inferring --> [*]: 任务完成持久化
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Anthropic’s tool-use contract says Claude emits structured tool_use requests, then the application executes the tool and returns tool_result blocks ."
+> "stop the agent when a verifier passes or a turn budget is exhausted."
+- **实证来源**：https://news.creeta.com/en/claude-code-agent-architecture/
+
+**关键设计决策 (Engineering Decisions)**：
+- 工具执行生命周期由 Before/After Tool Hooks 与轮次预算控制器托管
+
+**架构借鉴点 (Takeaways)**：
+1. Before/After Tool Hooks 是实现审计日志、自动测试触发与企业安全策略拦截的最佳扩展位
+
+### 安全沙箱
+
+**置信度**：★★★★★ | **品类权重**：`5/5` | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+可执行权限网关 + 写入限制 + Shell 命令审批确认（官方云/沙箱容器方案协同）保护本地开发机与代码仓安全
+
+由于 CLI 直接运行在开发者终端并可联动 IDE 与本地工具，Harness 对写入范围与 Shell 执行施加可执行权限策略门控；同时平台侧提供沙箱容器运行 Python/Bash 的能力。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Act["提议执行写文件 / Shell / 联网"] --> Pol{"可执行权限与策略网关"}
+    Pol -- 命中受限规则 --> Human["人工审批 / Guardian 复审"]
+    Pol -- 安全策略允许 --> Box["受控沙箱 (OS / Docker / Cloud VM)"]
+    Human -- 批准升级 --> Box
+    Human -- 拒绝 --> Abort["拦截终止"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Run Python and Bash code in a sandboxed container to analyze data, generate files, and iterate on solutions."
+> "the boundary matters because prompts are advisory while tool policy is executable."
+- **实证来源**：https://platform.claude.com/docs/en/agents-and-tools/claude-code ； https://news.creeta.com/en/claude-code-agent-architecture/
+
+**关键设计决策 (Engineering Decisions)**：
+- 权限策略以代码形式（Executable Policy）而非仅靠 Prompt 劝导来限制写文件与执行命令
+
+**架构借鉴点 (Takeaways)**：
+1. 绝对不能用 System Prompt 代替权限代码：安全边界必须落在工具执行前的硬检查层
+
+### 人机协同
+
+**置信度**：★★★★☆ | **品类权重**：`5/5` | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+强调『人类可随时观察流式输出并介入引导（Human watches and steers）』的终端/IDE/桌面多端协同开发体验
+
+定位并非黑盒无人值守替工，而是覆盖 Terminal、VS Code、JetBrains IDE、Claude Desktop 与 Web 的实时流式协作工具，高风险命令触发审批等待。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Agent["Claude Code 流式产出 / 计划"] --> UI["差异预览 / 工具可视化卡片"]
+    UI --> Check{"人类审查介入点"}
+    Check -- Accept / Approve --> Apply["应用变更继续执行"]
+    Check -- Reject / Edit --> Steer["人工纠正方向回传"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "It's available in your terminal, Visual Studio Code, the Claude Desktop app, on the web, and in JetBrains IDEs."
+> "Start from the claude_code preset for CLI or IDE-like coding tools where a human watches and steers the work."
+- **实证来源**：https://academy.claude.com/courses/claude-code-101/what-is-claude-code ； https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts
+
+**关键设计决策 (Engineering Decisions)**：
+- 全链路流式透明反馈，覆盖 Terminal、VS Code、JetBrains、Desktop 与 Web 多入口
+
+**架构借鉴点 (Takeaways)**：
+1. 即使 CLI 为主战场，覆盖 IDE 扩展与桌面端才能满足不同开发者的审查习惯
+
+### 扩展生态
+
+**置信度**：★★★★☆ | **品类权重**：`5/5` | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+支持 MCP 外部服务器接入、Agent Skills 可分享技能包、Tool Hooks 生命周期扩展，并兼容第三方工具链（如 Agent SDK、Skill 生态）
+
+不仅开放 MCP 服务器挂载外部 API 与工具（包括逆向工具、路由器等），还形成跨 Claude Code / Codex 通用的 `SKILL.md` 开放技能生态（如 `create-agent-skill`、`ctf-skills`）。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Core["Claude Code 核心引擎"] --> MCP["MCP 工具协议生态"]
+    Core --> Skills["Markdown Skills / 规则模板"]
+    Core --> Hooks["Before / After 生命周期 Hooks"]
+    Core --> SDK["SDK / IDE Server 开放协议"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "expose MCP servers, trigger hooks before or after tool use"
+> "Works with any tool that supports the Agent Skills spec, including Claude Code"
+- **实证来源**：https://news.creeta.com/en/claude-code-agent-architecture/ ； https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts
+
+**关键设计决策 (Engineering Decisions)**：
+- 同时提供底层 Agent SDK、生命周期 Hooks 与低门槛文件化 Skills
+
+**架构借鉴点 (Takeaways)**：
+1. Markdown+脚本驱动的 Skills 体系比硬编码 SDK 插件更容易在开发者社区形成裂变复用
+
+### 2. 品类专属穿透维度拆解
+
+**专属维度实证置信度图 (Mermaid)**：
+```mermaid
+xychart-beta
+    title "Claude Code engineering 专属维度实证评分"
+    x-axis ["沙箱隔离模型", "代码理解引擎", "Diff 与变更管理", "终端与进程管理", "检查点与回滚"]
+    y-axis "评分 (1-5★)" 0 --> 5
+    bar [4, 3, 3, 3, 1]
+```
+
+| 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
+| :--- | :---: | :---: | :---: | :---: |
+| 沙箱隔离模型 | ★★★★☆ | `strict_verified` | 1 | 1 |
+| 代码理解引擎 | ★★★☆☆ | `partial_verified` | 1 | 1 |
+| Diff 与变更管理 | ★★★☆☆ | `strict_verified` | 1 | 1 |
+| 终端与进程管理 | ★★★☆☆ | `partial_verified` | 1 | 1 |
+| 检查点与回滚 | ★☆☆☆☆ | `unverified_capped` | 0 | 0 |
+
+### 沙箱隔离模型
+
+**置信度**：★★★★☆ | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+混合模型：本地终端通过可执行权限网关与写入范围受控执行（不依赖重容器即可本地读写），云端/API 工具层配合沙箱容器隔离
+
+在本地开发场景下以终端进程+命令审批+权限策略为主控制面；在托管执行侧通过隔离容器执行 Python/Bash 工具。因本次未能直接拉取闭源 CLI 内部沙箱系统调用源码（docs.anthropic.com 旧页 404），沙箱内核细节部分基于官方文档与外部架构剖析。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart TD
+    Cmd["命令与文件操作请求"] --> Mode{"隔离模式选择"}
+    Mode -- 轻量开发 --> Local["本地 OS 权限边界 (文件/网络策略)"]
+    Mode -- 强隔离任务 --> Container["Docker / 微VM / 云端沙箱"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Run Python and Bash code in a sandboxed container to analyze data, generate files, and iterate on solutions."
+- **实证来源**：https://platform.claude.com/docs/en/agents-and-tools/claude-code
+
+**关键设计决策 (Engineering Decisions)**：
+- 本地命令行借助权限策略和人工确认隔离危险动作，免除重度本地 Docker 依赖
+
+**架构借鉴点 (Takeaways)**：
+1. CLI 型工程 Agent 降低第一分钟安装门槛的关键在于用轻量化权限门控替代强制全量容器化
+
+### 代码理解引擎
+
+**置信度**：★★★☆☆ | **联系程度**：🔴 核心强关联 | **Guard 状态**：⚠️ 部分实证受限
+
+> ℹ️ *核心维度仅有单条二手/评论引证，尚缺源码或官方文档实锤（置信度封顶 3 星）。*
+
+以多轮 Agentic Search 实时探测工程结构与跨文件依赖，不要求用户手工勾选或预建复杂外部向量库
+
+依赖 Grep/Glob/Read 工具与 Explore 子代理快速建构仓库心智图并解释大规模代码库，本次采集到的官方页面明确阐述该 Agentic Search 设计理念。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Root["工程根目录 (Workspace)"] --> Scan["符号 / AST / Grep / Agentic Search"]
+    Scan --> Graph["跨文件引用与依赖心智图"]
+    Graph --> EditCtx["精准定位待改片段"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Claude Code maps and explains large codebases in a few seconds. It uses agentic search to understand project structure and dependencies without you having to manually select context files."
+- **实证来源**：https://code.claude.com/
+
+**关键设计决策 (Engineering Decisions)**：
+- 通过多轮工具检索（Agentic Search）按需精读源码，替代静态全库分块向量化
+
+**架构借鉴点 (Takeaways)**：
+1. 拥有强长上下文（如 200k~1M）与强 Tool-Use 能力的模型，动态代码检索的精准度明显优于离线切块 RAG
+
+### Diff 与变更管理
+
+**置信度**：★★★☆☆ | **联系程度**：🔴 核心强关联 | **Guard 状态**：✅ 严格实证通过
+
+通过专用 Edit 工具配合『先 Read 后 Edit』行为契约完成局部文件修改，具体底层补丁匹配算法未在闭源文档细节中披露
+
+架构分析指出编辑工具要求先读再改且控制写入边界，但本次采集到的公开一手资料未包含具体的 Diff 补丁匹配容错代码细节，按严格实证标准标为受限。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Gen["生成增量补丁 (Patch / Diff)"] --> Verify["上游语法与审批检查"]
+    Verify --> Apply["原子写入目标工作区"]
+    Apply --> Delta["产出文件 Delta 变更回执"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "It takes action — for example, editing a file or running a command."
+- **实证来源**：https://academy.claude.com/courses/claude-code-101/how-claude-code-works
+
+**关键设计决策 (Engineering Decisions)**：
+- 分离只读 Read 与修改 Edit 工具并限制写权限边界
+
+**架构借鉴点 (Takeaways)**：
+1. 强制先读后写能显著降低大模型凭记忆覆盖篡改未读代码的幻觉编辑
+
+### 终端与进程管理
+
+**置信度**：★★★☆☆ | **联系程度**：🔴 核心强关联 | **Guard 状态**：⚠️ 部分实证受限
+
+> ℹ️ *核心维度仅有单条二手/评论引证，尚缺源码或官方文档实锤（置信度封顶 3 星）。*
+
+原生运行于开发者终端，结合 Bash 工具调用、命令权限审批与执行结果验证循环驱动编译和测试自愈
+
+官方课程与架构文档明确其直接运行在 Terminal 并可执行 Bash 命令及验证执行结果，对高危 Shell 操作施加审批拦截与输出采集。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Shell["终端命令下发"] --> PTY["PTY / Exec Server 会话"]
+    PTY --> Stream["流式捕获 Stdout / Stderr / 退出码"]
+    Stream -- 退出码非0 --> SelfFix["错误回传触发自愈修复"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
+**原文佐证片段 (Verified Quotes)**：
+> "Claude Code is an agentic coding tool that understands your codebase, edits your files, runs commands, and integrates with your existing developer tools to help you get things done faster."
+- **实证来源**：https://academy.claude.com/courses/claude-code-101/what-is-claude-code
+
+**关键设计决策 (Engineering Decisions)**：
+- 将 CLI 终端作为一等运行面，同时提供对危险 Shell 指令的权限审批门控
+
+**架构借鉴点 (Takeaways)**：
+1. 把测试命令运行与结果校验纳入单循环内，是 CLI Agent 达成自动修复闭环的核心
+
+### 检查点与回滚
+
+**置信度**：★☆☆☆☆ | **联系程度**：🔴 核心强关联 | **Guard 状态**：🚧 无实证推断封顶
+
+> ⚠️ *🔴 核心强关联维度缺乏原文实证（或引用未命中原文），置信度已严格封顶 1 星，PM 切勿直接作为 P0 硬依据。*
+
+本次采集语料未捕获显式细粒度 Checkpoint 状态快照或自动撤销引擎的一手实现证据，日常高度依赖 Git 工作区与人工审批防护
+
+已知闭源 NPM 包曾引发架构与特性讨论（如特性开关与会话习惯），但在本次公开采集语料中未见文件级内置快照引擎源码证据，故严谨标注为推断警示。
+
+**机制参考图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Pre["编辑前自动快照 / Git Stash"] --> Mutate["多文件变更应用"]
+    Mutate --> Check{"结果符合预期?"}
+    Check -- 是 --> Commit["保留进入下一轮"]
+    Check -- 否 --> Rollback["一键回滚恢复安全点"]
+```
+
+**📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `1` 项
+
+**关键设计决策 (Engineering Decisions)**：
+- 依托 `CLAUDE.md` 会话记录与 Git 版本控制承担状态兜底
+
+**架构借鉴点 (Takeaways)**：
+1. 自建终端类 Agent 产品若缺少内置文件撤销栈，务必在修改前自动打 Git stash/commit 检查点
+
+### 3. 识别到的架构模式 (Architecture Patterns)
+
+**架构模式协同关系图 (Mermaid)**：
+```mermaid
+flowchart LR
+    Core["Claude Code 工程 Harness 内核"]
+    Core --> P0["agent_loop (5★ | 1条证据)"]
+    Core --> P1["human_in_the_loop_guard (5★ | 1条证据)"]
+    Core --> P2["mcp_protocol_standard (5★ | 1条证据)"]
+    Core --> P3["multi_agent_hierarchical (4★ | 1条证据)"]
+```
+
+| 模式名称 | 落地说明 | 数据/源码证据要点 | 置信度 |
+| :--- | :--- | :--- | :---: |
+| `agent_loop` | 采用 Gather Context -> Tool Use -> Execute -> Verify Results 闭环，支持按校验结果或 Turn 预算自动退出。 | It takes action — for example, editing a file or running a command. It verifies the results and determines whether they achieve what | ★★★★★ |
+| `human_in_the_loop_guard` | 由外围 Harness 执行权限策略检查，对高危 Shell 执行与写操作施加显式授权控制。 | a harness can restrict writes, require approval for shell commands, load project memory, expose MCP servers | ★★★★★ |
+| `mcp_protocol_standard` | 原生集成 MCP 客户端以连接外部工具服务与第三方扩展能力。 | expose MCP servers, trigger hooks before or after tool use | ★★★★★ |
+| `multi_agent_hierarchical` | 主 Agent 可派生 Explore / Plan / Task 子代理分担只读检索与规划工作。 | All parts of Claude Code's system prompt, builtin tool descriptions, subagent prompts (Plan/Explore/Task), and utility prompts. | ★★★★☆ |
+
+## 💡 关键架构洞察 (Key Insights)
+
+**📊 洞察实证锚点支撑**：共提炼 `4` 条核心结论，基于 `10` 个严格实证维度与 `21` 条原文片段。
+
+1. 典型「Prompt is the smallest part, Harness owns reliability」设计：Prompt 负责软建议（先读后改），而 Harness 通过可执行权限策略、沙箱边界、Hooks 与轮次预算硬约束执行安全
+2. 双层提示词约束：系统级 `claude_code` preset 定义总体行为规范，每个内置工具（Bash/Edit/Read/Grep/Agent/Skill）的 description 承担“微型操作规程”就近约束
+3. Agentic Search 免手工选文件：依靠代理式搜索直接索引与解释大型代码库依赖，而非依赖用户事先逐个 @ 挂载文件
+4. 以 `CLAUDE.md` 与 Skills 作为轻量跨机器/跨会话状态与规范沉淀载体，配合子代理（Plan/Explore/Task）分工降低主上下文污染
+
+## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
+
+**信源通道分布参考图 (Mermaid)**：
+```mermaid
+flowchart TD
+    Root["Claude Code 信源追踪总计 (28 篇)"] --> GH["GitHub 源码/仓库/Issues: 9 条"]
+    Root --> Docs["官方文档与技术文章: 8 条"]
+    Root --> Comm["社区评测与真实吐槽: 9 条"]
+    Root --> Other["泛网络与技术解析: 2 条"]
+    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 0 处"]
+```
+
+**📊 信源分布数据统计**：总计 `28` 条（GitHub `9` ｜ 官方文档/博客 `8` ｜ 社区评论/讨论 `9` ｜ 其他技术文章 `2`）
+
+**主要参考信源与逆向资产**：
+- https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts
+- https://news.creeta.com/en/claude-code-agent-architecture/
+- https://github.com/Piebald-AI/claude-code-system-prompts/blob/main/system-prompts/agent-prompt-explore.md
+- https://gist.github.com/jischein/8cf9a052fe61ca503b1e410a465fac2c
+- https://github.com/morluto/rea
+- https://blog.csdn.net/2501_92593481/article/details/161089769
+- https://blog.csdn.net/weixin_29046035/article/details/166798078
+- https://code.claude.com/docs/zh-CN/prompt-library
+- https://zhuanlan.zhihu.com/p/1930336996246683842
+- https://zhuanlan.zhihu.com/p/2022605516262614921
+- https://docs.anthropic.com/en/docs/agents-and-tools/claude-code
+- https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools
+- https://github.com/asgeirtj/system_prompts_leaks
+- https://github.com/gsd-build/get-shit-done
+- https://github.com/cutetailbud/ff-ruyijs
+- https://github.com/AIshihzong/awesome-reverse-engineer-anything
+- https://github.com/1llu50ry/Decompile
+- https://news.ycombinator.com/item?id=48734373
+- https://news.ycombinator.com/item?id=43163011
+- https://news.ycombinator.com/item?id=47584540
+- https://www.reddit.com/r/ClaudeAI/comments/1cw7h43/how_i_code_10x_faster_with_claude/
+- https://www.reddit.com/r/ClaudeAI/comments/1bs3xp1/claude_is_a_magnitude_above_gpt4_for_coding_and/
+- https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/
+- https://www.reddit.com/r/ClaudeAI/comments/1p0n7pg/this_claude_code_skill_creates_claude_code_skills/
+- https://code.claude.com/
+- https://academy.claude.com/courses/claude-code-101/what-is-claude-code
+- https://academy.claude.com/courses/claude-code-101/how-claude-code-works
+- https://aiweekly.co/learning-ai/generative-ai/claude-ai-guide
+
+> **分析与免责声明**：
+> 本分析报告基于全网公开逆向仓库、官方技术博客、开源代码及逆向提示词线索，结合大语言模型分析推断得出。报告聚焦于指导公司内部产品与架构建设，不代表对应产品官方的保密实现细节。

@@ -1,0 +1,365 @@
+{
+  "app_name": "claude-code",
+  "app_display_name": "Claude Code",
+  "category": "engineering",
+  "architecture_summary": "Claude Code 采用「最小 Prompt + 强控制 Harness + 确定性 Agentic Loop」三层终端原生编码架构：系统与工具提示词以 `claude_code` preset 和六大核心工具描述实现“就近行为契约”，外围 Harness 运行时负责权限策略拦截、沙箱隔离、Before/After 工具 Hooks、MCP 扩展与持久化工程记忆 (`CLAUDE.md`)，并同时通过 Agent SDK 开放编程嵌入与 CLI/IDE 多端挂载。",
+  "key_insights": [
+    "典型「Prompt is the smallest part, Harness owns reliability」设计：Prompt 负责软建议（先读后改），而 Harness 通过可执行权限策略、沙箱边界、Hooks 与轮次预算硬约束执行安全",
+    "双层提示词约束：系统级 `claude_code` preset 定义总体行为规范，每个内置工具（Bash/Edit/Read/Grep/Agent/Skill）的 description 承担“微型操作规程”就近约束",
+    "Agentic Search 免手工选文件：依靠代理式搜索直接索引与解释大型代码库依赖，而非依赖用户事先逐个 @ 挂载文件",
+    "以 `CLAUDE.md` 与 Skills 作为轻量跨机器/跨会话状态与规范沉淀载体，配合子代理（Plan/Explore/Task）分工降低主上下文污染"
+  ],
+  "common_dimensions": [
+    {
+      "dimension": "agent_orchestration",
+      "summary": "单主循环加专业子代理委派（Plan / Explore / Task Subagents）的确定性 Agentic Loop，支持终端 CLI、IDE 与 Agent SDK 复用",
+      "details": "交互采用 Gather Context -> Model (`tool_use`) -> Execute Tool (`tool_result`) -> Verify Results 的闭环；遇到复杂搜索或规划任务可派生专门子代理（Explore/Plan），同时提供 TypeScript/Python Agent SDK 复用相同预设循环。",
+      "key_decisions": [
+        "基于 `tool_use` / `tool_result` 强类型消息协议构建单步可控执行循环",
+        "将代码搜索与规划拆为专门子代理提示（Plan / Explore / Task）避免污染主上下文"
+      ],
+      "takeaways": [
+        "先把主 Agentic Loop 与子代理探索边界做清晰，比一开始堆砌复杂自由多 Agent 通信网更稳定"
+      ],
+      "verbatim_quotes": [
+        "It takes action — for example, editing a file or running a command. It verifies the results and determines whether they achieve what",
+        "Claude Code is better understood as a three-layer system: the harness owns the environment, the execution loop mediates model-tool interaction, and the prompt supplies compact instructions."
+      ],
+      "evidence_sources": [
+        "https://academy.claude.com/courses/claude-code-101/how-claude-code-works",
+        "https://news.creeta.com/en/claude-code-agent-architecture/"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "model_routing",
+      "summary": "垂直绑定 Anthropic Claude 系列旗舰/轻量模型并依托云端 1M 上下文窗口，用户侧主要关注账号档位、配额速率与模型版本切换",
+      "details": "作为官方第一方终端工具，模型路由深度聚焦 Anthropic 自研 Claude 家族（包括不同 Sonnet/Opus 推理与输出档位）；社区讨论重点集中在与竞争对手的模型推理配额对比以及请求指纹/速率策略。",
+      "key_decisions": [
+        "深度围绕 Anthropic 自家模型指令遵循与长上下文特性调优 Harness 协议"
+      ],
+      "takeaways": [
+        "第一方封闭模型+第一方 Harness 可以通过联合训练模型偏好工具调用契约获得更低格式错误率"
+      ],
+      "verbatim_quotes": [
+        "Anthropic’s 2026 releases emphasized 1M-token context windows and 128k output caps as runtime surfaces, not prompt text ."
+      ],
+      "evidence_sources": [
+        "https://news.creeta.com/en/claude-code-agent-architecture/"
+      ],
+      "confidence": 3
+    },
+    {
+      "dimension": "tool_chain",
+      "summary": "分层专用核心工具（Read / Edit / Grep / Bash / Agent / Skill）与 MCP 外部工具服务器标准接入，通过工具级提示约束强制 Bash 降权使用",
+      "details": "Harness 面向软件工程精炼少量高信号专用工具，并在每个工具 Schema/Description 内嵌入操作安全规程（例如编辑前必读、优先用专用 Read/Grep 而非盲目调 Bash shell），外挂能力通过 MCP 对接。",
+      "key_decisions": [
+        "用专用 File/Search 工具取代万能 Bash 处理常规读写检索",
+        "将操作守则嵌入工具自身 description 实现“就近约束”"
+      ],
+      "takeaways": [
+        "减少不必要 Bash 泛化调用、把规则写进 Tool Description，可大幅降低误操作率与上下文噪音"
+      ],
+      "verbatim_quotes": [
+        "Connect Claude to external tools and APIs. See where tools run, when Claude calls them, and which tool fits your task.",
+        "A prompt can say “inspect before editing,” but a harness can restrict writes, require approval for shell commands, load project memory, expose MCP servers, trigger hooks before or after tool use, and stop the agent when a verifier passes or a turn budget is exhausted."
+      ],
+      "evidence_sources": [
+        "https://platform.claude.com/docs/en/agents-and-tools/claude-code",
+        "https://news.creeta.com/en/claude-code-agent-architecture/"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "prompt_engineering",
+      "summary": "系统提示采用可复用的 `claude_code` preset（支持 `append` 扩展）与可共享 Skill 元模板机制，形成『系统总纲 + 工具微规程 + 项目记忆』三层体系",
+      "details": "Claude Agent SDK 明确拆分 Minimal default 与包含完整工具及安全指令的 `claude_code` preset；社区亦普遍通过自定义 Agent Skills（包括生成 Skill 的 meta-skill）扩展团队规范。",
+      "key_decisions": [
+        "将完整 CLI 提示抽象为可编程继承的 `claude_code` preset，允许下游开发者仅做增量 `append`",
+        "将系统提示与安全边界指令显式分离，不依赖单一脆弱文本提示"
+      ],
+      "takeaways": [
+        "把产品内部锤炼成熟的 System Prompt 封装为 SDK Preset 并开放扩展点，利于沉淀生态"
+      ],
+      "verbatim_quotes": [
+        "preset: the system prompt that the Claude Code CLI uses, with tool usage instructions and security and safety instructions.",
+        "Start from the claude_code preset for CLI or IDE-like coding tools where a human watches and steers the work."
+      ],
+      "evidence_sources": [
+        "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "context_engineering",
+      "summary": "采用 Agentic Search 自主检索大型代码库，配合 `CLAUDE.md` 跨会话持久化项目状态与 TODO，大幅降低手工挑选上下文的负担",
+      "details": "不需要用户手动勾选所有相关文件，Agent 自行通过搜索定位项目结构与依赖；实践中最常见的跨机器状态同步范式是在每次会话结束后更新项目根目录的 `CLAUDE.md`。",
+      "key_decisions": [
+        "免手动索引式 Agentic Search 替代人工 `@file` 全量投喂",
+        "利用项目内 `CLAUDE.md` 存储长期规则、进度摘要与待办上下文"
+      ],
+      "takeaways": [
+        "在大型代码库场景，让 Agent 自主通过 Grep/Glob 渐进式探索上下文往往比盲目切块向量检索更准确"
+      ],
+      "verbatim_quotes": [
+        "Claude Code maps and explains large codebases in a few seconds. It uses agentic search to understand project structure and dependencies without you having to manually select context files.",
+        "To keep the sessions in sync, I’ve been having Claude update claude.md file at the end of each session. It includes a summary of what we worked on, current status, TODOs, and anything else relevant."
+      ],
+      "evidence_sources": [
+        "https://code.claude.com/",
+        "https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "data_flow_state",
+      "summary": "基于 `tool_use` / `tool_result` 对话事件流驱动执行状态机，跨会话/跨终端通过项目文件（`CLAUDE.md`）与 SDK 会话配置衔接",
+      "details": "每次模型返回结构化 `tool_use` 块，客户端 Harness 校验权限并在前后触发 Hooks，执行完毕后封装 `tool_result` 返回模型继续推进直至满足验证条件或耗尽轮次预算。",
+      "key_decisions": [
+        "工具执行生命周期由 Before/After Tool Hooks 与轮次预算控制器托管"
+      ],
+      "takeaways": [
+        "Before/After Tool Hooks 是实现审计日志、自动测试触发与企业安全策略拦截的最佳扩展位"
+      ],
+      "verbatim_quotes": [
+        "Anthropic’s tool-use contract says Claude emits structured tool_use requests, then the application executes the tool and returns tool_result blocks .",
+        "stop the agent when a verifier passes or a turn budget is exhausted."
+      ],
+      "evidence_sources": [
+        "https://news.creeta.com/en/claude-code-agent-architecture/"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "security_sandbox",
+      "summary": "可执行权限网关 + 写入限制 + Shell 命令审批确认（官方云/沙箱容器方案协同）保护本地开发机与代码仓安全",
+      "details": "由于 CLI 直接运行在开发者终端并可联动 IDE 与本地工具，Harness 对写入范围与 Shell 执行施加可执行权限策略门控；同时平台侧提供沙箱容器运行 Python/Bash 的能力。",
+      "key_decisions": [
+        "权限策略以代码形式（Executable Policy）而非仅靠 Prompt 劝导来限制写文件与执行命令"
+      ],
+      "takeaways": [
+        "绝对不能用 System Prompt 代替权限代码：安全边界必须落在工具执行前的硬检查层"
+      ],
+      "verbatim_quotes": [
+        "Run Python and Bash code in a sandboxed container to analyze data, generate files, and iterate on solutions.",
+        "the boundary matters because prompts are advisory while tool policy is executable."
+      ],
+      "evidence_sources": [
+        "https://platform.claude.com/docs/en/agents-and-tools/claude-code",
+        "https://news.creeta.com/en/claude-code-agent-architecture/"
+      ],
+      "confidence": 5
+    },
+    {
+      "dimension": "human_ai_collaboration",
+      "summary": "强调『人类可随时观察流式输出并介入引导（Human watches and steers）』的终端/IDE/桌面多端协同开发体验",
+      "details": "定位并非黑盒无人值守替工，而是覆盖 Terminal、VS Code、JetBrains IDE、Claude Desktop 与 Web 的实时流式协作工具，高风险命令触发审批等待。",
+      "key_decisions": [
+        "全链路流式透明反馈，覆盖 Terminal、VS Code、JetBrains、Desktop 与 Web 多入口"
+      ],
+      "takeaways": [
+        "即使 CLI 为主战场，覆盖 IDE 扩展与桌面端才能满足不同开发者的审查习惯"
+      ],
+      "verbatim_quotes": [
+        "It's available in your terminal, Visual Studio Code, the Claude Desktop app, on the web, and in JetBrains IDEs.",
+        "Start from the claude_code preset for CLI or IDE-like coding tools where a human watches and steers the work."
+      ],
+      "evidence_sources": [
+        "https://academy.claude.com/courses/claude-code-101/what-is-claude-code",
+        "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "extensibility_ecosystem",
+      "summary": "支持 MCP 外部服务器接入、Agent Skills 可分享技能包、Tool Hooks 生命周期扩展，并兼容第三方工具链（如 Agent SDK、Skill 生态）",
+      "details": "不仅开放 MCP 服务器挂载外部 API 与工具（包括逆向工具、路由器等），还形成跨 Claude Code / Codex 通用的 `SKILL.md` 开放技能生态（如 `create-agent-skill`、`ctf-skills`）。",
+      "key_decisions": [
+        "同时提供底层 Agent SDK、生命周期 Hooks 与低门槛文件化 Skills"
+      ],
+      "takeaways": [
+        "Markdown+脚本驱动的 Skills 体系比硬编码 SDK 插件更容易在开发者社区形成裂变复用"
+      ],
+      "verbatim_quotes": [
+        "expose MCP servers, trigger hooks before or after tool use",
+        "Works with any tool that supports the Agent Skills spec, including Claude Code"
+      ],
+      "evidence_sources": [
+        "https://news.creeta.com/en/claude-code-agent-architecture/",
+        "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts"
+      ],
+      "confidence": 4
+    }
+  ],
+  "specialized_dimensions": [
+    {
+      "dimension": "sandbox_model",
+      "summary": "混合模型：本地终端通过可执行权限网关与写入范围受控执行（不依赖重容器即可本地读写），云端/API 工具层配合沙箱容器隔离",
+      "details": "在本地开发场景下以终端进程+命令审批+权限策略为主控制面；在托管执行侧通过隔离容器执行 Python/Bash 工具。因本次未能直接拉取闭源 CLI 内部沙箱系统调用源码（docs.anthropic.com 旧页 404），沙箱内核细节部分基于官方文档与外部架构剖析。",
+      "key_decisions": [
+        "本地命令行借助权限策略和人工确认隔离危险动作，免除重度本地 Docker 依赖"
+      ],
+      "takeaways": [
+        "CLI 型工程 Agent 降低第一分钟安装门槛的关键在于用轻量化权限门控替代强制全量容器化"
+      ],
+      "verbatim_quotes": [
+        "Run Python and Bash code in a sandboxed container to analyze data, generate files, and iterate on solutions."
+      ],
+      "evidence_sources": [
+        "https://platform.claude.com/docs/en/agents-and-tools/claude-code"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "code_understanding",
+      "summary": "以多轮 Agentic Search 实时探测工程结构与跨文件依赖，不要求用户手工勾选或预建复杂外部向量库",
+      "details": "依赖 Grep/Glob/Read 工具与 Explore 子代理快速建构仓库心智图并解释大规模代码库，本次采集到的官方页面明确阐述该 Agentic Search 设计理念。",
+      "key_decisions": [
+        "通过多轮工具检索（Agentic Search）按需精读源码，替代静态全库分块向量化"
+      ],
+      "takeaways": [
+        "拥有强长上下文（如 200k~1M）与强 Tool-Use 能力的模型，动态代码检索的精准度明显优于离线切块 RAG"
+      ],
+      "verbatim_quotes": [
+        "Claude Code maps and explains large codebases in a few seconds. It uses agentic search to understand project structure and dependencies without you having to manually select context files."
+      ],
+      "evidence_sources": [
+        "https://code.claude.com/"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "diff_management",
+      "summary": "通过专用 Edit 工具配合『先 Read 后 Edit』行为契约完成局部文件修改，具体底层补丁匹配算法未在闭源文档细节中披露",
+      "details": "架构分析指出编辑工具要求先读再改且控制写入边界，但本次采集到的公开一手资料未包含具体的 Diff 补丁匹配容错代码细节，按严格实证标准标为受限。",
+      "key_decisions": [
+        "分离只读 Read 与修改 Edit 工具并限制写权限边界"
+      ],
+      "takeaways": [
+        "强制先读后写能显著降低大模型凭记忆覆盖篡改未读代码的幻觉编辑"
+      ],
+      "verbatim_quotes": [
+        "It takes action — for example, editing a file or running a command."
+      ],
+      "evidence_sources": [
+        "https://academy.claude.com/courses/claude-code-101/how-claude-code-works"
+      ],
+      "confidence": 3
+    },
+    {
+      "dimension": "terminal_management",
+      "summary": "原生运行于开发者终端，结合 Bash 工具调用、命令权限审批与执行结果验证循环驱动编译和测试自愈",
+      "details": "官方课程与架构文档明确其直接运行在 Terminal 并可执行 Bash 命令及验证执行结果，对高危 Shell 操作施加审批拦截与输出采集。",
+      "key_decisions": [
+        "将 CLI 终端作为一等运行面，同时提供对危险 Shell 指令的权限审批门控"
+      ],
+      "takeaways": [
+        "把测试命令运行与结果校验纳入单循环内，是 CLI Agent 达成自动修复闭环的核心"
+      ],
+      "verbatim_quotes": [
+        "Claude Code is an agentic coding tool that understands your codebase, edits your files, runs commands, and integrates with your existing developer tools to help you get things done faster."
+      ],
+      "evidence_sources": [
+        "https://academy.claude.com/courses/claude-code-101/what-is-claude-code"
+      ],
+      "confidence": 4
+    },
+    {
+      "dimension": "checkpoint_rollback",
+      "summary": "本次采集语料未捕获显式细粒度 Checkpoint 状态快照或自动撤销引擎的一手实现证据，日常高度依赖 Git 工作区与人工审批防护",
+      "details": "已知闭源 NPM 包曾引发架构与特性讨论（如特性开关与会话习惯），但在本次公开采集语料中未见文件级内置快照引擎源码证据，故严谨标注为推断警示。",
+      "key_decisions": [
+        "依托 `CLAUDE.md` 会话记录与 Git 版本控制承担状态兜底"
+      ],
+      "takeaways": [
+        "自建终端类 Agent 产品若缺少内置文件撤销栈，务必在修改前自动打 Git stash/commit 检查点"
+      ],
+      "verbatim_quotes": [],
+      "evidence_sources": [],
+      "confidence": 2
+    }
+  ],
+  "matched_patterns": [
+    {
+      "pattern_name": "agent_loop",
+      "description": "采用 Gather Context -> Tool Use -> Execute -> Verify Results 闭环，支持按校验结果或 Turn 预算自动退出。",
+      "evidence": [
+        "It takes action — for example, editing a file or running a command. It verifies the results and determines whether they achieve what"
+      ],
+      "confidence": 5
+    },
+    {
+      "pattern_name": "human_in_the_loop_guard",
+      "description": "由外围 Harness 执行权限策略检查，对高危 Shell 执行与写操作施加显式授权控制。",
+      "evidence": [
+        "a harness can restrict writes, require approval for shell commands, load project memory, expose MCP servers"
+      ],
+      "confidence": 5
+    },
+    {
+      "pattern_name": "mcp_protocol_standard",
+      "description": "原生集成 MCP 客户端以连接外部工具服务与第三方扩展能力。",
+      "evidence": [
+        "expose MCP servers, trigger hooks before or after tool use"
+      ],
+      "confidence": 5
+    },
+    {
+      "pattern_name": "multi_agent_hierarchical",
+      "description": "主 Agent 可派生 Explore / Plan / Task 子代理分担只读检索与规划工作。",
+      "evidence": [
+        "All parts of Claude Code's system prompt, builtin tool descriptions, subagent prompts (Plan/Explore/Task), and utility prompts."
+      ],
+      "confidence": 4
+    }
+  ],
+  "user_reviews": {
+    "review_sources": [
+      "https://news.ycombinator.com/item?id=48734373",
+      "https://news.ycombinator.com/item?id=43163011",
+      "https://news.ycombinator.com/item?id=47584540",
+      "https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/",
+      "https://www.reddit.com/r/ClaudeAI/comments/1p0n7pg/this_claude_code_skill_creates_claude_code_skills/"
+    ],
+    "praises": [
+      "代码理解和复杂重构能力强，通过 Agentic Search 与 Skills 生态能稳定加速工程交付",
+      "工具体系与扩展性（`CLAUDE.md`、`SKILL.md` 元技能生成器）极易沉淀个人与团队标准化工作流"
+    ],
+    "pain_points": [
+      "NPM source map 源码泄露事件暴露闭源包透明度争议与部分功能特性耦合问题（1022 条 HN 讨论）",
+      "高难度长任务单次 API/订阅额度消耗成本相对高，且部分开发者担心封号列表、请求隐写指纹和限速降级问题（750 条 HN 讨论）"
+    ],
+    "trust_and_ux_friction": [
+      "账号限流/封控焦虑及闭源客户端对请求指纹处理的不透明感，促使部分开发者呼吁开源可控 Harness 或准备备选兼容接口"
+    ],
+    "sample_quotes": [
+      "To keep the sessions in sync, I’ve been having Claude update claude.md file at the end of each session. It includes a summary of what we worked on, current status, TODOs, and anything else relevant.",
+      "The much more interesting question is if they directly act on this data in their API. For example by rate-limiting, compute-limiting or rerouting to weaker models."
+    ]
+  },
+  "pm_guidance": {
+    "suitable_product_forms": [
+      "终端原生 CLI Agent + IDE/桌面实时审查伴侣（Terminal + VS Code/JetBrains 多入口协同）",
+      "可编程嵌入式 Agent SDK（提供默认安全与工具 preset 供企业二次封装）"
+    ],
+    "autonomy_level": "L2~L3（默认受可执行权限策略约束的协同引导式：人类观看流式过程并在高风险动作前授权审批）",
+    "interaction_design": "1. 坚持“Prompt 辅助 + 代码策略兜底”，对写文件与 Shell 执行建立清晰权限分级菜单与审批确认；\n2. 将大型代码库索引改为 Agentic Search + 项目级记忆文件（类似 CLAUDE.md）降低配置心智负担；\n3. 暴露 Before/After Tool Hooks 生命周期位点，方便开发者接入团队 lint、测试和审计流水线。",
+    "cost_latency_tradeoffs": "• 借助只读探索子代理过滤无关文件，避免把整个仓库硬塞进昂贵旗舰模型主会话上下文；\n• 提供明确的 Turn 预算与配额感知提示，并提前规划账号降级/多供应商容灾策略防止单一额度触顶停摆。",
+    "mvp_must_haves": [
+      "专用低风险工具集合（Read/Edit/Grep）与可执行 Shell 审批权限门控",
+      "Agentic Search + 项目根记忆文件（如 AGENTS.md / CLAUDE.md）持久化机制",
+      "可继承复用的核心 Preset + MCP 外部工具标准挂载",
+      "明确的 Turn 轮次上限与自动编辑前 Git 快照兜底（补足闭源版弱点）"
+    ],
+    "mvp_nice_to_haves": [
+      "只读 Explore / Plan 子代理分工",
+      "Before/After Tool Hooks 事件钩子系统",
+      "Markdown 文件化 Skills 分享与自动生成工作流"
+    ],
+    "anti_patterns_to_avoid": [
+      "切忌完全依靠 System Prompt 嘱咐安全，而不在执行层写死权限校验与目录边界；",
+      "切忌发布客户端包时意外保留完整 source map 泄露内部未公开特性开关与业务逻辑；",
+      "切忌在额度计费、降速路由或风控机制上黑盒处理，极大损害开发者长期信任。"
+    ]
+  }
+}

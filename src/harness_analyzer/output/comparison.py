@@ -2,6 +2,8 @@
 from datetime import datetime
 from typing import Any
 
+from .diagram import DiagramGenerator
+
 
 class ComparisonReportGenerator:
     """生成多个 AI 应用 Harness 架构的横向对比 Markdown 报告"""
@@ -48,8 +50,12 @@ class ComparisonReportGenerator:
         sections.append(title)
         sections.append(f"> 生成时间：{now_str} | 对比数量：{len(analyses)} 款 AI 应用\n")
 
-        # 2. 概览对比表
+        # 2. 概览对比表 + 置信度图
         sections.append("## 1. 概览横向对比\n")
+        diag = DiagramGenerator()
+        cmp_chart = diag.generate_comparison_chart(analyses)
+        if cmp_chart:
+            sections.append("```mermaid\n" + cmp_chart + "\n```\n")
         table_headers = ["对比维度"] + app_names
         table_sep = [":---"] + [":---"] * len(app_names)
 
@@ -91,6 +97,9 @@ class ComparisonReportGenerator:
         pm_objects = [self._get_val(a, "pm_guidance", default=None) for a in analyses]
         if any(pm is not None for pm in pm_objects):
             sections.append("## 2. 应用层：产品方案横向对比 (PM Guidance)\n")
+            cmp_flow = diag.generate_comparison_flow(analyses)
+            if cmp_flow:
+                sections.append("```mermaid\n" + cmp_flow + "\n```\n")
             pm_rows = [
                 ["**适合产品形态**"] + [
                     "；".join(self._get_val(pm, "suitable_product_forms", default=[]) or ["*暂无*"])
@@ -149,7 +158,9 @@ class ComparisonReportGenerator:
                     if dim_data:
                         summary = self._get_val(dim_data, "summary", default="")
                         takeaways = self._get_val(dim_data, "takeaways", "key_takeaways", default=[])
-                        cell_content = summary
+                        d_conf = self._format_stars(self._get_val(dim_data, "confidence", default=3))
+                        d_quotes = len(self._get_val(dim_data, "verbatim_quotes", default=[]) or [])
+                        cell_content = f"[{d_conf}｜{d_quotes}条实证] {summary}"
                         if takeaways and isinstance(takeaways, list) and takeaways[0]:
                             cell_content += f"<br>• *{takeaways[0]}*"
                         row_cells.append(cell_content)

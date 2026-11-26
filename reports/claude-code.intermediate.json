@@ -1,0 +1,179 @@
+{
+  "app_name": "claude-code",
+  "category": "engineering",
+  "generated_at": "2026-11-26T11:58:03.691242",
+  "core_verified_facts": [
+    "[沙箱隔离模型] 混合模型：本地终端通过可执行权限网关与写入范围受控执行（不依赖重容器即可本地读写），云端/API 工具层配合沙箱容器隔离 (置信度 4★ | core/strict_verified)",
+    "[代码理解引擎] 以多轮 Agentic Search 实时探测工程结构与跨文件依赖，不要求用户手工勾选或预建复杂外部向量库 (置信度 3★ | core/partial_verified)",
+    "[Diff 与变更管理] 通过专用 Edit 工具配合『先 Read 后 Edit』行为契约完成局部文件修改，具体底层补丁匹配算法未在闭源文档细节中披露 (置信度 3★ | core/strict_verified)",
+    "[终端与进程管理] 原生运行于开发者终端，结合 Bash 工具调用、命令权限审批与执行结果验证循环驱动编译和测试自愈 (置信度 3★ | core/partial_verified)",
+    "[Agent 编排] 单主循环加专业子代理委派（Plan / Explore / Task Subagents）的确定性 Agentic Loop，支持终端 CLI、IDE 与 Agent SDK 复用 (置信度 4★ | core/strict_verified)",
+    "[模型路由] 垂直绑定 Anthropic Claude 系列旗舰/轻量模型并依托云端 1M 上下文窗口，用户侧主要关注账号档位、配额速率与模型版本切换 (置信度 3★ | core/partial_verified)",
+    "[工具链] 分层专用核心工具（Read / Edit / Grep / Bash / Agent / Skill）与 MCP 外部工具服务器标准接入，通过工具级提示约束强制 Bash 降权使用 (置信度 5★ | core/strict_verified)",
+    "[上下文工程] 采用 Agentic Search 自主检索大型代码库，配合 `CLAUDE.md` 跨会话持久化项目状态与 TODO，大幅降低手工挑选上下文的负担 (置信度 4★ | core/strict_verified)",
+    "[安全沙箱] 可执行权限网关 + 写入限制 + Shell 命令审批确认（官方云/沙箱容器方案协同）保护本地开发机与代码仓安全 (置信度 5★ | core/strict_verified)",
+    "[人机协同] 强调『人类可随时观察流式输出并介入引导（Human watches and steers）』的终端/IDE/桌面多端协同开发体验 (置信度 4★ | core/strict_verified)",
+    "[扩展生态] 支持 MCP 外部服务器接入、Agent Skills 可分享技能包、Tool Hooks 生命周期扩展，并兼容第三方工具链（如 Agent SDK、Skill 生态） (置信度 4★ | core/strict_verified)"
+  ],
+  "moderate_findings": [
+    "[提示词工程] 系统提示采用可复用的 `claude_code` preset（支持 `append` 扩展）与可共享 Skill 元模板机制，形成『系统总纲 + 工具微规程 + 项目记忆』三层体系 (置信度 5★ | moderate/strict_verified)",
+    "[数据流与状态管理] 基于 `tool_use` / `tool_result` 对话事件流驱动执行状态机，跨会话/跨终端通过项目文件（`CLAUDE.md`）与 SDK 会话配置衔接 (置信度 4★ | moderate/strict_verified)"
+  ],
+  "inferred_warnings": [
+    "[检查点与回滚] 本次采集语料未捕获显式细粒度 Checkpoint 状态快照或自动撤销引擎的一手实现证据，日常高度依赖 Git 工作区与人工审批防护 —— 🔴 核心强关联维度缺乏原文实证（或引用未命中原文），置信度已严格封顶 1 星，PM 切勿直接作为 P0 硬依据。"
+  ],
+  "user_reviews": {
+    "review_sources": [
+      "https://news.ycombinator.com/item?id=48734373",
+      "https://news.ycombinator.com/item?id=43163011",
+      "https://news.ycombinator.com/item?id=47584540",
+      "https://www.reddit.com/r/ClaudeCode/comments/1m7cb64/anyone_else_using_claude_code_across_multiple_pcs/",
+      "https://www.reddit.com/r/ClaudeAI/comments/1p0n7pg/this_claude_code_skill_creates_claude_code_skills/"
+    ],
+    "praises": [
+      "代码理解和复杂重构能力强，通过 Agentic Search 与 Skills 生态能稳定加速工程交付",
+      "工具体系与扩展性（`CLAUDE.md`、`SKILL.md` 元技能生成器）极易沉淀个人与团队标准化工作流"
+    ],
+    "pain_points": [
+      "NPM source map 源码泄露事件暴露闭源包透明度争议与部分功能特性耦合问题（1022 条 HN 讨论）",
+      "高难度长任务单次 API/订阅额度消耗成本相对高，且部分开发者担心封号列表、请求隐写指纹和限速降级问题（750 条 HN 讨论）"
+    ],
+    "trust_and_ux_friction": [
+      "账号限流/封控焦虑及闭源客户端对请求指纹处理的不透明感，促使部分开发者呼吁开源可控 Harness 或准备备选兼容接口"
+    ],
+    "sample_quotes": [
+      "To keep the sessions in sync, I’ve been having Claude update claude.md file at the end of each session. It includes a summary of what we worked on, current status, TODOs, and anything else relevant.",
+      "The much more interesting question is if they directly act on this data in their API. For example by rate-limiting, compute-limiting or rerouting to weaker models."
+    ]
+  },
+  "search_coverage": {
+    "question_language": "zh",
+    "bilingual_names": {
+      "local": "Claude Code",
+      "en": "Claude Code"
+    },
+    "items": [
+      {
+        "query": "how the Claude Code works AI architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code AI engineering blog system architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code system prompt tools agent harness",
+        "language": "en",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 2,
+        "chars_collected": 9000
+      },
+      {
+        "query": "Claude Code AI agent github reverse engineering",
+        "language": "en",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code的架构是什么",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code AI 底层原理 技术架构 拆解",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code 提示词 工具调用 Agent 工作流",
+        "language": "zh",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 2,
+        "chars_collected": 7406
+      },
+      {
+        "query": "Claude Code 开源 源码 逆向",
+        "language": "zh",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"Claude Code\" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"Claude Code\" (\"pros and cons\" OR \"frustrating\" OR \"review\" OR \"issues\") site:reddit.com",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1298
+      },
+      {
+        "query": "\"Claude Code\" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com OR site:juejin.cn)",
+        "language": "zh",
+        "angle": "user_reviews",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "Claude Code AI explained",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1048
+      },
+      {
+        "query": "Claude Code AI 原理",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      }
+    ],
+    "zh_hits": 8,
+    "en_hits": 16,
+    "covered_angles": [
+      "architecture_qa",
+      "implementation_tech",
+      "source_reverse",
+      "user_reviews"
+    ],
+    "missing_angles": [],
+    "coverage_score": 1.0,
+    "refill_triggered": true,
+    "blocked_sources": []
+  },
+  "guard_summary": {
+    "strict_verified": 10,
+    "partial_verified": 3,
+    "unverified_capped": 1
+  }
+}

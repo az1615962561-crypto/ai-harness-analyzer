@@ -1,0 +1,197 @@
+{
+  "app_name": "codex",
+  "category": "engineering",
+  "generated_at": "2026-11-26T11:58:02.101690",
+  "core_verified_facts": [
+    "[沙箱隔离模型] 原生多平台 OS 沙箱体系（区分 Linux/macOS 与 `WindowsSandboxLevel`，独立管控文件系统与网络策略 `NetworkSandboxPolicy`）+ 云端隔离任务容器 (置信度 5★ | core/strict_verified)",
+    "[代码理解引擎] 通过 CLI/沙箱环境内工作区路径映射（`PathUri` / `workspace_roots`）结合终端工具主动检索理解工程；本次抓取到的有限核心源码切片未涵盖专门 AST/LSP 索引器实现 (置信度 3★ | core/strict_verified)",
+    "[Diff 与变更管理] 以独立 `codex_apply_patch` 运行时与强类型变更事件 (`AppliedPatchDelta`、`AppliedPatchFileChange`、`FileChange`) 实现可控补丁应用与本地/远端统一执行 (置信度 5★ | core/strict_verified)",
+    "[终端与进程管理] 专用 `codex_exec_server` 与结构化输出模型 (`ExecToolCallOutput` / `StreamOutput`) 结合多 OS 沙箱执行器管理终端命令生命周期 (置信度 4★ | core/strict_verified)",
+    "[检查点与回滚] 利用结构化 `AppliedPatchDelta` 与环境隔离保障变更可追踪，仓库提供 `check-clean-worktree` 等 Git 保护工作流，但本次抓取切片未见多步历史 Undo Tree 源码 (置信度 3★ | core/strict_verified)",
+    "[Agent 编排] 单一 Rust 核心状态机协调工具调用、Guardian 权限评审、沙箱尝试与拒后重试升级，统一支撑 CLI、IDE App Server、Desktop 与云端任务 (置信度 5★ | core/strict_verified)",
+    "[模型路由] 围绕 OpenAI GPT/Codex 系列推理档位（如 Reasoning Effort 中/高与 Codex-Max/Mini 分层）运行，也支持通过外部路由器接入自定义供应商模型 (置信度 3★ | core/partial_verified)",
+    "[工具链] 以结构化 `apply_patch` 补丁执行器和沙箱化命令执行器 (`codex_exec_server`) 为支柱，并原生内置 `@modelcontextprotocol/sdk` MCP 协议与网络审批工具链 (置信度 5★ | core/strict_verified)",
+    "[上下文工程] 支持增量工具窗口下的基线指令恢复（`base_instructions.rs`）、`AGENTS.md` 项目规约加载、以及标准化 Agent Skills 按需注入 (置信度 5★ | core/strict_verified)",
+    "[安全沙箱] 纵深 OS 级沙箱 + Guardian 审查 + 粒度审批策略（`AskForApproval` / `NetworkSandboxPolicy` / `WindowsSandboxLevel` / `PROTECTED_METADATA_PATH_NAMES`），提权重试必须二次审查 (置信度 5★ | core/strict_verified)",
+    "[人机协同] 粒度可调审批流（`AskForApproval`、`GranularApprovalConfig`），覆盖 CLI TUI、IDE 扩展（VS Code/Cursor/Windsurf）、桌面端 (`codex app`) 与云端异步 PR 工作流 (置信度 5★ | core/strict_verified)",
+    "[扩展生态] 开放标准 MCP 集成 (`@modelcontextprotocol/sdk`)、标准化 `AGENTS.md` / `Agent Skills` (`openai/skills`)、生命周期 Hooks 与 `app-server-protocol` 多端协议 (置信度 5★ | core/strict_verified)"
+  ],
+  "moderate_findings": [
+    "[提示词工程] 通过模型解析消息包 `codex_prompts::ResolvedModelMessages`、强类型标记片断（`BaseInstructionsFragment`、`AppsInstructions`）与 Hooks 注入文本（`HookPromptFragment`）精密管理提示分层 (置信度 5★ | moderate/strict_verified)",
+    "[数据流与状态管理] 基于 Rust 强类型 `codex_protocol` 事件与 `TurnEnvironment` / `TurnEnvironmentSelection` 状态模型，严格隔离每一轮对话的工具区目录与权限快照 (置信度 4★ | moderate/strict_verified)"
+  ],
+  "inferred_warnings": [],
+  "user_reviews": {
+    "review_sources": [
+      "https://github.com/openai/codex/issues",
+      "https://news.ycombinator.com/item?id=46902638",
+      "https://news.ycombinator.com/item?id=47796469",
+      "https://www.g2.com/products/openai-codex/reviews",
+      "https://www.producthunt.com/products/codex-3-0-by-openai",
+      "https://www.v2ex.com/t/1171528",
+      "https://www.zhihu.com/question/2057495861937153314",
+      "https://www.zhihu.com/question/1972596458084627013"
+    ],
+    "praises": [
+      "代码完整性强且具备后台仓库级自动化（自动判断测试、重构与自主 PR 审查），在明确意图约束下结构逻辑差错极少",
+      "借助 `Codex-Max` 等中等推理档位可在保持前沿效果的同时显著削减思考标记与成本，且支持接第三方 API 与稳定配额重置"
+    ],
+    "pain_points": [
+      "Token 与订阅配额消耗极快（IDE 扩展 Issue 630 评论抱怨烧 Token、Usage 325 评论抱怨额度骤降及服务端 404/SSO 手机验证问题）",
+      "高权限 CLI 若直接跑在生产服务器且放开保护会酿成灾难（440 评论严重事故 Issue：要求重启服务器却误毁 systemd 与容器并损失超万美元）"
+    ],
+    "trust_and_ux_friction": [
+      "重度用户反馈能力跃升后编码变成了“写死约束等待异步交付的黑盒体验”（一插嘴反帮倒忙），且开发者对让 Agent 接管宿主环境仍有强烈安全戒心"
+    ],
+    "sample_quotes": [
+      "[closed, 440 评论] Told to reboot a server, it destroyed systemd, destroyed containers, ran random scripts, cost me $10,000+",
+      "[closed, 630 评论] Burning tokens very fast: Which IDE are you using? VS Code",
+      "Do people really want codex to have control over their computer and apps? I'm still paranoid about keeping things securely sandboxed."
+    ]
+  },
+  "search_coverage": {
+    "question_language": "zh",
+    "bilingual_names": {
+      "local": "codex",
+      "en": "codex"
+    },
+    "items": [
+      {
+        "query": "how the codex works AI architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 4,
+        "pages_fetched": 1,
+        "chars_collected": 4500
+      },
+      {
+        "query": "codex AI engineering blog system architecture",
+        "language": "en",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex system prompt tools agent harness",
+        "language": "en",
+        "angle": "implementation_tech",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex AI agent github reverse engineering",
+        "language": "en",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex的架构是什么",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex AI 底层原理 技术架构 拆解",
+        "language": "zh",
+        "angle": "architecture_qa",
+        "hits_count": 0,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex 提示词 工具调用 Agent 工作流",
+        "language": "zh",
+        "angle": "implementation_tech",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "codex 开源 源码 逆向",
+        "language": "zh",
+        "angle": "source_reverse",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 0
+      },
+      {
+        "query": "\"codex\" (site:g2.com OR site:producthunt.com OR site:trustpilot.com) review",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1734
+      },
+      {
+        "query": "\"codex\" (\"pros and cons\" OR \"frustrating\" OR \"review\" OR \"issues\") site:reddit.com",
+        "language": "en",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 1102
+      },
+      {
+        "query": "\"codex\" (真实体验 OR 缺点 OR 吐槽 OR 评测) (site:zhihu.com OR site:v2ex.com OR site:juejin.cn)",
+        "language": "zh",
+        "angle": "user_reviews",
+        "hits_count": 4,
+        "pages_fetched": 0,
+        "chars_collected": 525
+      }
+    ],
+    "zh_hits": 12,
+    "en_hits": 16,
+    "covered_angles": [
+      "architecture_qa",
+      "implementation_tech",
+      "source_reverse",
+      "user_reviews"
+    ],
+    "missing_angles": [],
+    "coverage_score": 1.0,
+    "refill_triggered": false,
+    "blocked_sources": [
+      {
+        "url": "https://blog.csdn.net/qq_20042935/article/details/157213551",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://blog.csdn.net/2303_80243004/article/details/161397557",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://deepwiki.com/openai/codex/1.3-architecture-overview",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      },
+      {
+        "url": "https://blog.csdn.net/qq_20042935/article/details/157213551",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://blog.csdn.net/2303_80243004/article/details/161397557",
+        "reason": "http_521",
+        "status_code": 521
+      },
+      {
+        "url": "https://deepwiki.com/openai/codex/1.3-architecture-overview",
+        "reason": "rate_limited_429",
+        "status_code": 429
+      }
+    ]
+  },
+  "guard_summary": {
+    "strict_verified": 13,
+    "partial_verified": 1,
+    "unverified_capped": 0
+  }
+}
