@@ -4,7 +4,7 @@
 
 | 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| engineering | 2026-11-26 11:58:06 | 5 | 14/14 | 0 | ★★★★★ |
+| engineering | 2026-11-26 13:40:45 | 5 | 14/14 | 0 | ★★★★★ |
 
 ## 架构总览拓扑 (System Topology)
 
@@ -29,17 +29,6 @@ Cursor 是一套工业级 AI 编程助手 Harness，核心通过'快速补全 + 
 ## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
 
 > **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
-
-### 0. PM 决策链路与风控边界参考图 (Mermaid)
-
-```mermaid
-flowchart LR
-    Facts["已实证技术锚点 (14 项)"] --> Decide["Cursor 产品定位与自主度: L2~L3 (人在回路的渐进协同型)"]
-    Friction["社区真实痛点与警示 (0 项风险)"] --> Decide
-    Decide --> P0["V1 P0 必做 (5 项): 基于 Tree-sitter 的代码文件语法块精准解析 (…"]
-    Decide --> P1["V2 P1 增强 (4 项): 进阶路由与生态"]
-    Decide -. 避坑红线 .-> Avoid["严禁 (3 项): 千万不要在第一期要求大模型直接重写几千行的整个源文件 (T…"]
-```
 
 **📊 方案支撑数据例证**：实证技术锚点 `14` 项 ｜ 社区评论来源 `2` 处 ｜ 待避坑未实证警示 `0` 项 ｜ 建议 MVP P0 `5` 项 / P1 `4` 项
 
@@ -120,10 +109,10 @@ flowchart LR
 
 ### 1. 基础共性维度拆解
 
-**共性维度评分与权重全景图 (Mermaid)**：
+**共性维度多维分布图 (Mermaid：快速识别高权重低实证短板)**：
 ```mermaid
 xychart-beta
-    title "Cursor 共性维度评分与权重对比"
+    title "Cursor 共性维度评分(柱)与权重(线)对比"
     x-axis ["Agent 编排", "模型路由", "工具链", "提示词工程", "上下文工程", "数据流与状态管理", "安全沙箱", "人机协同", "扩展生态"]
     y-axis "评分 (1-5★)" 0 --> 5
     bar [5, 5, 5, 4, 5, 4, 5, 5, 5]
@@ -187,15 +176,6 @@ sequenceDiagram
 
 针对行内 Tab 补全使用自研/微调的小型模型（几十毫秒内返回），保证打字不卡顿；针对代码重构、全库问答和 Composer，默认路由至 Claude 3.5 Sonnet 或 GPT-4o，平衡效果与成本。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Req["Cursor 任务请求"] --> Router{"模型/推理档位路由"}
-    Router -- 高频/实时探索 --> Fast["轻量高速模型 / Low Effort"]
-    Router -- 复杂架构/疑难修复 --> Strong["旗舰推理模型 / High Effort"]
-    Router -. 限流/跨厂商兜底 .-> Ext["Proxy / ACP / BYOK"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `3` 项
 - **实证来源**：Cursor 官方技术分享
 
@@ -216,16 +196,6 @@ flowchart LR
 
 工具链包含：语义代码搜索 (Codebase Semantic Search)、文件定位、精准行区间读取 (Read Range)、文件批量编辑与 Diff 生成、终端命令执行。深度对接 VS Code LSP 语法诊断。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    LLM["LLM Tool Request"] --> Gate{"Schema + 风险策略校验"}
-    Gate -- 内置核心工具 --> Builtin["Read / Edit / Patch / Exec"]
-    Gate -- 开放标准协议 --> MCP["MCP Servers (stdio / SSE / SHTTP)"]
-    Builtin --> Obs["结构化 Observation 回传"]
-    MCP --> Obs
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `3` 项
 - **实证来源**：Cursor IDE 逆向与架构分析
 
@@ -245,15 +215,6 @@ flowchart LR
 分层规则注入与结构化 XML/Markdown 格式约束
 
 通过项目级 `.cursorrules` 文件实现用户偏好自适应注入；在 System Prompt 中深度约束 Diff 输出格式，通过严格的 Search/Replace 标记减少生成标记量并保证精确匹配。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Sys["系统 Preset / 总纲"] --> Stack["Prompt 运行时装配层"]
-    ToolDesc["工具微规程 (Description)"] --> Stack
-    ProjMem["仓库规则 (AGENTS.md / CLAUDE.md / Skills)"] --> Stack
-    Stack --> Call["发送至 Cursor 模型"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `3` 项
 - **实证来源**：.cursorrules 社区规范
@@ -363,15 +324,6 @@ flowchart LR
 
 Cursor 将人类与 AI 的协作拉到极致细腻的颗粒度：不是整包提交代码，而是在代码编辑器内原生展示绿色新增与红色删除，开发者可以按单行或单文件快捷键接受/拒绝。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Agent["Cursor 流式产出 / 计划"] --> UI["差异预览 / 工具可视化卡片"]
-    UI --> Check{"人类审查介入点"}
-    Check -- Accept / Approve --> Apply["应用变更继续执行"]
-    Check -- Reject / Edit --> Steer["人工纠正方向回传"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `2` 项
 - **实证来源**：用户体验架构拆解
 
@@ -390,15 +342,6 @@ flowchart LR
 
 Fork 自 VS Code，100% 继承其庞大插件市场；同时支持 MCP 接入外部数据源和工具，形成开放强大的生态飞轮。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Core["Cursor 核心引擎"] --> MCP["MCP 工具协议生态"]
-    Core --> Skills["Markdown Skills / 规则模板"]
-    Core --> Hooks["Before / After 生命周期 Hooks"]
-    Core --> SDK["SDK / IDE Server 开放协议"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `2` 项
 - **实证来源**：Cursor 开发者文档
 
@@ -410,15 +353,6 @@ flowchart LR
 1. 不要从零构建新环境，寄生于现有成熟工作流（如 IDE / 浏览器）能加速 Agent 生态繁荣
 
 ### 2. 品类专属穿透维度拆解
-
-**专属维度实证置信度图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "Cursor engineering 专属维度实证评分"
-    x-axis ["沙箱隔离模型", "代码理解引擎", "Diff 与变更管理", "终端与进程管理", "检查点与回滚"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [4, 5, 5, 5, 5]
-```
 
 | 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: |
@@ -461,14 +395,6 @@ LSP 静态分析 + Tree-sitter AST + 增量向量混合索引
 
 利用 Tree-sitter 进行代码块分块解析，结合语义嵌入和 LSP 的定义跳转引用关系，构建高保真代码拓扑网。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Root["工程根目录 (Workspace)"] --> Scan["符号 / AST / Grep / Agentic Search"]
-    Scan --> Graph["跨文件引用与依赖心智图"]
-    Graph --> EditCtx["精准定位待改片段"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -485,14 +411,6 @@ flowchart LR
 高效流式 SEARCH/REPLACE 块解析与实时语法合规性检查
 
 模型仅输出更改前后片段，客户端在内存中快速做 Levenshtein 模糊匹配定位，并在应用变更前验证语法完整性。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Gen["生成增量补丁 (Patch / Diff)"] --> Verify["上游语法与审批检查"]
-    Verify --> Apply["原子写入目标工作区"]
-    Apply --> Delta["产出文件 Delta 变更回执"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
@@ -511,14 +429,6 @@ flowchart LR
 
 Agent 可以监听终端退出码与错误输出 (stderr)，自动识别依赖缺失或测试失败并触发修复循环。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Shell["终端命令下发"] --> PTY["PTY / Exec Server 会话"]
-    PTY --> Stream["流式捕获 Stdout / Stderr / 退出码"]
-    Stream -- 退出码非0 --> SelfFix["错误回传触发自愈修复"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -535,15 +445,6 @@ flowchart LR
 Git 兼容的轻量暂存区快照与多步撤销树
 
 在执行复杂 Composer 多文件修改前记录编辑快照，用户一键按 Esc 或 Reject 即可无缝恢复所有文件。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Pre["编辑前自动快照 / Git Stash"] --> Mutate["多文件变更应用"]
-    Mutate --> Check{"结果符合预期?"}
-    Check -- 是 --> Commit["保留进入下一轮"]
-    Check -- 否 --> Rollback["一键回滚恢复安全点"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
@@ -565,16 +466,6 @@ flowchart LR
 5. 利用现有 VS Code 庞大生态与 MCP 协议快速撬动开发者社区
 
 ## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
-
-**信源通道分布参考图 (Mermaid)**：
-```mermaid
-flowchart TD
-    Root["Cursor 信源追踪总计 (2 篇)"] --> GH["GitHub 源码/仓库/Issues: 0 条"]
-    Root --> Docs["官方文档与技术文章: 2 条"]
-    Root --> Comm["社区评测与真实吐槽: 0 条"]
-    Root --> Other["泛网络与技术解析: 0 条"]
-    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 0 处"]
-```
 
 **📊 信源分布数据统计**：总计 `2` 条（GitHub `0` ｜ 官方文档/博客 `2` ｜ 社区评论/讨论 `0` ｜ 其他技术文章 `0`）
 

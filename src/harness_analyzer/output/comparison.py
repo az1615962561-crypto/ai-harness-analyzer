@@ -50,12 +50,9 @@ class ComparisonReportGenerator:
         sections.append(title)
         sections.append(f"> 生成时间：{now_str} | 对比数量：{len(analyses)} 款 AI 应用\n")
 
-        # 2. 概览对比表 + 置信度图
+        # 2. 概览对比表（单一总评分直接用紧凑表格对比，无需画无意义柱状图）
         sections.append("## 1. 概览横向对比\n")
         diag = DiagramGenerator()
-        cmp_chart = diag.generate_comparison_chart(analyses)
-        if cmp_chart:
-            sections.append("```mermaid\n" + cmp_chart + "\n```\n")
         table_headers = ["对比维度"] + app_names
         table_sep = [":---"] + [":---"] * len(app_names)
 
@@ -97,9 +94,6 @@ class ComparisonReportGenerator:
         pm_objects = [self._get_val(a, "pm_guidance", default=None) for a in analyses]
         if any(pm is not None for pm in pm_objects):
             sections.append("## 2. 应用层：产品方案横向对比 (PM Guidance)\n")
-            cmp_flow = diag.generate_comparison_flow(analyses)
-            if cmp_flow:
-                sections.append("```mermaid\n" + cmp_flow + "\n```\n")
             pm_rows = [
                 ["**适合产品形态**"] + [
                     "；".join(self._get_val(pm, "suitable_product_forms", default=[]) or ["*暂无*"])
@@ -130,8 +124,11 @@ class ComparisonReportGenerator:
                 pm_md.append("| " + " | ".join(clean_row) + " |")
             sections.append("\n".join(pm_md) + "\n")
 
-        # 4. 中间层：架构维度横向对比
+        # 4. 中间层：多维架构横向对比（维度数多时先放 Mermaid 多维折线/柱状图帮助快速扫视差异，再列详情表）
         sections.append("## 3. 中间层：关键架构维度对比\n")
+        cmp_chart = diag.generate_comparison_chart(analyses)
+        if cmp_chart:
+            sections.append("```mermaid\n" + cmp_chart + "\n```\n")
 
         all_dim_labels: list[str] = []
         app_dim_maps: list[dict[str, Any]] = []

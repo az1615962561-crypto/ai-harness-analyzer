@@ -1,16 +1,8 @@
 # AI Harness 架构对比报告：Codex vs Claude Code
 
-> 生成时间：2026-11-26 11:58:11 | 对比数量：2 款 AI 应用
+> 生成时间：2026-11-26 13:40:49 | 对比数量：2 款 AI 应用
 
 ## 1. 概览横向对比
-
-```mermaid
-xychart-beta
-    title "架构总体置信度横向对比 (1-5★)"
-    x-axis ["Codex", "Claude Code"]
-    y-axis "置信度" 0 --> 5
-    bar [4, 4]
-```
 
 | 对比维度 | Codex | Claude Code |
 | :--- | :--- | :--- |
@@ -21,12 +13,6 @@ xychart-beta
 
 ## 2. 应用层：产品方案横向对比 (PM Guidance)
 
-```mermaid
-flowchart LR
-    A0["Codex (engineering | 42源)"] --> R0["自主度与形态: L3（云端隔离异步交付型）与 L2~L3 可调…"]
-    A1["Claude Code (engineering | 32源)"] --> R1["自主度与形态: L2~L3（默认受可执行权限策略约束的协同引导…"]
-```
-
 | 产品决策维度 | Codex | Claude Code |
 | :--- | :--- | :--- |
 | **适合产品形态** | 共享内核驱动的多宿主工程 Agent 套件（单 CLI/TUI 内核 + IDE 扩展 + 桌面客户端 + 云端异步 PR 工人）；具备强 OS 沙箱（文件与网络分离授权）的本地/CI 自动化修 Bug 与 PR 审查平台 | 终端原生 CLI Agent + IDE/桌面实时审查伴侣（Terminal + VS Code/JetBrains 多入口协同）；可编程嵌入式 Agent SDK（提供默认安全与工具 preset 供企业二次封装） |
@@ -35,6 +21,15 @@ flowchart LR
 | **关键避坑红线** | ❌ 切忌在不做 OS/容器硬隔离的生产服务器环境下默认开放高危 shell 免确认模式（血泪案例已证明会损毁 systemd/容器）；<br>❌ 切忌高频烧 Token 的推理档位黑盒运行且缺乏每轮预算/额度预警； | ❌ 切忌完全依靠 System Prompt 嘱咐安全，而不在执行层写死权限校验与目录边界；<br>❌ 切忌发布客户端包时意外保留完整 source map 泄露内部未公开特性开关与业务逻辑； |
 
 ## 3. 中间层：关键架构维度对比
+
+```mermaid
+xychart-beta
+    title "共性维度实证置信度横向对比 (柱状=首应用, 折线=次应用)"
+    x-axis ["Agent 编排", "模型路由", "工具链", "提示词工程", "上下文工程", "数据流与状态管理", "安全沙箱", "人机协同", "扩展生态"]
+    y-axis "置信度 (0-5★)" 0 --> 5
+    bar [5, 3, 5, 5, 5, 4, 5, 5, 5]
+    line [4, 3, 5, 5, 4, 4, 5, 4, 4]
+```
 
 | 架构维度 | Codex | Claude Code |
 | :--- | :--- | :--- |

@@ -54,12 +54,13 @@ def test_markdown_report_generator():
     assert "### Agent 编排" in md
     assert "Dual-agent flow" in md
     assert "flowchart TD" in md
-    assert "PM 决策链路与风控边界参考图 (Mermaid)" in md
     assert "方案支撑数据例证" in md
     assert "机制参考图 (Mermaid)" in md
     assert "📊 数据例证 (Data Evidence)" in md
-    assert "信源通道分布参考图 (Mermaid)" in md
-    assert md.count("```mermaid") >= 5
+    assert "信源分布数据统计" not in md or "flowchart TD" in md
+    # 整体拓扑 + Agent编排 sequenceDiagram（复杂维度按需附图）
+    assert "sequenceDiagram" in md
+    assert md.count("```mermaid") == 2
 
 
 def test_comparison_report_generator():
@@ -101,3 +102,21 @@ def test_comparison_report_generator():
     assert "企业 BI 工作台" in report
     assert "LSP tools" in report
     assert "SQL tools" in report
+    # Only 1 common dimension -> do NOT emit redundant bar chart for trivial single comparison
+    assert "xychart-beta" not in report
+
+
+def test_selective_diagrams_suppress_trivial_and_render_multidim():
+    gen = MarkdownReportGenerator()
+    simple_dim = DimensionAnalysis(
+        dimension="model_routing", label="模型路由", summary="Single provider", confidence=4
+    )
+    analysis = HarnessAnalysis(
+        app_name="demo",
+        app_display_name="Demo",
+        category="engineering",
+        common_dimensions=[simple_dim],
+    )
+    md = gen.generate(analysis)
+    # Only overall topology diagram; trivial single-dim model_routing should NOT add boilerplate diagram
+    assert md.count("```mermaid") == 1

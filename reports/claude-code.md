@@ -4,7 +4,7 @@
 
 | 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| engineering | 2026-11-26 11:58:03 | 32 | 10/14 | 21 | ★★★★☆ |
+| engineering | 2026-11-26 13:40:42 | 32 | 10/14 | 21 | ★★★★☆ |
 
 ## 架构总览拓扑 (System Topology)
 
@@ -29,17 +29,6 @@ Claude Code 采用「最小 Prompt + 强控制 Harness + 确定性 Agentic Loop�
 ## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
 
 > **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
-
-### 0. PM 决策链路与风控边界参考图 (Mermaid)
-
-```mermaid
-flowchart LR
-    Facts["已实证技术锚点 (10 项)"] --> Decide["Claude Code 产品定位与自主度: L2~L3（默认受可执行权限策略约束的协同引导式：人类观看流式过程…"]
-    Friction["社区真实痛点与警示 (1 项风险)"] --> Decide
-    Decide --> P0["V1 P0 必做 (4 项): 专用低风险工具集合（Read/Edit/Grep）与可执行…"]
-    Decide --> P1["V2 P1 增强 (3 项): 进阶路由与生态"]
-    Decide -. 避坑红线 .-> Avoid["严禁 (3 项): 切忌完全依靠 System Prompt 嘱咐安全，而不在…"]
-```
 
 **📊 方案支撑数据例证**：实证技术锚点 `10` 项 ｜ 社区评论来源 `5` 处 ｜ 待避坑未实证警示 `1` 项 ｜ 建议 MVP P0 `4` 项 / P1 `3` 项
 
@@ -139,10 +128,10 @@ flowchart LR
 
 ### 1. 基础共性维度拆解
 
-**共性维度评分与权重全景图 (Mermaid)**：
+**共性维度多维分布图 (Mermaid：快速识别高权重低实证短板)**：
 ```mermaid
 xychart-beta
-    title "Claude Code 共性维度评分与权重对比"
+    title "Claude Code 共性维度评分(柱)与权重(线)对比"
     x-axis ["Agent 编排", "模型路由", "工具链", "提示词工程", "上下文工程", "数据流与状态管理", "安全沙箱", "人机协同", "扩展生态"]
     y-axis "评分 (1-5★)" 0 --> 5
     bar [4, 3, 5, 5, 4, 4, 5, 4, 4]
@@ -209,15 +198,6 @@ sequenceDiagram
 
 作为官方第一方终端工具，模型路由深度聚焦 Anthropic 自研 Claude 家族（包括不同 Sonnet/Opus 推理与输出档位）；社区讨论重点集中在与竞争对手的模型推理配额对比以及请求指纹/速率策略。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Req["Claude Code 任务请求"] --> Router{"模型/推理档位路由"}
-    Router -- 高频/实时探索 --> Fast["轻量高速模型 / Low Effort"]
-    Router -- 复杂架构/疑难修复 --> Strong["旗舰推理模型 / High Effort"]
-    Router -. 限流/跨厂商兜底 .-> Ext["Proxy / ACP / BYOK"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "Anthropic’s 2026 releases emphasized 1M-token context windows and 128k output caps as runtime surfaces, not prompt text ."
@@ -236,16 +216,6 @@ flowchart LR
 分层专用核心工具（Read / Edit / Grep / Bash / Agent / Skill）与 MCP 外部工具服务器标准接入，通过工具级提示约束强制 Bash 降权使用
 
 Harness 面向软件工程精炼少量高信号专用工具，并在每个工具 Schema/Description 内嵌入操作安全规程（例如编辑前必读、优先用专用 Read/Grep 而非盲目调 Bash shell），外挂能力通过 MCP 对接。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    LLM["LLM Tool Request"] --> Gate{"Schema + 风险策略校验"}
-    Gate -- 内置核心工具 --> Builtin["Read / Edit / Patch / Exec"]
-    Gate -- 开放标准协议 --> MCP["MCP Servers (stdio / SSE / SHTTP)"]
-    Builtin --> Obs["结构化 Observation 回传"]
-    MCP --> Obs
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -267,15 +237,6 @@ flowchart LR
 系统提示采用可复用的 `claude_code` preset（支持 `append` 扩展）与可共享 Skill 元模板机制，形成『系统总纲 + 工具微规程 + 项目记忆』三层体系
 
 Claude Agent SDK 明确拆分 Minimal default 与包含完整工具及安全指令的 `claude_code` preset；社区亦普遍通过自定义 Agent Skills（包括生成 Skill 的 meta-skill）扩展团队规范。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Sys["系统 Preset / 总纲"] --> Stack["Prompt 运行时装配层"]
-    ToolDesc["工具微规程 (Description)"] --> Stack
-    ProjMem["仓库规则 (AGENTS.md / CLAUDE.md / Skills)"] --> Stack
-    Stack --> Call["发送至 Claude Code 模型"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -390,15 +351,6 @@ flowchart LR
 
 定位并非黑盒无人值守替工，而是覆盖 Terminal、VS Code、JetBrains IDE、Claude Desktop 与 Web 的实时流式协作工具，高风险命令触发审批等待。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Agent["Claude Code 流式产出 / 计划"] --> UI["差异预览 / 工具可视化卡片"]
-    UI --> Check{"人类审查介入点"}
-    Check -- Accept / Approve --> Apply["应用变更继续执行"]
-    Check -- Reject / Edit --> Steer["人工纠正方向回传"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "It's available in your terminal, Visual Studio Code, the Claude Desktop app, on the web, and in JetBrains IDEs."
@@ -419,15 +371,6 @@ flowchart LR
 
 不仅开放 MCP 服务器挂载外部 API 与工具（包括逆向工具、路由器等），还形成跨 Claude Code / Codex 通用的 `SKILL.md` 开放技能生态（如 `create-agent-skill`、`ctf-skills`）。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Core["Claude Code 核心引擎"] --> MCP["MCP 工具协议生态"]
-    Core --> Skills["Markdown Skills / 规则模板"]
-    Core --> Hooks["Before / After 生命周期 Hooks"]
-    Core --> SDK["SDK / IDE Server 开放协议"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "expose MCP servers, trigger hooks before or after tool use"
@@ -441,15 +384,6 @@ flowchart LR
 1. Markdown+脚本驱动的 Skills 体系比硬编码 SDK 插件更容易在开发者社区形成裂变复用
 
 ### 2. 品类专属穿透维度拆解
-
-**专属维度实证置信度图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "Claude Code engineering 专属维度实证评分"
-    x-axis ["沙箱隔离模型", "代码理解引擎", "Diff 与变更管理", "终端与进程管理", "检查点与回滚"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [4, 3, 3, 3, 1]
-```
 
 | 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: |
@@ -496,14 +430,6 @@ flowchart TD
 
 依赖 Grep/Glob/Read 工具与 Explore 子代理快速建构仓库心智图并解释大规模代码库，本次采集到的官方页面明确阐述该 Agentic Search 设计理念。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Root["工程根目录 (Workspace)"] --> Scan["符号 / AST / Grep / Agentic Search"]
-    Scan --> Graph["跨文件引用与依赖心智图"]
-    Graph --> EditCtx["精准定位待改片段"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "Claude Code maps and explains large codebases in a few seconds. It uses agentic search to understand project structure and dependencies without you having to manually select context files."
@@ -522,14 +448,6 @@ flowchart LR
 通过专用 Edit 工具配合『先 Read 后 Edit』行为契约完成局部文件修改，具体底层补丁匹配算法未在闭源文档细节中披露
 
 架构分析指出编辑工具要求先读再改且控制写入边界，但本次采集到的公开一手资料未包含具体的 Diff 补丁匹配容错代码细节，按严格实证标准标为受限。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Gen["生成增量补丁 (Patch / Diff)"] --> Verify["上游语法与审批检查"]
-    Verify --> Apply["原子写入目标工作区"]
-    Apply --> Delta["产出文件 Delta 变更回执"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -552,14 +470,6 @@ flowchart LR
 
 官方课程与架构文档明确其直接运行在 Terminal 并可执行 Bash 命令及验证执行结果，对高危 Shell 操作施加审批拦截与输出采集。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Shell["终端命令下发"] --> PTY["PTY / Exec Server 会话"]
-    PTY --> Stream["流式捕获 Stdout / Stderr / 退出码"]
-    Stream -- 退出码非0 --> SelfFix["错误回传触发自愈修复"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "Claude Code is an agentic coding tool that understands your codebase, edits your files, runs commands, and integrates with your existing developer tools to help you get things done faster."
@@ -581,15 +491,6 @@ flowchart LR
 
 已知闭源 NPM 包曾引发架构与特性讨论（如特性开关与会话习惯），但在本次公开采集语料中未见文件级内置快照引擎源码证据，故严谨标注为推断警示。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Pre["编辑前自动快照 / Git Stash"] --> Mutate["多文件变更应用"]
-    Mutate --> Check{"结果符合预期?"}
-    Check -- 是 --> Commit["保留进入下一轮"]
-    Check -- 否 --> Rollback["一键回滚恢复安全点"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `1` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -599,16 +500,6 @@ flowchart LR
 1. 自建终端类 Agent 产品若缺少内置文件撤销栈，务必在修改前自动打 Git stash/commit 检查点
 
 ### 3. 识别到的架构模式 (Architecture Patterns)
-
-**架构模式协同关系图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Core["Claude Code 工程 Harness 内核"]
-    Core --> P0["agent_loop (5★ | 1条证据)"]
-    Core --> P1["human_in_the_loop_guard (5★ | 1条证据)"]
-    Core --> P2["mcp_protocol_standard (5★ | 1条证据)"]
-    Core --> P3["multi_agent_hierarchical (4★ | 1条证据)"]
-```
 
 | 模式名称 | 落地说明 | 数据/源码证据要点 | 置信度 |
 | :--- | :--- | :--- | :---: |
@@ -627,16 +518,6 @@ flowchart LR
 4. 以 `CLAUDE.md` 与 Skills 作为轻量跨机器/跨会话状态与规范沉淀载体，配合子代理（Plan/Explore/Task）分工降低主上下文污染
 
 ## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
-
-**信源通道分布参考图 (Mermaid)**：
-```mermaid
-flowchart TD
-    Root["Claude Code 信源追踪总计 (28 篇)"] --> GH["GitHub 源码/仓库/Issues: 9 条"]
-    Root --> Docs["官方文档与技术文章: 8 条"]
-    Root --> Comm["社区评测与真实吐槽: 9 条"]
-    Root --> Other["泛网络与技术解析: 2 条"]
-    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 0 处"]
-```
 
 **📊 信源分布数据统计**：总计 `28` 条（GitHub `9` ｜ 官方文档/博客 `8` ｜ 社区评论/讨论 `9` ｜ 其他技术文章 `2`）
 

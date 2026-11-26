@@ -4,7 +4,7 @@
 
 | 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| engineering | 2026-11-26 11:58:05 | 32 | 10/14 | 19 | ★★★★☆ |
+| engineering | 2026-11-26 13:40:44 | 32 | 10/14 | 19 | ★★★★☆ |
 
 ## 架构总览拓扑 (System Topology)
 
@@ -29,17 +29,6 @@ OpenHands 已演进为由 Agent Canvas（浏览器/桌面控制面客户端）�
 ## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
 
 > **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
-
-### 0. PM 决策链路与风控边界参考图 (Mermaid)
-
-```mermaid
-flowchart LR
-    Facts["已实证技术锚点 (10 项)"] --> Decide["OpenHands 产品定位与自主度: L3（沙箱隔离下的半自动端到端执行；本地直连模式建议降级为 L2…"]
-    Friction["社区真实痛点与警示 (3 项风险)"] --> Decide
-    Decide --> P0["V1 P0 必做 (4 项): 可一键挂载指定工程目录的 Docker 隔离沙箱与端口自检…"]
-    Decide --> P1["V2 P1 增强 (3 项): 进阶路由与生态"]
-    Decide -. 避坑红线 .-> Avoid["严禁 (4 项): 切忌在未明确警示或隔离边界的情况下让浏览器/桌面客户端直接…"]
-```
 
 **📊 方案支撑数据例证**：实证技术锚点 `10` 项 ｜ 社区评论来源 `3` 处 ｜ 待避坑未实证警示 `3` 项 ｜ 建议 MVP P0 `4` 项 / P1 `3` 项
 
@@ -144,10 +133,10 @@ flowchart LR
 
 ### 1. 基础共性维度拆解
 
-**共性维度评分与权重全景图 (Mermaid)**：
+**共性维度多维分布图 (Mermaid：快速识别高权重低实证短板)**：
 ```mermaid
 xychart-beta
-    title "OpenHands 共性维度评分与权重对比"
+    title "OpenHands 共性维度评分(柱)与权重(线)对比"
     x-axis ["Agent 编排", "模型路由", "工具链", "提示词工程", "上下文工程", "数据流与状态管理", "安全沙箱", "人机协同", "扩展生态"]
     y-axis "评分 (1-5★)" 0 --> 5
     bar [5, 5, 5, 4, 3, 4, 5, 5, 5]
@@ -212,15 +201,6 @@ sequenceDiagram
 
 用户可通过 Provider API 或本地模型运行推理，前端也内置了 LLM 订阅 Schema 扩展与模型设置项，同时还能通过 ACP 协议将推理直接路由给 Claude Code、Codex 或 Gemini CLI 等外部 Agent 执行。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Req["OpenHands 任务请求"] --> Router{"模型/推理档位路由"}
-    Router -- 高频/实时探索 --> Fast["轻量高速模型 / Low Effort"]
-    Router -- 复杂架构/疑难修复 --> Strong["旗舰推理模型 / High Effort"]
-    Router -. 限流/跨厂商兜底 .-> Ext["Proxy / ACP / BYOK"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "The LLM models can run locally, through a provider API or be accessed through an ACP agent."
@@ -240,16 +220,6 @@ flowchart LR
 内置 Bash/文件编辑器/搜索/任务工具集并配合前端 React 专属工具可视化卡片，同时原生支持 MCP 工具协议
 
 前端为 bash、file-editor、search、task 注册了专门的 Action/Observation 渲染器，未注册的工具则平滑降级到通用 Markdown 渲染管线；外部工具统一经由 MCP 客户端连接器加载注册。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    LLM["LLM Tool Request"] --> Gate{"Schema + 风险策略校验"}
-    Gate -- 内置核心工具 --> Builtin["Read / Edit / Patch / Exec"]
-    Gate -- 开放标准协议 --> MCP["MCP Servers (stdio / SSE / SHTTP)"]
-    Builtin --> Obs["结构化 Observation 回传"]
-    MCP --> Obs
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -271,15 +241,6 @@ flowchart LR
 基于仓库内 `.agents/skills` 与自定义 Agent 角色隔离（只读 Planning Prompt vs 全功能 Execution Prompt）管理提示策略
 
 OpenHands 仓库自身通过 `.agents/skills/*` 为不同研发任务挂载专业指导规则与参考文档，并在 SDK 指南中示范通过定制只读规划 Agent 与全编辑执行 Agent 的 System Prompt 分工优化复杂任务表现。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Sys["系统 Preset / 总纲"] --> Stack["Prompt 运行时装配层"]
-    ToolDesc["工具微规程 (Description)"] --> Stack
-    ProjMem["仓库规则 (AGENTS.md / CLAUDE.md / Skills)"] --> Stack
-    Stack --> Call["发送至 OpenHands 模型"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -394,15 +355,6 @@ flowchart LR
 
 用户可在单一控制界面内审阅文件变更、观察内置 Bash/FileEditor/Search/Task 视觉卡片与 xterm 终端反馈，还支持接入外部 MCP 与自动化调度并在敏感 Action 上等待确认。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Agent["OpenHands 流式产出 / 计划"] --> UI["差异预览 / 工具可视化卡片"]
-    UI --> Check{"人类审查介入点"}
-    Check -- Accept / Approve --> Apply["应用变更继续执行"]
-    Check -- Reject / Edit --> Steer["人工纠正方向回传"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
 > "From one place, you can manage conversations, files, terminals, model configuration, backends, and automations."
@@ -424,15 +376,6 @@ flowchart LR
 
 除了兼容标准 MCP Server（支持 SSE、SHTTP、stdio 三种传输），OpenHands 还将扩展性延展到整个编码 Agent 生态——支持连接 Claude Code、Codex、Gemini CLI 等任何 ACP 兼容 Agent，并开放 `@openhands/extensions` 与 Software Agent SDK。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Core["OpenHands 核心引擎"] --> MCP["MCP 工具协议生态"]
-    Core --> Skills["Markdown Skills / 规则模板"]
-    Core --> Hooks["Before / After 生命周期 Hooks"]
-    Core --> SDK["SDK / IDE Server 开放协议"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
 > "Connects to configured servers (SSE, SHTTP, or stdio)"
@@ -447,15 +390,6 @@ flowchart LR
 1. 控制面开源平台通过同时拥抱 MCP（工具标准）和 ACP（智能体标准）能够避免生态孤岛
 
 ### 2. 品类专属穿透维度拆解
-
-**专属维度实证置信度图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "OpenHands engineering 专属维度实证评分"
-    x-axis ["沙箱隔离模型", "代码理解引擎", "Diff 与变更管理", "终端与进程管理", "检查点与回滚"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [5, 1, 1, 5, 1]
-```
 
 | 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: |
@@ -503,14 +437,6 @@ flowchart TD
 
 在已采集的主站与前端源码中可确认包含 Search 与 File Editor 工具可视化器，但未抓取出底层代码索引（如 Tree-sitter/向量/LSP）的具体实现代码，此处按事实严谨标注为待补充验证。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Root["工程根目录 (Workspace)"] --> Scan["符号 / AST / Grep / Agentic Search"]
-    Scan --> Graph["跨文件引用与依赖心智图"]
-    Graph --> EditCtx["精准定位待改片段"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `1` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -529,14 +455,6 @@ flowchart LR
 
 从依赖与组件目录可见其集成 `@monaco-editor/react` 与 `fileEditorVisualizer`，具体编辑格式（如 Search/Replace 或 Unified Diff 协议）本次未在一手源码中抓全。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Gen["生成增量补丁 (Patch / Diff)"] --> Verify["上游语法与审批检查"]
-    Verify --> Apply["原子写入目标工作区"]
-    Apply --> Delta["产出文件 Delta 变更回执"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `1` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -552,14 +470,6 @@ flowchart LR
 内置 xterm 终端管理与专属 Bash Action/Observation 可视化组件，支持本地与远端后端会话交互
 
 Agent Canvas 在控制台中统一管理终端会话（`package.json` 引入 `@xterm/xterm` 与 `@xterm/addon-fit`），并为 `bashVisualizer` 提供结构化命令与执行结果卡片展示。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Shell["终端命令下发"] --> PTY["PTY / Exec Server 会话"]
-    PTY --> Stream["流式捕获 Stdout / Stderr / 退出码"]
-    Stream -- 退出码非0 --> SelfFix["错误回传触发自愈修复"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -582,15 +492,6 @@ flowchart LR
 
 已知 Backend 负责会话持久化与容器隔离，实际代码层面可能借助 Git 隔离或独立容器销毁恢复环境，因缺乏一手源码佐证故标注为推断受限。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Pre["编辑前自动快照 / Git Stash"] --> Mutate["多文件变更应用"]
-    Mutate --> Check{"结果符合预期?"}
-    Check -- 是 --> Commit["保留进入下一轮"]
-    Check -- 否 --> Rollback["一键回滚恢复安全点"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `1` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -600,16 +501,6 @@ flowchart LR
 1. 自研类似系统时若运行在本地非容器模式，务必内建前置 Git checkpoint 快照回滚
 
 ### 3. 识别到的架构模式 (Architecture Patterns)
-
-**架构模式协同关系图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Core["OpenHands 工程 Harness 内核"]
-    Core --> P0["agent_loop (5★ | 1条证据)"]
-    Core --> P1["mcp_protocol_standard (5★ | 1条证据)"]
-    Core --> P2["code_interpreter_sandbox (5★ | 1条证据)"]
-    Core --> P3["hierarchical_recursive_summ… (4★ | 1条证据)"]
-```
 
 | 模式名称 | 落地说明 | 数据/源码证据要点 | 置信度 |
 | :--- | :--- | :--- | :---: |
@@ -628,16 +519,6 @@ flowchart LR
 4. 支持通过 ACP 协议将 Claude Code、Codex、Gemini CLI 等外部 Agent 直接编排纳入统一工作台，并用 MCP 标准化接入外部工具服务
 
 ## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
-
-**信源通道分布参考图 (Mermaid)**：
-```mermaid
-flowchart TD
-    Root["OpenHands 信源追踪总计 (28 篇)"] --> GH["GitHub 源码/仓库/Issues: 10 条"]
-    Root --> Docs["官方文档与技术文章: 9 条"]
-    Root --> Comm["社区评测与真实吐槽: 6 条"]
-    Root --> Other["泛网络与技术解析: 3 条"]
-    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 2 处"]
-```
 
 **📊 信源分布数据统计**：总计 `28` 条（GitHub `10` ｜ 官方文档/博客 `9` ｜ 社区评论/讨论 `6` ｜ 其他技术文章 `3`）
 

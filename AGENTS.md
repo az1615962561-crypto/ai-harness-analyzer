@@ -82,5 +82,5 @@ After running `harness analyze <app_name>`, read these files:
   ```bash
   pytest -v tests/
   ```
-- Also update `src/harness_analyzer/output/diagram.py`, `markdown.py`, and `comparison.py` together when changing report sections, ensuring every section keeps its Mermaid diagram reference and quantitative data evidence intact.
+- Also update `src/harness_analyzer/output/diagram.py`, `markdown.py`, and `comparison.py` together when changing report sections: attach Mermaid diagrams **selectively** to reduce reading burden on complex mechanisms or multi-dimensional data (`xychart-beta`, `sequenceDiagram`, `stateDiagram-v2`, `flowchart`), never adding filler charts for single numbers or simple descriptive tables.
 - Never attempt to bypass CAPTCHAs, Cloudflare challenges, or WAF blocks; `collectors/web_utils.py` trips a per-domain circuit breaker and records `blocked_sources` cleanly.

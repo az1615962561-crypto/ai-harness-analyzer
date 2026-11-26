@@ -4,7 +4,7 @@
 
 | 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| automation | 2026-11-26 11:58:11 | 5 | 6/6 | 0 | ★★★★★ |
+| automation | 2026-11-26 13:40:49 | 5 | 6/6 | 0 | ★★★★★ |
 
 ## 架构总览拓扑 (System Topology)
 
@@ -28,17 +28,6 @@ AutoGPT 是自主自动化 Agent 的代表作，其 Harness 围绕 Plan-Execute-
 ## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
 
 > **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
-
-### 0. PM 决策链路与风控边界参考图 (Mermaid)
-
-```mermaid
-flowchart LR
-    Facts["已实证技术锚点 (6 项)"] --> Decide["AutoGPT 产品定位与自主度: L3~L4 (高自主度的全托管异步型)"]
-    Friction["社区真实痛点与警示 (0 项风险)"] --> Decide
-    Decide --> P0["V1 P0 必做 (5 项): 基于 DAG 的有向无环图任务依赖调度引擎"]
-    Decide --> P1["V2 P1 增强 (4 项): 进阶路由与生态"]
-    Decide -. 避坑红线 .-> Avoid["严禁 (3 项): 绝对不要在宿主开发环境或生产机裸跑无容器隔离的自动化 Ag…"]
-```
 
 **📊 方案支撑数据例证**：实证技术锚点 `6` 项 ｜ 社区评论来源 `2` 处 ｜ 待避坑未实证警示 `0` 项 ｜ 建议 MVP P0 `5` 项 / P1 `4` 项
 
@@ -118,16 +107,6 @@ flowchart LR
 
 ### 1. 基础共性维度拆解
 
-**共性维度评分与权重全景图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "AutoGPT 共性维度评分与权重对比"
-    x-axis ["Agent 编排", "工具链", "安全沙箱"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [5, 5, 5]
-    line [5, 5, 3]
-```
-
 | 维度 | 品类权重 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | Agent 编排 | 5/5 | ★★★★★ | `strict_verified` | 0 | 0 |
@@ -176,16 +155,6 @@ sequenceDiagram
 
 工具覆盖：本地文件读写、Bash 命令执行、无头浏览器网页抓取与操作、网络搜索。所有工具均以统一的标准 Schema 暴露给模型。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    LLM["LLM Tool Request"] --> Gate{"Schema + 风险策略校验"}
-    Gate -- 内置核心工具 --> Builtin["Read / Edit / Patch / Exec"]
-    Gate -- 开放标准协议 --> MCP["MCP Servers (stdio / SSE / SHTTP)"]
-    Builtin --> Obs["结构化 Observation 回传"]
-    MCP --> Obs
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -223,15 +192,6 @@ flowchart LR
 1. 自主自动化 Agent 的安全底线是容器级隔离，绝不能在宿主生产环境裸跑
 
 ### 2. 品类专属穿透维度拆解
-
-**专属维度实证置信度图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "AutoGPT automation 专属维度实证评分"
-    x-axis ["DAG/状态机引擎", "容错与重试恢复", "事件触发与调度机制"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [5, 4, 4]
-```
 
 | 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: |
@@ -272,13 +232,6 @@ flowchart LR
 
 当某一步骤工具执行抛错时，Agent 分析错误原因，尝试切换备选工具或修正参数后重试，避免单点阻断全流程。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["AutoGPT 容错与重试恢复"] --> Dec["指数退避重试"]
-    Dec --> Out["异常捕获 -> 状态回滚 -> 替代路径重试"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -295,13 +248,6 @@ flowchart LR
 事件驱动 Webhook 监听与定时 Cron 调度
 
 不仅支持人机交互对话触发，还支持监听外部 Webhook 事件或按时间表自动化执行周期性工作流。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["AutoGPT 事件触发与调度机制"] --> Dec["集成工作流调度网关"]
-    Dec --> Out["事件驱动 Webhook 监听与定时 Cron 调度"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
@@ -321,16 +267,6 @@ flowchart LR
 3. 容器级物理沙箱是全自主工具调用的强制安全要求
 
 ## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
-
-**信源通道分布参考图 (Mermaid)**：
-```mermaid
-flowchart TD
-    Root["AutoGPT 信源追踪总计 (1 篇)"] --> GH["GitHub 源码/仓库/Issues: 1 条"]
-    Root --> Docs["官方文档与技术文章: 0 条"]
-    Root --> Comm["社区评测与真实吐槽: 0 条"]
-    Root --> Other["泛网络与技术解析: 0 条"]
-    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 0 处"]
-```
 
 **📊 信源分布数据统计**：总计 `1` 条（GitHub `1` ｜ 官方文档/博客 `0` ｜ 社区评论/讨论 `0` ｜ 其他技术文章 `0`）
 

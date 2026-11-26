@@ -4,7 +4,7 @@
 
 | 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| knowledge | 2026-11-26 11:58:09 | 4 | 7/7 | 0 | ★★★★★ |
+| knowledge | 2026-11-26 13:40:48 | 4 | 7/7 | 0 | ★★★★★ |
 
 ## 架构总览拓扑 (System Topology)
 
@@ -27,17 +27,6 @@ Perplexity 构建了一套以'快速检索-多路召回-精准重排-可溯源�
 ## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
 
 > **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
-
-### 0. PM 决策链路与风控边界参考图 (Mermaid)
-
-```mermaid
-flowchart LR
-    Facts["已实证技术锚点 (7 项)"] --> Decide["Perplexity 产品定位与自主度: L1~L2 (透明引用的交互探索型)"]
-    Friction["社区真实痛点与警示 (0 项风险)"] --> Decide
-    Decide --> P0["V1 P0 必做 (5 项): 多路搜索并发召回 (关键词+语义向量混合召回)"]
-    Decide --> P1["V2 P1 增强 (4 项): 进阶路由与生态"]
-    Decide -. 避坑红线 .-> Avoid["严禁 (3 项): 切忌只做普通向量召回不加 Reranker (召回一堆垃圾…"]
-```
 
 **📊 方案支撑数据例证**：实证技术锚点 `7` 项 ｜ 社区评论来源 `2` 处 ｜ 待避坑未实证警示 `0` 项 ｜ 建议 MVP P0 `5` 项 / P1 `4` 项
 
@@ -118,10 +107,10 @@ flowchart LR
 
 ### 1. 基础共性维度拆解
 
-**共性维度评分与权重全景图 (Mermaid)**：
+**共性维度多维分布图 (Mermaid：快速识别高权重低实证短板)**：
 ```mermaid
 xychart-beta
-    title "Perplexity 共性维度评分与权重对比"
+    title "Perplexity 共性维度评分(柱)与权重(线)对比"
     x-axis ["Agent 编排", "模型路由", "上下文工程", "人机协同"]
     y-axis "评分 (1-5★)" 0 --> 5
     bar [5, 5, 5, 5]
@@ -177,15 +166,6 @@ sequenceDiagram
 
 搜索关键词拓展与意图识别使用极速小模型处理，最终的复杂回答与长上下文归纳路由至 Claude 3.5 Sonnet / GPT-4o。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Req["Perplexity 任务请求"] --> Router{"模型/推理档位路由"}
-    Router -- 高频/实时探索 --> Fast["轻量高速模型 / Low Effort"]
-    Router -- 复杂架构/疑难修复 --> Strong["旗舰推理模型 / High Effort"]
-    Router -. 限流/跨厂商兜底 .-> Ext["Proxy / ACP / BYOK"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -229,15 +209,6 @@ flowchart LR
 
 在生成的每句话末尾标注角标 [1][2]，鼠标悬停即可预览原始网页片段；回答底部自动推荐 3 个延伸思考问题，形成连续探索。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Agent["Perplexity 流式产出 / 计划"] --> UI["差异预览 / 工具可视化卡片"]
-    UI --> Check{"人类审查介入点"}
-    Check -- Accept / Approve --> Apply["应用变更继续执行"]
-    Check -- Reject / Edit --> Steer["人工纠正方向回传"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -248,15 +219,6 @@ flowchart LR
 1. 提升 AI 回答可信度的最好手段不是声明正确，而是提供低成本验证引用的交互体验
 
 ### 2. 品类专属穿透维度拆解
-
-**专属维度实证置信度图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "Perplexity knowledge 专属维度实证评分"
-    x-axis ["RAG 检索管线", "引用链管理与溯源", "多文档综合推理"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [5, 5, 4]
-```
 
 | 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: |
@@ -298,13 +260,6 @@ flowchart LR
 
 在生成 Prompt 中要求模型以特定语法标注引用源索引，前端将其解析为交互式卡片，点击可跳转高亮原文。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["Perplexity 引用链管理与溯源"] --> Dec["Prompt 强制格式约束与后置验证"]
-    Dec --> Out["句子级细粒度引用锚定与源文快照"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -321,13 +276,6 @@ flowchart LR
 冲突检测与多方观点汇总
 
 当多个网页对同一问题存在不同观点时，Agent 会梳理出不同立场并分别注明出处。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["Perplexity 多文档综合推理"] --> Dec["正反观点对比呈现"]
-    Dec --> Out["冲突检测与多方观点汇总"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
@@ -347,16 +295,6 @@ flowchart LR
 3. 多搜索词拓展机制解决了用户原始提问关键词不充分的问题
 
 ## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
-
-**信源通道分布参考图 (Mermaid)**：
-```mermaid
-flowchart TD
-    Root["Perplexity 信源追踪总计 (1 篇)"] --> GH["GitHub 源码/仓库/Issues: 0 条"]
-    Root --> Docs["官方文档与技术文章: 0 条"]
-    Root --> Comm["社区评测与真实吐槽: 0 条"]
-    Root --> Other["泛网络与技术解析: 1 条"]
-    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 0 处"]
-```
 
 **📊 信源分布数据统计**：总计 `1` 条（GitHub `0` ｜ 官方文档/博客 `0` ｜ 社区评论/讨论 `0` ｜ 其他技术文章 `1`）
 

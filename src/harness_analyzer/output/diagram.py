@@ -203,8 +203,22 @@ class DiagramGenerator:
             lines.append(f'    line [{", ".join(weights)}]')
         return "\n".join(lines)
 
+    _COMPLEX_FALLBACK_DIMS = {
+        "agent_orchestration",
+        "data_flow_state",
+        "security_sandbox",
+        "context_engineering",
+        "sandbox_model",
+        "nl2sql_pipeline",
+        "rag_pipeline",
+        "dag_state_machine",
+    }
+
     def generate_dimension_diagram(self, item: Any, category: str = "engineering", app_name: str = "AI 应用") -> str:
-        """为单个 Harness 维度返回自定义或领域匹配的 Mermaid 机制参考图"""
+        """按需生成单维度 Mermaid 机制图：
+        仅在存在显式定制图，或属于多方交互/状态机/多分支复杂维度时才附图，
+        简单描述性或单一指标维度不硬凑流程图。
+        """
         custom = self._get(item, "mermaid_diagram", default="")
         if isinstance(custom, str) and custom.strip() and any(
             k in custom for k in ("flowchart", "sequenceDiagram", "stateDiagram", "xychart-beta")
@@ -212,7 +226,8 @@ class DiagramGenerator:
             return custom.strip().replace("```mermaid", "").replace("```", "").strip()
 
         dim_key = str(self._get(item, "dimension", default="")).lower()
-        lbl = self._safe_label(self._get(item, "label", "dimension_label", default=dim_key), 24)
+        if dim_key not in self._COMPLEX_FALLBACK_DIMS:
+            return ""
         app_lbl = self._safe_label(app_name, 18)
 
         templates: dict[str, str] = {
@@ -347,15 +362,7 @@ class DiagramGenerator:
         }
         if dim_key in templates:
             return templates[dim_key]
-
-        key_dec = self._get(item, "key_decisions", default=[]) or []
-        dec_lbl = self._safe_label(key_dec[0], 32) if key_dec else "核心设计决策"
-        sum_lbl = self._safe_label(self._get(item, "summary", default=lbl), 32)
-        return (
-            "flowchart LR\n"
-            f'    In["{app_lbl} {lbl}"] --> Dec["{dec_lbl}"]\n'
-            f'    Dec --> Out["{sum_lbl}"]'
-        )
+        return ""
 
     def generate_patterns_diagram(self, analysis: Any) -> str:
         """生成识别到的经典架构模式组合 Mermaid 图"""
@@ -401,24 +408,44 @@ class DiagramGenerator:
         )
 
     def generate_comparison_chart(self, analyses: list[Any]) -> str:
-        """生成横向对比报告的置信度 xychart-beta 柱状图"""
-        if not analyses:
+        """仅当对比维度足够多（多应用间至少 4 个共性维度）时生成多维对比 xychart-beta，
+        单一总评分对比（仅两三个数字）不浪费篇幅画柱状图。
+        """
+        if len(analyses) < 2:
             return ""
-        names = []
-        confs = []
-        for idx, a in enumerate(analyses):
-            n = self._safe_label(self._get(a, "app_display_name", "app_name", default=f"App{idx+1}"), 16)
-            names.append(f'"{n}"')
-            c = self._get(a, "confidence_overall", "confidence", default=3) or 3
-            val = max(1, min(5, int(round(float(c) * 5 if isinstance(c, float) and c <= 1 else float(c)))))
-            confs.append(str(val))
-        return "\n".join([
+        common_labels: list[str] = []
+        app_scores: list[list[int]] = []
+        for a in analyses:
+            dims = self._get(a, "common_dimensions", default=[]) or []
+            for d in dims:
+                lbl = str(self._get(d, "label", "dimension_label", "dimension", default=""))
+                if lbl and lbl not in common_labels:
+                    common_labels.append(lbl)
+        if len(common_labels) < 4:
+            return ""
+
+        chart_labels = common_labels[:9]
+        for a in analyses[:4]:
+            dims = self._get(a, "common_dimensions", default=[]) or []
+            score_map = {
+                str(self._get(d, "label", "dimension_label", "dimension", default="")): int(
+                    max(1, min(5, round(float(self._get(d, "confidence", default=3) or 3))))
+                )
+                for d in dims
+            }
+            app_scores.append([score_map.get(lbl, 0) for lbl in chart_labels])
+
+        x_items = ", ".join(f'"{self._safe_label(l, 8)}"' for l in chart_labels)
+        lines = [
             "xychart-beta",
-            '    title "架构总体置信度横向对比 (1-5★)"',
-            f'    x-axis [{", ".join(names)}]',
-            '    y-axis "置信度" 0 --> 5',
-            f'    bar [{", ".join(confs)}]',
-        ])
+            '    title "共性维度实证置信度横向对比 (柱状=首应用, 折线=次应用)"',
+            f"    x-axis [{x_items}]",
+            '    y-axis "置信度 (0-5★)" 0 --> 5',
+            f"    bar [{', '.join(str(v) for v in app_scores[0])}]",
+        ]
+        if len(app_scores) >= 2:
+            lines.append(f"    line [{', '.join(str(v) for v in app_scores[1])}]")
+        return "\n".join(lines)
 
     def generate_comparison_flow(self, analyses: list[Any]) -> str:
         """生成横向对比的架构路线与定位差异 Mermaid 图"""

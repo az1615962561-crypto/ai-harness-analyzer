@@ -1,7 +1,7 @@
 {
   "app_name": "cursor",
   "category": "engineering",
-  "generated_at": "2026-11-26T11:58:06.801836",
+  "generated_at": "2026-11-26T13:40:45.455883",
   "core_verified_facts": [
     "[沙箱隔离模型] 宿主安全确认模式 + 本地执行边界 (置信度 4★ | core/strict_verified)",
     "[代码理解引擎] LSP 静态分析 + Tree-sitter AST + 增量向量混合索引 (置信度 5★ | core/strict_verified)",

@@ -1,7 +1,7 @@
 {
   "app_name": "perplexity",
   "category": "knowledge",
-  "generated_at": "2026-11-26T11:58:09.829275",
+  "generated_at": "2026-11-26T13:40:48.156441",
   "core_verified_facts": [
     "[RAG 检索管线] 动态多路由检索 + 实时重排序模型 (Cross-Encoder Reranker) (置信度 5★ | core/strict_verified)",
     "[引用链管理与溯源] 句子级细粒度引用锚定与源文快照 (置信度 5★ | core/strict_verified)",

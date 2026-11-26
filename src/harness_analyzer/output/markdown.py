@@ -298,11 +298,6 @@ class MarkdownReportGenerator:
         ]
 
         if analysis is not None:
-            pm_flow = diag.generate_pm_flow(analysis, pm_data)
-            if pm_flow:
-                lines.append("### 0. PM 决策链路与风控边界参考图 (Mermaid)\n")
-                lines.append("```mermaid\n" + pm_flow + "\n```\n")
-
             artifact = self._get_val(analysis, "intermediate_artifact", default=None)
             gs = self._get_val(artifact, "guard_summary", default={}) or {} if artifact else {}
             strict_n = gs.get("strict_verified", 0)
@@ -465,18 +460,21 @@ class MarkdownReportGenerator:
         parts.append("## 🔬 中间层：Harness 架构维度深度拆解 (Dimension Analysis)\n")
         parts.append("> **分析手法说明**：本节运用 9 大共性工程维度与 5 大品类专属穿透维度，对底层调度、上下文、沙箱与工具链进行技术解剖，每个维度均附带独立 **Mermaid 机制参考图** 与 **量化数据例证**。\n")
 
-        # 共性维度
+        # 共性维度（多维对比维度多、权重与置信度交叉，用图+表辅助快速发现短板）
         parts.append("### 1. 基础共性维度拆解\n")
         if common_dimensions and isinstance(common_dimensions, list):
-            weights_map = DIMENSION_WEIGHTS.get(category, {})
-            common_chart = diag.generate_dimensions_chart(
-                common_dimensions,
-                title=f"{app_display_name} 共性维度评分与权重对比",
-                weights_map=weights_map or None,
-            )
-            if common_chart:
-                parts.append("**共性维度评分与权重全景图 (Mermaid)**：")
-                parts.append("```mermaid\n" + common_chart + "\n```\n")
+            if len(common_dimensions) >= 4:
+                weights_map = DIMENSION_WEIGHTS.get(category, {})
+                common_chart = diag.generate_dimensions_chart(
+                    common_dimensions,
+                    title=f"{app_display_name} 共性维度评分(柱)与权重(线)对比",
+                    weights_map=weights_map or None,
+                )
+                if common_chart:
+                    parts.append("**共性维度多维分布图 (Mermaid：快速识别高权重低实证短板)**：")
+                    parts.append("```mermaid\n" + common_chart + "\n```\n")
+            else:
+                weights_map = DIMENSION_WEIGHTS.get(category, {})
 
             parts.append("| 维度 | 品类权重 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |")
             parts.append("| :--- | :---: | :---: | :---: | :---: | :---: |")
@@ -496,17 +494,9 @@ class MarkdownReportGenerator:
         else:
             parts.append("*暂无共性维度分析数据。*\n")
 
-        # 品类专属维度
+        # 品类专属维度（仅 5 项且权重同为 CORE，直接用紧凑汇总表即可，不重复画单维柱状图；复杂维度段落内按需附机制图）
         parts.append("### 2. 品类专属穿透维度拆解\n")
         if specialized_dimensions and isinstance(specialized_dimensions, list):
-            spec_chart = diag.generate_dimensions_chart(
-                specialized_dimensions,
-                title=f"{app_display_name} {category} 专属维度实证评分",
-            )
-            if spec_chart:
-                parts.append("**专属维度实证置信度图 (Mermaid)**：")
-                parts.append("```mermaid\n" + spec_chart + "\n```\n")
-
             parts.append("| 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |")
             parts.append("| :--- | :---: | :---: | :---: | :---: |")
             for sd in specialized_dimensions:
@@ -526,11 +516,6 @@ class MarkdownReportGenerator:
         # 6.5. 经典架构模式识别 (Architecture Patterns)
         if matched_patterns and isinstance(matched_patterns, list):
             parts.append("### 3. 识别到的架构模式 (Architecture Patterns)\n")
-            pat_mermaid = diag.generate_patterns_diagram(analysis)
-            if pat_mermaid:
-                parts.append("**架构模式协同关系图 (Mermaid)**：")
-                parts.append("```mermaid\n" + pat_mermaid + "\n```\n")
-
             parts.append("| 模式名称 | 落地说明 | 数据/源码证据要点 | 置信度 |")
             parts.append("| :--- | :--- | :--- | :---: |")
             for p in matched_patterns:
@@ -557,10 +542,6 @@ class MarkdownReportGenerator:
 
         # 8. 事实层：信源与逆向采集追踪
         parts.append("## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)\n")
-        src_mermaid = diag.generate_source_traceability_diagram(analysis, artifact=intermediate_artifact)
-        if src_mermaid:
-            parts.append("**信源通道分布参考图 (Mermaid)**：")
-            parts.append("```mermaid\n" + src_mermaid + "\n```\n")
 
         if raw_sources and isinstance(raw_sources, list):
             gh_n = docs_n = rev_n = other_n = 0

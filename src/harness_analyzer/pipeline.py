@@ -184,7 +184,7 @@ def build_prompt_contract(category: str = "engineering") -> dict[str, Any]:
                     "verbatim_quotes": ["exact substring copied from collected_items"],
                     "evidence_sources": ["url or title"],
                     "confidence": 4,
-                    "mermaid_diagram": "optional mermaid flowchart/sequence snippet (auto-generated if omitted)",
+                    "mermaid_diagram": "optional mermaid (ONLY for complex loops/state-machines/multi-actor flows; omit for simple prose/single metrics)",
                 }
             ],
             "specialized_dimensions": "same shape using 5 keys from specialized_dimensions_by_category[category]",

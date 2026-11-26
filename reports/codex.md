@@ -4,7 +4,7 @@
 
 | 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| engineering | 2026-11-26 11:58:02 | 42 | 13/14 | 26 | ★★★★☆ |
+| engineering | 2026-11-26 13:40:41 | 42 | 13/14 | 26 | ★★★★☆ |
 
 ## 架构总览拓扑 (System Topology)
 
@@ -29,17 +29,6 @@ OpenAI Codex 采用「Rust 高性能共享内核 (`codex-rs`) + 多宿主接口�
 ## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
 
 > **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
-
-### 0. PM 决策链路与风控边界参考图 (Mermaid)
-
-```mermaid
-flowchart LR
-    Facts["已实证技术锚点 (13 项)"] --> Decide["Codex 产品定位与自主度: L3（云端隔离异步交付型）与 L2~L3 可调混合（本地借助 As…"]
-    Friction["社区真实痛点与警示 (0 项风险)"] --> Decide
-    Decide --> P0["V1 P0 必做 (4 项): 文件系统与网络访问分离的本地沙箱 + 提权重试二次审批机制"]
-    Decide --> P1["V2 P1 增强 (3 项): 进阶路由与生态"]
-    Decide -. 避坑红线 .-> Avoid["严禁 (3 项): 切忌在不做 OS/容器硬隔离的生产服务器环境下默认开放高危…"]
-```
 
 **📊 方案支撑数据例证**：实证技术锚点 `13` 项 ｜ 社区评论来源 `8` 处 ｜ 待避坑未实证警示 `0` 项 ｜ 建议 MVP P0 `4` 项 / P1 `3` 项
 
@@ -145,10 +134,10 @@ flowchart LR
 
 ### 1. 基础共性维度拆解
 
-**共性维度评分与权重全景图 (Mermaid)**：
+**共性维度多维分布图 (Mermaid：快速识别高权重低实证短板)**：
 ```mermaid
 xychart-beta
-    title "Codex 共性维度评分与权重对比"
+    title "Codex 共性维度评分(柱)与权重(线)对比"
     x-axis ["Agent 编排", "模型路由", "工具链", "提示词工程", "上下文工程", "数据流与状态管理", "安全沙箱", "人机协同", "扩展生态"]
     y-axis "评分 (1-5★)" 0 --> 5
     bar [5, 3, 5, 5, 5, 4, 5, 5, 5]
@@ -215,15 +204,6 @@ sequenceDiagram
 
 社区基准测评提到中等推理强度的 `GPT-5.1-Codex-Max` 可用更少思考标记实现更低成本的高质量输出，GPT-5.3-Codex 主攻终端高难度工程任务；同时仓库源码与社区生态兼容通过配置文件与第三方 Router 对接替代 API 端点。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Req["Codex 任务请求"] --> Router{"模型/推理档位路由"}
-    Router -- 高频/实时探索 --> Fast["轻量高速模型 / Low Effort"]
-    Router -- 复杂架构/疑难修复 --> Strong["旗舰推理模型 / High Effort"]
-    Router -. 限流/跨厂商兜底 .-> Ext["Proxy / ACP / BYOK"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "在SWE-bench Verified中，采用“中等”推理的GPT-5.1-Codex-Max表现优于GPT-5.1-Codex，且使用少30%的思考标记。"
@@ -242,16 +222,6 @@ flowchart LR
 以结构化 `apply_patch` 补丁执行器和沙箱化命令执行器 (`codex_exec_server`) 为支柱，并原生内置 `@modelcontextprotocol/sdk` MCP 协议与网络审批工具链
 
 源码 `apply_patch.rs` 与 `orchestrator.rs` 展示了严格的 `ToolRuntime`、`Sandboxable` 与 `Approvable` trait 抽象，配合 `ActiveNetworkApproval` 对涉外网络请求进行细粒度延期或即时批准。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    LLM["LLM Tool Request"] --> Gate{"Schema + 风险策略校验"}
-    Gate -- 内置核心工具 --> Builtin["Read / Edit / Patch / Exec"]
-    Gate -- 开放标准协议 --> MCP["MCP Servers (stdio / SSE / SHTTP)"]
-    Builtin --> Obs["结构化 Observation 回传"]
-    MCP --> Obs
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -273,15 +243,6 @@ flowchart LR
 通过模型解析消息包 `codex_prompts::ResolvedModelMessages`、强类型标记片断（`BaseInstructionsFragment`、`AppsInstructions`）与 Hooks 注入文本（`HookPromptFragment`）精密管理提示分层
 
 源码显示基础系统指令 (`model.base_instructions`)、应用目录说明 (`apps.instructions` + 显式开闭标签标记) 与 Hook 运行时输出均以结构化 Fragment 和 `developer` 角色封装注入，便于在上下文保留恢复时准确识别与去重。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Sys["系统 Preset / 总纲"] --> Stack["Prompt 运行时装配层"]
-    ToolDesc["工具微规程 (Description)"] --> Stack
-    ProjMem["仓库规则 (AGENTS.md / CLAUDE.md / Skills)"] --> Stack
-    Stack --> Call["发送至 Codex 模型"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `3` 条 ｜ 关联信源 `3` 篇 ｜ 提炼工程决策 `2` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -397,15 +358,6 @@ flowchart LR
 
 支持既可在本地高交互审批单步操作，也可切到云端异步自动化（“从交互式碎碎念变成从约束到交付物的异步过程”）。但用户真实吐槽也显示：全自主执行有时导致“隐藏代码、消耗大量 Token 且一旦无保护越界极具风险”。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Agent["Codex 流式产出 / 计划"] --> UI["差异预览 / 工具可视化卡片"]
-    UI --> Check{"人类审查介入点"}
-    Check -- Accept / Approve --> Apply["应用变更继续执行"]
-    Check -- Reject / Edit --> Steer["人工纠正方向回传"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `2` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "If you want the desktop app experience, run <code>codex app</code>"
@@ -426,15 +378,6 @@ flowchart LR
 
 不仅兼容 OpenAI/社区 Skills 规范、允许仓库配置 `.github/codex/` 与 `AGENTS.md`，还通过独立定义的 `app-server-protocol` TypeScript/Rust 契约把同一 Agent 内核开放给各种编辑器插件与自动化工作流。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Core["Codex 核心引擎"] --> MCP["MCP 工具协议生态"]
-    Core --> Skills["Markdown Skills / 规则模板"]
-    Core --> Hooks["Before / After 生命周期 Hooks"]
-    Core --> SDK["SDK / IDE Server 开放协议"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > ""@modelcontextprotocol/sdk": "1.32.0""
@@ -448,15 +391,6 @@ flowchart LR
 1. 定义清晰的 `app-server-protocol` RPC 契约可以让第三方的 IDE 插件与 CLI 共用完全一致的底层运行时
 
 ### 2. 品类专属穿透维度拆解
-
-**专属维度实证置信度图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "Codex engineering 专属维度实证评分"
-    x-axis ["沙箱隔离模型", "代码理解引擎", "Diff 与变更管理", "终端与进程管理", "检查点与回滚"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [5, 3, 5, 4, 3]
-```
 
 | 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: |
@@ -503,14 +437,6 @@ flowchart TD
 
 在已抓回的文件树与核心源码中可见针对 `workspace_roots`、`PathUri` 和代码库问答/重构能力的调度入口，但仓库共含 10,598 个文件，本次并发抽样未命中独立 AST/LSP 索引模块细节，按 Guard 规范稳健处理。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Root["工程根目录 (Workspace)"] --> Scan["符号 / AST / Grep / Agentic Search"]
-    Scan --> Graph["跨文件引用与依赖心智图"]
-    Graph --> EditCtx["精准定位待改片段"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "workspace_roots: Vec::new(),"
@@ -529,14 +455,6 @@ flowchart LR
 以独立 `codex_apply_patch` 运行时与强类型变更事件 (`AppliedPatchDelta`、`AppliedPatchFileChange`、`FileChange`) 实现可控补丁应用与本地/远端统一执行
 
 `codex-rs/core/src/tools/runtimes/apply_patch.rs` 明确将补丁解析/验证审批与实际应用拆分为两步：先由上游完成 `ApplyPatchAction` 验证审批，再统一在 `TurnEnvironment` 对应的本地或远程文件系统上下文中原子落地并产出 `AppliedPatchDelta`。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Gen["生成增量补丁 (Patch / Diff)"] --> Verify["上游语法与审批检查"]
-    Verify --> Apply["原子写入目标工作区"]
-    Apply --> Delta["产出文件 Delta 变更回执"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
@@ -558,14 +476,6 @@ flowchart LR
 
 从 `apply_patch.rs` 与 `orchestrator.rs` 引用可见独立 `codex_exec_server` crate 与 `ExecToolCallOutput` / `StreamOutput` 流式输出封装，支撑本地终端 TUI、Windows 沙箱选择与无头 CI 模式执行。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Shell["终端命令下发"] --> PTY["PTY / Exec Server 会话"]
-    PTY --> Stream["流式捕获 Stdout / Stderr / 退出码"]
-    Stream -- 退出码非0 --> SelfFix["错误回传触发自愈修复"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `2` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "use codex_protocol::exec_output::ExecToolCallOutput;"
@@ -586,15 +496,6 @@ flowchart LR
 
 补丁应用产生明确的 `AppliedPatchFileChange` / `Delta` 数据结构并运行于隔离环境中，具体类似 Cursor 的前端多步图形化一键回滚机制在本批抽样文件中未直接体现。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Pre["编辑前自动快照 / Git Stash"] --> Mutate["多文件变更应用"]
-    Mutate --> Check{"结果符合预期?"}
-    Check -- 是 --> Commit["保留进入下一轮"]
-    Check -- 否 --> Rollback["一键回滚恢复安全点"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `1` 条 ｜ 关联信源 `1` 篇 ｜ 提炼工程决策 `1` 项
 **原文佐证片段 (Verified Quotes)**：
 > "use codex_apply_patch::AppliedPatchDelta;"
@@ -607,16 +508,6 @@ flowchart LR
 1. 配合 `AppliedPatchDelta` 可极低成本在客户端额外挂载逐 Turn 自动 Git Snapshot 回滚栈
 
 ### 3. 识别到的架构模式 (Architecture Patterns)
-
-**架构模式协同关系图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Core["Codex 工程 Harness 内核"]
-    Core --> P0["agent_loop (5★ | 1条证据)"]
-    Core --> P1["human_in_the_loop_guard (5★ | 1条证据)"]
-    Core --> P2["code_interpreter_sandbox (5★ | 1条证据)"]
-    Core --> P3["mcp_protocol_standard (5★ | 1条证据)"]
-```
 
 | 模式名称 | 落地说明 | 数据/源码证据要点 | 置信度 |
 | :--- | :--- | :--- | :---: |
@@ -635,16 +526,6 @@ flowchart LR
 4. 上下文装配采用结构化 `ContextualUserFragment` 与 `ContentItemKind` 标签（如 `model.base_instructions`、`apps.instructions`），确保历史消息恢复与增量工具窗口下指令来源不丢失
 
 ## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
-
-**信源通道分布参考图 (Mermaid)**：
-```mermaid
-flowchart TD
-    Root["Codex 信源追踪总计 (41 篇)"] --> GH["GitHub 源码/仓库/Issues: 17 条"]
-    Root --> Docs["官方文档与技术文章: 4 条"]
-    Root --> Comm["社区评测与真实吐槽: 16 条"]
-    Root --> Other["泛网络与技术解析: 4 条"]
-    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 6 处"]
-```
 
 **📊 信源分布数据统计**：总计 `41` 条（GitHub `17` ｜ 官方文档/博客 `4` ｜ 社区评论/讨论 `16` ｜ 其他技术文章 `4`）
 

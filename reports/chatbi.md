@@ -4,7 +4,7 @@
 
 | 所属品类 | 分析时间 | 信源覆盖数 | 严格实证维度比 | 原文实证摘录数 | 架构置信度 |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| data | 2026-11-26 11:58:08 | 3 | 9/9 | 0 | ★★★★☆ |
+| data | 2026-11-26 13:40:46 | 3 | 9/9 | 0 | ★★★★☆ |
 
 ## 架构总览拓扑 (System Topology)
 
@@ -28,17 +28,6 @@ ChatBI 代表了典型的数据分析型 Agent Harness：采用意图分类与�
 ## 🎯 应用层：产品经理产品方案指导 (PM Solution Guidance)
 
 > **定位说明**：本节专为公司**产品经理 (PM)** 与**业务负责人**编写，将底层复杂的 Harness 架构拆解转化为具体的产品形态定义、交互信任机制及第一期 PRD 落地清单。
-
-### 0. PM 决策链路与风控边界参考图 (Mermaid)
-
-```mermaid
-flowchart LR
-    Facts["已实证技术锚点 (9 项)"] --> Decide["ChatBI 产品定位与自主度: L1~L2 (严格受控的建议与辅助型)"]
-    Friction["社区真实痛点与警示 (0 项风险)"] --> Decide
-    Decide --> P0["V1 P0 必做 (5 项): 核心业务指标字典与元数据映射 (Schema 注释库)"]
-    Decide --> P1["V2 P1 增强 (4 项): 进阶路由与生态"]
-    Decide -. 避坑红线 .-> Avoid["严禁 (3 项): 切忌把上百张表的建表语句直接塞给大模型 (上下文被污染，准…"]
-```
 
 **📊 方案支撑数据例证**：实证技术锚点 `9` 项 ｜ 社区评论来源 `1` 处 ｜ 待避坑未实证警示 `0` 项 ｜ 建议 MVP P0 `5` 项 / P1 `4` 项
 
@@ -118,10 +107,10 @@ flowchart LR
 
 ### 1. 基础共性维度拆解
 
-**共性维度评分与权重全景图 (Mermaid)**：
+**共性维度多维分布图 (Mermaid：快速识别高权重低实证短板)**：
 ```mermaid
 xychart-beta
-    title "ChatBI 共性维度评分与权重对比"
+    title "ChatBI 共性维度评分(柱)与权重(线)对比"
     x-axis ["Agent 编排", "工具链", "提示词工程", "安全沙箱"]
     y-axis "评分 (1-5★)" 0 --> 5
     bar [4, 5, 5, 5]
@@ -176,16 +165,6 @@ sequenceDiagram
 
 核心工具集包括：DB 元数据提取器、SQL Parser (验证 AST 与权限)、安全沙盒只读查询执行器、ECharts/AntV 渲染配置生成器。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    LLM["LLM Tool Request"] --> Gate{"Schema + 风险策略校验"}
-    Gate -- 内置核心工具 --> Builtin["Read / Edit / Patch / Exec"]
-    Gate -- 开放标准协议 --> MCP["MCP Servers (stdio / SSE / SHTTP)"]
-    Builtin --> Obs["结构化 Observation 回传"]
-    MCP --> Obs
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -202,15 +181,6 @@ flowchart LR
 动态 Schema 注入 + Few-Shot SQL 黄金案例库
 
 针对特定数据库方言进行专门的 Prompt 优化，通过语义相似度动态召回 3-5 个高频正确 SQL 样例进行 Few-Shot 强化。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    Sys["系统 Preset / 总纲"] --> Stack["Prompt 运行时装配层"]
-    ToolDesc["工具微规程 (Description)"] --> Stack
-    ProjMem["仓库规则 (AGENTS.md / CLAUDE.md / Skills)"] --> Stack
-    Stack --> Call["发送至 ChatBI 模型"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
@@ -249,15 +219,6 @@ flowchart LR
 1. 数据安全沙盒的核心在于 SQL 重写与动态权限注入
 
 ### 2. 品类专属穿透维度拆解
-
-**专属维度实证置信度图 (Mermaid)**：
-```mermaid
-xychart-beta
-    title "ChatBI data 专属维度实证评分"
-    x-axis ["NL2SQL 转换…", "多源异构数据适配", "数据模式自动发现", "查询优化与安全", "数据可视化引擎"]
-    y-axis "评分 (1-5★)" 0 --> 5
-    bar [4, 4, 5, 4, 4]
-```
 
 | 专属维度 | 置信度 | Guard 状态 | 原文引用数 | 依据来源数 |
 | :--- | :---: | :---: | :---: | :---: |
@@ -302,13 +263,6 @@ flowchart LR
 
 屏蔽 MySQL、ClickHouse、PostgreSQL、Hive、Snowflake 等方言差异，在 Prompt 中动态适配对应方言语法。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["ChatBI 多源异构数据适配"] --> Dec["方言特征注入 Prompt 头部"]
-    Dec --> Out["统一 JDBC/ODBC 抽象层与方言适配器"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -325,13 +279,6 @@ flowchart LR
 元数据采集 + 样本数据语义推导 + 业务指标字典映射
 
 自动扫描数据表外键关系、采样前 5 条样本数据辅助模型理解真实字段分布，支持人工标注指标公式。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["ChatBI 数据模式自动发现"] --> Dec["动态 Schema 剪枝 (只注入相关度前 10 张表)"]
-    Dec --> Out["元数据采集 + 样本数据语义推导 + 业务指标字典映射"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
@@ -350,13 +297,6 @@ flowchart LR
 
 防止大模型写出全表扫描或跨分区死锁的低效 SQL，自动检查时间分区字段是否存在。
 
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["ChatBI 查询优化与安全"] --> Dec["强制分区字段校验"]
-    Dec --> Out["智能索引推荐与分区裁剪检查"]
-```
-
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
 **关键设计决策 (Engineering Decisions)**：
@@ -373,13 +313,6 @@ flowchart LR
 查询结果自动匹配图表形态与数据洞察总结
 
 根据查询结果的维度数、时间序列特征、离散程度，智能选择折线图、柱状图、饼图或交叉透视表，并生成自然语言解释。
-
-**机制参考图 (Mermaid)**：
-```mermaid
-flowchart LR
-    In["ChatBI 数据可视化引擎"] --> Dec["数据类型启发式规则决定图表形式"]
-    Dec --> Out["查询结果自动匹配图表形态与数据洞察总结"]
-```
 
 **📊 数据例证 (Data Evidence)**：命中原文片段 `0` 条 ｜ 关联信源 `0` 篇 ｜ 提炼工程决策 `2` 项
 
@@ -400,16 +333,6 @@ flowchart LR
 4. 错误反馈自动纠错重试机制可显著拉升整体任务完成率
 
 ## 📑 事实层：信源与逆向采集追踪 (Fact Traceability)
-
-**信源通道分布参考图 (Mermaid)**：
-```mermaid
-flowchart TD
-    Root["ChatBI 信源追踪总计 (2 篇)"] --> GH["GitHub 源码/仓库/Issues: 0 条"]
-    Root --> Docs["官方文档与技术文章: 1 条"]
-    Root --> Comm["社区评测与真实吐槽: 0 条"]
-    Root --> Other["泛网络与技术解析: 1 条"]
-    Root -. 反爬熔断 .-> Blk["礼貌跳过/限流: 0 处"]
-```
 
 **📊 信源分布数据统计**：总计 `2` 条（GitHub `0` ｜ 官方文档/博客 `1` ｜ 社区评论/讨论 `0` ｜ 其他技术文章 `1`）
 

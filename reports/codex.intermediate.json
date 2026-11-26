@@ -1,7 +1,7 @@
 {
   "app_name": "codex",
   "category": "engineering",
-  "generated_at": "2026-11-26T11:58:02.101690",
+  "generated_at": "2026-11-26T13:40:41.384816",
   "core_verified_facts": [
     "[沙箱隔离模型] 原生多平台 OS 沙箱体系（区分 Linux/macOS 与 `WindowsSandboxLevel`，独立管控文件系统与网络策略 `NetworkSandboxPolicy`）+ 云端隔离任务容器 (置信度 5★ | core/strict_verified)",
     "[代码理解引擎] 通过 CLI/沙箱环境内工作区路径映射（`PathUri` / `workspace_roots`）结合终端工具主动检索理解工程；本次抓取到的有限核心源码切片未涵盖专门 AST/LSP 索引器实现 (置信度 3★ | core/strict_verified)",
